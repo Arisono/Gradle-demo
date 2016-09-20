@@ -1,30 +1,41 @@
 package com.gradle.java.base;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import com.gradle.java.utils.DateFormatUtil;
 
 /**
  * @author Arison
  * Java 语法测试类
  */
 public class JavaBaseMain {
+	 /** custom maximum value this axis represents */
+    protected static float mCustomAxisMax = Float.NaN;
 
 	public static void main(String[] args) {
-		
-		//String str= URLDecoder.decode("%");
-		String str1=URLEncoder.encode("%");
-		 
-		System.out.println(URLDecoder.decode(str1));
+		str_replaceAll();
+	}
+
+
+
+	/**
+	 * 取代所有空格
+	 */
+	public static void str_replaceAll() {
+		String str="  你  好   你好  你好    ";
+		System.out.println(str.replaceAll(" ", ""));
+	}
+
+    
+
+	/**
+	 * 数字格式化
+	 */
+	public static void test_DecimalFormat() {
+		System.out.println(new DecimalFormat("###,###,##0").format(12.0));
 	}
 	
 	
-	/**
-	 * Java基础篇
-	 */
 
 	/**
 	 * 测试for循环
@@ -43,8 +54,4 @@ public class JavaBaseMain {
         }
 	}
 	
-	/**
-	 * Java Json解析篇
-	 */
-
 }

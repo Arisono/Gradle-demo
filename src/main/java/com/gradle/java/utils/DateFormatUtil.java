@@ -889,6 +889,44 @@ public class DateFormatUtil {
 		}
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param beginDate
+	 * @param endDate
+	 * @param f
+	 *            时间差的形式0:秒,1:分种,2:小时,3:天
+	 * @return
+	 */
+	public static long getDifference(Date beginDate, Date endDate, int f) {
+		long result = 0;
+		if (beginDate == null || endDate == null) {
+			return 0;
+		}
+		try {
+			// 日期相减获取日期差X(单位:毫秒)
+			long millisecond = endDate.getTime() - beginDate.getTime();
+			/**
+			 * Math.abs((int)(millisecond/1000)); 绝对值 1秒 = 1000毫秒
+			 * millisecond/1000 --> 秒 millisecond/1000*60 - > 分钟
+			 * millisecond/(1000*60*60) -- > 小时 millisecond/(1000*60*60*24) -->
+			 * 天
+			 * */
+			switch (f) {
+			case 0: // second
+				return  (millisecond / 1000);
+			case 1: // minute
+				return (millisecond / (1000 * 60));
+			case 2: // hour
+				return  (millisecond / (1000 * 60 * 60));
+			case 3: // day
+				return (millisecond / (1000 * 60 * 60 * 24));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	/**
 	 * <p>
@@ -916,14 +954,7 @@ public class DateFormatUtil {
 		return long1 - long2;
 	}
 
-	public static void main(String[] args) {
-
-		System.out.println(getFristDayOfMonth());
-		System.out.println(getCurrentYear());
-		System.out.println(getCurrentMonth());
-		System.out.println(getCurrentDay());
-
-	}
+	
 
 	public static Date getPreYearStartTime() {
 		Calendar cal = Calendar.getInstance();
@@ -1028,5 +1059,36 @@ public class DateFormatUtil {
 			e.printStackTrace();
 		}
 		return now;
+	}
+	
+
+	/**
+	 * 根据指定日期,来运算加减乘除
+	 * @param date 
+	 * @param format
+	 * @param value
+	 * add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+	 */
+	public static void add(Date date,String format,long value){
+		   SimpleDateFormat df=new SimpleDateFormat(format);   
+		   System.out.println("起始日期："+df.format(date));   
+//		   System.out.println("两天前的日期：" + df.format(new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000)));  
+//		   System.out.println("三天后的日期：" + df.format(new Date(d.getTime() + 3 * 24 * 60 * 60 * 1000)));
+		   long newValue=date.getTime()+value;
+		   System.out.println("变化后的日期：" + df.format(new Date(newValue)));
+	}
+	
+	public static void main(String[] args) throws ParseException {
+		Date startDate=new Date();//当前时间
+//		add(startDate,"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+	    
+		Date endDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-10-09 18:00:00");
+		System.out.println(getDifference(startDate, endDate, 3));//天
+		System.out.println(getDifference(startDate, endDate, 2));//时
+		System.out.println(getDifference(startDate, endDate, 1));//
+		System.out.println(getDifference(startDate, endDate, 0));
+		long time=getDifference(startDate, endDate, 0) * 1000+1000;//加一秒
+				
+		add(startDate,"yyyy-MM-dd HH:mm:ss",time);
 	}
 }
