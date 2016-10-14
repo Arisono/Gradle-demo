@@ -2,18 +2,22 @@ package com.gradle.http.okhttp;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.java.demos.ExceptionUtils;
 import com.gradle.java.demos.RSAUtils;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -33,7 +37,55 @@ public class OkhttpUtilsMain {
     = MediaType.parse("application/json; charset=utf-8");
 	
 	public static void main(String[] args) {
-		sendFormParams();
+//		sendFormParams();//RSA加密
+		sendSysResquest();//异步请求
+	}
+	
+	/**
+	 * Okhttp 异步请求
+	 */
+	public static void sendSysResquest(){
+		 RequestBody formBody = new FormBody.Builder()
+			.add("username", "123")
+			.add("password", "df13edafsdddsads")
+			.build();
+		
+		OkHttpClient client = new OkHttpClient.Builder()
+		   .connectTimeout(5, TimeUnit.SECONDS)
+		   .readTimeout(5, TimeUnit.SECONDS)
+		   .build();
+
+		Request request = new Request.Builder()
+				.url("http://localhost:8080/spring-mvc-showcase/client/info")
+				.header("cookie", "JSESSIONID=EB36DE5E50E342D86C55DAE0CDDD4F6D")
+				.addHeader("content-type", "text/html;charset:utf-8")
+				
+				.post(formBody)
+				.build();
+	
+			 client.newCall(request).enqueue(new Callback() {
+				
+				@Override
+				public void onResponse(Call call, Response response) throws IOException {
+					if (response.isSuccessful()) {
+						String json = response.body().string();
+						System.out.println(json);
+					}else{
+						System.out.println(JSON.toJSONString(response.code()));
+					}
+				}
+				
+				@Override
+				public void onFailure(Call call, IOException e) {
+					 System.out.println(ExceptionUtils.printExceptionStack(e));
+					 if(e instanceof ConnectException){
+						 System.out.println("服务器拒绝访问！");
+					 }else if(e instanceof SocketTimeoutException){
+						 System.out.println("超时响应！");
+					 }
+				}
+			});
+			
 	}
 	
 	/**
@@ -54,7 +106,8 @@ public class OkhttpUtilsMain {
 		
 		 String json_1="{}";//postBody 接收
 		 
-		 String bytes="username=123&password=df13edafsdddsads";
+		 @SuppressWarnings("unused")
+		String bytes="username=123&password=df13edafsdddsads";
 		
         
         
@@ -78,6 +131,7 @@ public class OkhttpUtilsMain {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		System.out.println("******************************************************");
 	}
 
 	/** 客户端加密token -RSA算法
@@ -133,7 +187,7 @@ public class OkhttpUtilsMain {
 				.addHeader("Home", "china")
 				// 自定义的header
 				.addHeader("Home1", china_str)
-				// 自定义的header 传中�?
+				// 自定义的header 
 				.addHeader("user-agent", "android")
 				.put(RequestBody.create(MEDIA_TYPE_TEXT, postBody))
 		
