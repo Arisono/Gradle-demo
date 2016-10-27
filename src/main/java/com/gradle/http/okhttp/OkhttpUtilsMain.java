@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.codec.binary.Base64;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.java.demos.ExceptionUtils;
-import com.gradle.java.demos.RSAUtils;
+import com.gradle.java.utils.ExceptionUtils;
+import com.gradle.java.utils.RSAUtils;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -39,6 +39,7 @@ public class OkhttpUtilsMain {
 	public static void main(String[] args) {
 //		sendFormParams();//RSA加密
 		sendSysResquest();//异步请求
+		sendHeaders();//请求头
 	}
 	
 	/**
@@ -219,10 +220,10 @@ public class OkhttpUtilsMain {
 		}
 		OkHttpClient client = new OkHttpClient();
 		Request request = new Request.Builder()
-				.url("http://localhost:8080/spring-mvc-showcase/api/getHeaders")
+				.url("http://192.168.253.132:9090/platform-b2c/?client=true")
 				.header("cookie", "JSESSIONID=EB36DE5E50E342D86C55DAE0CDDD4F6D")
 				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Home", "china")// 自定义的header
+				.addHeader("client-name","uasClient")// 自定义的header
 				.addHeader("Home1", china_str)// 自定义的header 传中�?
 				.addHeader("user-agent", "android").build();
 		try {

@@ -1,4 +1,4 @@
-package com.gradle.java.demos;
+package com.gradle.java.utils;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;

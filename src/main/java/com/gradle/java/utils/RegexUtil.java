@@ -1,4 +1,4 @@
-package com.gradle.java.demos;
+package com.gradle.java.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

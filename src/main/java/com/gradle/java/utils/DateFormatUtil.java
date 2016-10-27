@@ -889,7 +889,7 @@ public class DateFormatUtil {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @param beginDate
@@ -914,11 +914,11 @@ public class DateFormatUtil {
 			 * */
 			switch (f) {
 			case 0: // second
-				return  (millisecond / 1000);
+				return (millisecond / 1000);
 			case 1: // minute
 				return (millisecond / (1000 * 60));
 			case 2: // hour
-				return  (millisecond / (1000 * 60 * 60));
+				return (millisecond / (1000 * 60 * 60));
 			case 3: // day
 				return (millisecond / (1000 * 60 * 60 * 24));
 			}
@@ -926,6 +926,63 @@ public class DateFormatUtil {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public static String parseMillisecone(long millisecond, int f) {
+		String time = null;
+		try {
+			switch (f) {
+			case 0: // second
+				return (millisecond / 1000) + "秒";
+			case 1: // minute
+				return (millisecond / (1000 * 60)) + "分";
+			case 2: // hour
+				return (millisecond / (1000 * 60 * 60)) + "时";
+			case 3: // day
+				long yushu_day = millisecond % (1000 * 60 * 60 * 24);
+				long yushu_hour = (millisecond % (1000 * 60 * 60 * 24))
+						% (1000 * 60 * 60);
+				long yushu_minute = millisecond % (1000 * 60 * 60 * 24)
+						% (1000 * 60 * 60) % (1000 * 60);
+				long yushu_second = millisecond % (1000 * 60 * 60 * 24)
+						% (1000 * 60 * 60) % (1000 * 60) %1000;
+				System.out.println(yushu_day);
+				System.out.println(yushu_hour);
+				System.out.println(yushu_minute);
+				System.out.println(yushu_second);
+				if (yushu_day == 0) {
+					return (millisecond / (1000 * 60 * 60 * 24)) + "天";
+				} else {
+					if (yushu_hour == 0) {
+						return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+								+ (yushu_day / (1000 * 60 * 60)) + "时";
+					} else {
+						if (yushu_minute == 0) {
+							return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+									+ (yushu_day / (1000 * 60 * 60)) + "时"
+									+ (yushu_hour / (1000 * 60)) + "分";
+						} else {
+							if(yushu_second==0){
+								return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+										+ (yushu_day / (1000 * 60 * 60)) + "时"
+										+ (yushu_hour / (1000 * 60)) + "分"+(yushu_minute/1000)+"秒";
+							}else{
+								return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+										+ (yushu_day / (1000 * 60 * 60)) + "时"
+										+ (yushu_hour / (1000 * 60)) + "分"+(yushu_minute/1000)+"秒";
+							}
+
+						}
+
+					}
+
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return time;
 	}
 
 	/**
@@ -953,8 +1010,6 @@ public class DateFormatUtil {
 		long long2 = Long.parseLong(d2Str);
 		return long1 - long2;
 	}
-
-	
 
 	public static Date getPreYearStartTime() {
 		Calendar cal = Calendar.getInstance();
@@ -1060,35 +1115,35 @@ public class DateFormatUtil {
 		}
 		return now;
 	}
-	
 
 	/**
 	 * 根据指定日期,来运算加减乘除
-	 * @param date 
+	 * 
+	 * @param date
 	 * @param format
 	 * @param value
-	 * add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+	 *            add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
 	 */
-	public static void add(Date date,String format,long value){
-		   SimpleDateFormat df=new SimpleDateFormat(format);   
-		   System.out.println("起始日期："+df.format(date));   
-//		   System.out.println("两天前的日期：" + df.format(new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000)));  
-//		   System.out.println("三天后的日期：" + df.format(new Date(d.getTime() + 3 * 24 * 60 * 60 * 1000)));
-		   long newValue=date.getTime()+value;
-		   System.out.println("变化后的日期：" + df.format(new Date(newValue)));
+	public static String add(Date date, String format, long value) {
+		SimpleDateFormat df = new SimpleDateFormat(format);
+		// System.out.println("起始日期："+df.format(date));
+		long newValue = date.getTime() + value;
+		// System.out.println("变化后的日期：" + df.format(new Date(newValue)));
+		return df.format(new Date(newValue));
 	}
-	
+
 	public static void main(String[] args) throws ParseException {
-		Date startDate=new Date();//当前时间
-//		add(startDate,"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
-	    
-		Date endDate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-10-09 18:00:00");
-		System.out.println(getDifference(startDate, endDate, 3));//天
-		System.out.println(getDifference(startDate, endDate, 2));//时
+		Date startDate = new Date();// 当前时间
+		// add(startDate,"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+
+		Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+				.parse("2016-10-09 18:00:00");
+		System.out.println(getDifference(startDate, endDate, 3));// 天
+		System.out.println(getDifference(startDate, endDate, 2));// 时
 		System.out.println(getDifference(startDate, endDate, 1));//
 		System.out.println(getDifference(startDate, endDate, 0));
-		long time=getDifference(startDate, endDate, 0) * 1000+1000;//加一秒
-				
-		add(startDate,"yyyy-MM-dd HH:mm:ss",time);
+		long time = getDifference(startDate, endDate, 0) * 1000 + 1000;// 加一秒
+
+		add(startDate, "yyyy-MM-dd HH:mm:ss", time);
 	}
 }
