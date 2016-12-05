@@ -11,8 +11,6 @@ import java.util.GregorianCalendar;
  * <p>
  * 时间转换工具类
  * </p>
- * 
- * 
  */
 public class DateFormatUtil {
 
@@ -374,7 +372,7 @@ public class DateFormatUtil {
 	 * @return
 	 */
 	public static String getFormatDate(long timeMillis) {
-		return yMdHms.format(new Date(timeMillis));
+		return yMd_Hms.format(new Date(timeMillis));
 	}
 
 	/**
@@ -928,6 +926,14 @@ public class DateFormatUtil {
 		return result;
 	}
 
+	
+	
+	/**
+	 * 时间差--按照 xx天xx时xx分xx秒的格式输出
+	 * @param millisecond
+	 * @param f
+	 * @return
+	 */
 	public static String parseMillisecone(long millisecond, int f) {
 		String time = null;
 		try {
@@ -946,10 +952,10 @@ public class DateFormatUtil {
 						% (1000 * 60 * 60) % (1000 * 60);
 				long yushu_second = millisecond % (1000 * 60 * 60 * 24)
 						% (1000 * 60 * 60) % (1000 * 60) %1000;
-				System.out.println(yushu_day);
-				System.out.println(yushu_hour);
-				System.out.println(yushu_minute);
-				System.out.println(yushu_second);
+//				System.out.println(yushu_day);
+//				System.out.println(yushu_hour);
+//				System.out.println(yushu_minute);
+//				System.out.println(yushu_second);
 				if (yushu_day == 0) {
 					return (millisecond / (1000 * 60 * 60 * 24)) + "天";
 				} else {
@@ -1005,7 +1011,6 @@ public class DateFormatUtil {
 		int l2 = d2Str.length();
 		d1Str = d1Str.substring(0, l1 - 3) + "000";
 		d2Str = d2Str.substring(0, l2 - 3) + "000";
-		// System.out.println(d1Str + "   " + d2Str);
 		long long1 = Long.parseLong(d1Str);
 		long long2 = Long.parseLong(d2Str);
 		return long1 - long2;
@@ -1061,7 +1066,6 @@ public class DateFormatUtil {
 		Calendar c = Calendar.getInstance();
 		// c.add(Calendar.MONTH, -3);
 		int currentMonth = c.get(Calendar.MONTH) + 1;
-		System.out.println("currentMoth" + currentMonth);
 		SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = null;
@@ -1093,7 +1097,6 @@ public class DateFormatUtil {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.MONTH, -3);
 		int currentMonth = c.get(Calendar.MONTH) + 1;
-		System.out.println("currentMoth" + currentMonth);
 		SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = null;
@@ -1117,8 +1120,7 @@ public class DateFormatUtil {
 	}
 
 	/**
-	 * 根据指定日期,来运算加减乘除
-	 * 
+	 * 根据指定日期,来运算加减乘
 	 * @param date
 	 * @param format
 	 * @param value
@@ -1126,24 +1128,66 @@ public class DateFormatUtil {
 	 */
 	public static String add(Date date, String format, long value) {
 		SimpleDateFormat df = new SimpleDateFormat(format);
-		// System.out.println("起始日期："+df.format(date));
 		long newValue = date.getTime() + value;
-		// System.out.println("变化后的日期：" + df.format(new Date(newValue)));
 		return df.format(new Date(newValue));
 	}
-
+	
+	
+	
+   
+	/**
+	 * @param args main函数
+	 * @throws ParseException
+	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws ParseException {
-		Date startDate = new Date();// 当前时间
-		// add(startDate,"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
-
-		Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-				.parse("2016-10-09 18:00:00");
-		System.out.println(getDifference(startDate, endDate, 3));// 天
-		System.out.println(getDifference(startDate, endDate, 2));// 时
-		System.out.println(getDifference(startDate, endDate, 1));//
-		System.out.println(getDifference(startDate, endDate, 0));
+		
+		Date startDate=getDate4StrDate("2017-02-13 08:30:00", "yyyy-MM-dd HH:mm:ss");
+		Date endDate = getDate4StrDate("2017-02-13 08:30:00", "yyyy-MM-dd HH:mm:ss");
+		
+		System.out.println("天："+getDifference(startDate, endDate, 3));// 天---时间差
+		System.out.println("时："+getDifference(startDate, endDate, 2));// 时---时间差
+		System.out.println("分："+getDifference(startDate, endDate, 1));//分---时间差
+		System.out.println("秒："+getDifference(startDate, endDate, 0));//秒---时间差
+		
+		
+		//求时间差  时间差求余
+	
 		long time = getDifference(startDate, endDate, 0) * 1000 + 1000;// 加一秒
-
-		add(startDate, "yyyy-MM-dd HH:mm:ss", time);
+//		System.err.println(parseMillisecone(time, 3));//时间差 ---用户可理解的方式展示
+//		System.out.println("求余："+(float)getDifference(startDate, endDate, 1)/60);
+		
+		//加减操作
+//		add(startDate, "yyyy-MM-dd HH:mm:ss", time);
+//      add(startDate,"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+		
+		//比较大小
+//		String startDate="2016-12-16 08:30:00";
+//		String endDate="2016-12-18 18:30:00";
+//		System.out.println(endDate.compareTo(startDate));
+		
+		//熟悉subsring函数
+		String date="2014-12-12 09:08:12";
+//		System.out.println(date.substring(0, 4));
+//		System.out.println(date.substring(5, 7));
+//		System.out.println(date.substring(8, 10));
+//		System.out.println(date.substring(11, 13));
+//		System.out.println(date.substring(14, 16));
+		
+		 //获取当前时间根据Calendar
+//		 System.out.println(Calendar.getInstance().get(Calendar.YEAR));
+//		 System.out.println(Calendar.getInstance().get(Calendar.MONTH)+1);
+//		 System.out.println(Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+//		 System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
+//		 System.out.println(Calendar.getInstance().get(Calendar.MINUTE));
+		 
+		 Calendar cdate= Calendar.getInstance();
+		 cdate.setTime(getDate4StrDate("2017-02-13 23:35:00", "yyyy-MM-dd HH:mm:ss"));
+		 System.out.println(cdate.get(Calendar.YEAR));
+		 System.out.println(cdate.get(Calendar.MONTH)+1);
+		 System.out.println(cdate.get(Calendar.DAY_OF_MONTH));
+		 System.out.println(cdate.get(Calendar.HOUR_OF_DAY));
+		 System.out.println(cdate.get(Calendar.MINUTE));
+		
 	}
 }

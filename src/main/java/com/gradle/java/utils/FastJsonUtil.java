@@ -98,4 +98,7 @@ public class FastJsonUtil {
 		System.out.println(JSON.parseArray(json3).getJSONObject(3).getIntValue("str"));
 		
 	}
+	
+	
+	
 }

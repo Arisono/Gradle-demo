@@ -31,7 +31,6 @@ public class TypeUtils {
 	}
 	
 	public static void main(String[] args) {
-		
 		System.out.println(floatToIntCeil(132.2f));
 	}
 

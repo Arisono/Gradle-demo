@@ -4,13 +4,16 @@
  - [gradle-user-guide](https://dongchuan.gitbooks.io/gradle-user-guide-/content/overview/features.html)
 
 ## 学习目标
+
  - Gradle搭建一般Java项目
  - Gradle搭建Java Web项目
  - Gradle搭建Java Web多项目引用,多项目的Java构建
 
 ## 环境搭建
-
+ 
+ - eclipse 集成Gradle插件
 
 ## 更新记录
 
   - 集成okhttp
+  - 测试接口
