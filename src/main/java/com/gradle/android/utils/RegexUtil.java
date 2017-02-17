@@ -60,8 +60,7 @@ public class RegexUtil {
 	
 
 	public static void main(String[] args) {
-		
-		System.out.println("验证结果："+checkRegex("adfi4yhndf126com"
+	System.out.println("验证结果："+checkRegex("adfi4yhndf126com"
 				+ "asfdadfajksggj奇偶id按时交付就看到撒放假啊多少觉得十分激动撒骄傲的司法局"
 				+ "接撒地方角度来看撒酒疯来看撒绝对是咖啡尽量快点撒房间快点撒姐夫肯定撒就看到撒房间卡多少"
 				+ "啊圣诞节佛道撒酒疯圣诞节啊发据鞍读书撒旦颇丰打撒哦id撒颇的萨芬",
@@ -70,19 +69,6 @@ public class RegexUtil {
 	}
 
 	
-	
-	
-	
-	
-	
-	
-	
-	/**
-	 * 正则表达式，通用方法
-	 * @param text
-	 * @param regex
-	 * @return
-	 */
 	public static boolean checkRegex(String text, String regex) {
 		return Pattern.matches(regex, text);
 	}
@@ -98,6 +84,13 @@ public class RegexUtil {
 	
 	
 	
+	
+	
+	
+	/**
+	 * 以下方法可以作废
+	 *
+	 */
 	
 	
 	

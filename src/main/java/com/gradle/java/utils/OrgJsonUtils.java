@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.model.Users;
+import com.gradle.java.model.Users;
 
 /**
  * @author Arison

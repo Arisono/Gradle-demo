@@ -39,8 +39,8 @@ public class ApiUU {
 	private static String emcode;
 
 	public static void main(String[] args) {
-//		loginManage("13266699268", "111111");//管理平台登录
-//		loginERP("13266699268", "111111", master); // uas系统登录13691965521
+		loginManage("13266699268", "111111");//管理平台登录
+		loginERP("13266699268", "111111", master); // uas系统登录13691965521
 		
 //		loginManage("13691965521", "13691965521");
 //		loginERP("13691965521", "13691965521", master);
@@ -57,8 +57,8 @@ public class ApiUU {
 		// getCompoData();//下拉接口
 		// getDBFindData();//单选多选接口
 		// selectDetailData();// 配置表单 详细界面数据接口
-		// saveFormData();//配置表单 保存数据接口
-		// upateFormData();//配置表单 更新数据接口
+		 saveFormData();//配置表单 保存数据接口
+		 //upateFormData();//配置表单 更新数据接口
 		// "13510107574","111111"
 		// loginIM(MD5Utils.encode("13510107574"),
 		// MD5Utils.encode("111111"));//登录IM系统

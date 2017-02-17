@@ -5,6 +5,11 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
+/**
+ * Rxjava2的使用
+ * @author Arison
+ *
+ */
 public class Rxjava2 {
 
 	public static void main(String[] args) {

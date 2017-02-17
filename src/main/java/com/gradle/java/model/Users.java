@@ -1,4 +1,4 @@
-package com.gradle.model;
+package com.gradle.java.model;
 
 public class Users {
  private String name;
