@@ -3,8 +3,19 @@ package com.gradle.api.uas;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import com.alibaba.fastjson.JSON;
 import com.gradle.java.utils.ExceptionUtils;
 
 import okhttp3.OkHttpClient;
@@ -16,7 +27,11 @@ public class OkhttpUtils {
 	
 	public static OkHttpClient client = new OkHttpClient.Builder()
 	.connectTimeout(11, TimeUnit.SECONDS)
-	.readTimeout(11, TimeUnit.SECONDS).build();
+	.readTimeout(11, TimeUnit.SECONDS)
+	//信任所有证书
+	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())
+	.hostnameVerifier(new TrustAllHostnameVerifier())
+	.build();
 	
 	
 	/**
@@ -71,4 +86,41 @@ public class OkhttpUtils {
 					+ response.message();
 		}
 	}
+	
+	
+	//http://blog.csdn.net/u013686019/article/details/52856389  信任所有证书
+	private static class TrustAllCerts implements X509TrustManager {  
+	    @Override  
+	    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}  
+	  
+	    @Override  
+	    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {}  
+	  
+	    @Override  
+	    public X509Certificate[] getAcceptedIssuers() {return new X509Certificate[0];}
+
+		
+	}  
+	
+	private static class TrustAllHostnameVerifier implements HostnameVerifier {  
+	    @Override  
+	    public boolean verify(String hostname, SSLSession session) {  
+	        return true;  
+	    }  
+	}  
+	
+	private static SSLSocketFactory createSSLSocketFactory() {  
+	    SSLSocketFactory ssfFactory = null;  
+	  
+	    try {  
+	        SSLContext sc = SSLContext.getInstance("TLS");  
+	        sc.init(null,  new TrustManager[] { new TrustAllCerts() }, new SecureRandom());  
+	              
+	        ssfFactory = sc.getSocketFactory();  
+	    } catch (Exception e) {  
+	    }  
+	  
+	    return ssfFactory;  
+	}  
+
 }

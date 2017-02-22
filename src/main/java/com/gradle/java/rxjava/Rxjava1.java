@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers;
  * @author Arison
  *
  */
-public class Rxjava1 {
+public class Rxjava1 { 
 
 	public static void main(String[] args) {
 	    method1();//subscribe()  有订阅回调
