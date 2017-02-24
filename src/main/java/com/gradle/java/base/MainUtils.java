@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -31,7 +33,10 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-	    test07();
+		System.out.println(JSON.toJSONString(timeAddMuilt("08:30","12:29")));;
+		System.out.println("12:30".compareTo("12:30"));
+//		test07();
+		
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class MainUtils {
 		while(true){
 			start=DateFormatUtil.add(DateFormatUtil.getDate4StrDate(start, "HH:mm"),
 					"HH:mm",1*1*30*60 * 1000);
-			if(start.compareTo(end)>0){
+			if(start.compareTo(end)>=0){
 			    result.add(end);
 				break;
 			}else{
