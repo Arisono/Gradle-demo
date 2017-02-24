@@ -42,9 +42,9 @@ public class ApiUU {
 	public static void main(String[] args) {
 //		loginManage("13266699268", "111111");//管理平台登录
 //		loginERP("13266699268", "111111", master); // uas系统登录13691965521
-//		loginB2B();
+		loginB2B();
 //		loadUrlNoParams("https://www.baidu.com/");//测试url
-		login();//定时任务
+//		login();//定时任务
 	}
 
 	/**
