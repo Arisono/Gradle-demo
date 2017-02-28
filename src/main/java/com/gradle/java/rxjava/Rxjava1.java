@@ -196,6 +196,13 @@ public class Rxjava1 {
 		});
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	private static void method2() {
 		Observable.create(new Observable.OnSubscribe<String>() {
 			@Override
