@@ -20,7 +20,7 @@ import okhttp3.Response;
 
 /**
  * 测试UU互联接口
- * 
+ * 平台接口
  * @author Arison
  */
 @SuppressWarnings("unused")
