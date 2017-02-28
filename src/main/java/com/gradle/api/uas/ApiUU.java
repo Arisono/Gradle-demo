@@ -20,8 +20,8 @@ import okhttp3.Response;
 
 /**
  * 测试UU互联接口
- * 平台接口
- * @author Arison
+ * 平台接口 
+ * @author Arison RaoMeng
  */
 @SuppressWarnings("unused")
 public class ApiUU {
