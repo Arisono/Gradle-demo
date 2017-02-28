@@ -41,9 +41,10 @@ public class PlatformApi {
 	 */
 	public static void loginB2B(String url,String username,String password) {
 		RequestBody formBody = new FormBody.Builder()
-		.add("appId", "sso")
+//		.add("appId", "sso")
+		.add("appId", "b2b")
 		.add("username", username)
-		.add("spaceId", "81744")
+		.add("spaceId", "76035")
 		.add("password", password)
 		.build();
 		Request request = new Request.Builder().url(url)
@@ -57,20 +58,20 @@ public class PlatformApi {
 			@Override
 			public void onResponse(Call call, Response response)
 					throws IOException {
-//				OkhttpUtils.println("size:"+JSON.toJSONString(response.headers().size()));
-//				OkhttpUtils.println("size 4:"+JSON.toJSONString(response.headers().name(4)));
-//				OkhttpUtils.println("size 5:"+JSON.toJSONString(response.headers().name(5)));
-//				//打印完整的cookie
-//				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toString()));
-//				//打印完整的json格式数据
-//				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toMultimap()));
-//				//打印多个key为 Set-Cookie的值
-//			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.headers("Set-Cookie")));
-//			    //打印多个key，多个key会自动放入数组里面
-//			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.header("Set-Cookie")));
-//			    OkhttpUtils.println("set-cookie 5:"+JSON.toJSONString(response.headers().value(5)));
-//			    OkhttpUtils.println("set-cookie 6:"+JSON.toJSONString(response.headers().value(6)));
-//			    OkhttpUtils.println(JSON.toJSONString(response));
+				OkhttpUtils.println("size:"+JSON.toJSONString(response.headers().size()));
+				OkhttpUtils.println("size 4:"+JSON.toJSONString(response.headers().name(4)));
+				OkhttpUtils.println("size 5:"+JSON.toJSONString(response.headers().name(5)));
+				//打印完整的cookie
+				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toString()));
+				//打印完整的json格式数据
+				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toMultimap()));
+				//打印多个key为 Set-Cookie的值
+			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.headers("Set-Cookie")));
+			    //打印多个key，多个key会自动放入数组里面
+			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.header("Set-Cookie")));
+			    OkhttpUtils.println("set-cookie 5:"+JSON.toJSONString(response.headers().value(5)));
+			    OkhttpUtils.println("set-cookie 6:"+JSON.toJSONString(response.headers().value(6)));
+			    OkhttpUtils.println(JSON.toJSONString(response));
 				String json = OkhttpUtils.getResponseString(response);
 				OkhttpUtils.println("b2b登录：" + json);
 				
