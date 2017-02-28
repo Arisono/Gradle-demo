@@ -19,14 +19,14 @@ public class PlatformApi {
 	//18328587849  123456  //测试
 	private static String url_login_test="http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal="https://account.ubtob.com/sso/login";
-	private static String cookies;
+	private static String cookies="";
 	private static String username="18328587849";
 	private static String password="123456";
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-         if (cookies==null) {
+         if (cookies=="") {
         	 loginB2B(url_login_test, username, password);
 		}else{
 			
@@ -40,7 +40,10 @@ public class PlatformApi {
 	 * @param password
 	 */
 	public static void loginB2B(String url,String username,String password) {
+		OkhttpUtils.println(username);
+		OkhttpUtils.println(password);
 		RequestBody formBody = new FormBody.Builder()
+				
 //		.add("appId", "sso")
 		.add("appId", "b2b")
 		.add("username", username)
@@ -58,24 +61,27 @@ public class PlatformApi {
 			@Override
 			public void onResponse(Call call, Response response)
 					throws IOException {
-				OkhttpUtils.println("size:"+JSON.toJSONString(response.headers().size()));
-				OkhttpUtils.println("size 4:"+JSON.toJSONString(response.headers().name(4)));
-				OkhttpUtils.println("size 5:"+JSON.toJSONString(response.headers().name(5)));
-				//打印完整的cookie
-				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toString()));
-				//打印完整的json格式数据
-				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toMultimap()));
-				//打印多个key为 Set-Cookie的值
-			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.headers("Set-Cookie")));
-			    //打印多个key，多个key会自动放入数组里面
-			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.header("Set-Cookie")));
-			    OkhttpUtils.println("set-cookie 5:"+JSON.toJSONString(response.headers().value(5)));
-			    OkhttpUtils.println("set-cookie 6:"+JSON.toJSONString(response.headers().value(6)));
-			    OkhttpUtils.println(JSON.toJSONString(response));
+//				OkhttpUtils.println("size:"+JSON.toJSONString(response.headers().size()));
+//				OkhttpUtils.println("size 4:"+JSON.toJSONString(response.headers().name(4)));
+//				OkhttpUtils.println("size 5:"+JSON.toJSONString(response.headers().name(5)));
+//				//打印完整的cookie
+//				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toString()));
+//				//打印完整的json格式数据
+//				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toMultimap()));
+//				//打印多个key为 Set-Cookie的值
+//			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.headers("Set-Cookie")));
+//			    //打印多个key，多个key会自动放入数组里面
+//			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.header("Set-Cookie")));
+//			    OkhttpUtils.println("set-cookie 5:"+JSON.toJSONString(response.headers().value(5)));
+//			    OkhttpUtils.println("set-cookie 6:"+JSON.toJSONString(response.headers().value(6)));
+//			    OkhttpUtils.println(JSON.toJSONString(response));
 				String json = OkhttpUtils.getResponseString(response);
 				OkhttpUtils.println("b2b登录：" + json);
-				
-			   cookies=	response.headers().value(5)+";"+response.headers().value(6);
+				for (String iterable_element : response.headers("Set-Cookie")) {
+					cookies=cookies+ iterable_element+";";
+				}
+			    // cookies=	response.headers("Set-Cookie")[0]+";"+response.headers().value(6);
+				cookies=cookies.substring(0, cookies.length()-1);
 				checkLoginAtB2B(cookies);
 				
 			}
