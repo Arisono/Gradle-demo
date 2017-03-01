@@ -40,7 +40,7 @@ public class ApiUU {
 	private static String cookies;
 
 	public static void main(String[] args) {
-		loginManage("15915408583", "111111");// 管理平台登录
+		loginManage("18328587849", "123456");// 管理平台登录
 		loginERP("15915408583", "111111", master); // uas系统登录13691965521
 		// loginB2B();
 	}
@@ -78,6 +78,7 @@ public class ApiUU {
 	 * @param password
 	 */
 	public static void loginManage(String phone, String password) {
+		//192.168.253.192:8080/platform-manage//manage.ubtob.com
 		String url = "http://manage.ubtob.com/public/account?user=" + phone
 				+ "&password=" + password;
 		url = url + "&_timestamp=" + System.currentTimeMillis();
