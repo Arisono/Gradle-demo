@@ -21,6 +21,7 @@ import com.gradle.java.utils.ExceptionUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+@SuppressWarnings("unused")
 public class OkhttpUtils {
 	
 	private static boolean debug = true;// 是否日志打印
