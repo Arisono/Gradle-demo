@@ -19,6 +19,7 @@ import rx.schedulers.Schedulers;
  * @author Arison
  *
  */
+@SuppressWarnings("unused")
 public class Rxjava1 {
 
 	public static void main(String[] args) {

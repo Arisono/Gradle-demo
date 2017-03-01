@@ -21,6 +21,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * @author Arison 注册事件-接收消息 博文资料参考： http://www.jianshu.com/p/59c3d6bb6a6b
  */
+@SuppressWarnings("unused")
 public class RxjavaMain {
 
 	private final static CompositeSubscription mAllSubscription = new CompositeSubscription();

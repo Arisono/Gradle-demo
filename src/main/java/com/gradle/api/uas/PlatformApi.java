@@ -15,6 +15,7 @@ import okhttp3.Response;
  * @author RaoMeng
  *
  */
+@SuppressWarnings("unused")
 public class PlatformApi {
 	//18328587849  123456  //测试
 	private static String url_login_test="http://113.105.74.135:8001/sso/login";
