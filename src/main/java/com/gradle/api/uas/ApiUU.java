@@ -19,8 +19,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * 测试UU互联接口
- * 平台接口 
+ * 测试UU互联接口 平台接口
+ * 
  * @author Arison RaoMeng
  */
 @SuppressWarnings("unused")
@@ -40,41 +40,35 @@ public class ApiUU {
 	private static String cookies;
 
 	public static void main(String[] args) {
-		loginManage("13266699268", "111111");//管理平台登录
-		loginERP("13266699268", "111111", master); // uas系统登录13691965521
-		loginB2B();
-//		loadUrlNoParams("https://www.baidu.com/");//测试url
-//		login();//定时任务
+		loginManage("15915408583", "111111");// 管理平台登录
+		loginERP("15915408583", "111111", master); // uas系统登录13691965521
+		// loginB2B();
 	}
 
 	/**
 	 * 登录成功之后请求接口
 	 */
 	protected static void callbackResquest() {
+		api_updateWorkDate();// 更新班次接口
 		// getNotApproved();//获取审批流接口
 		// getFormandGridDetail("Ask4Leave");// 配置表单 生成表单接口 Workovertime
-		// Ask4Leave
 		// getFormandGridDetail("FeePlease!CCSQ");
 		// getCompoData();//下拉接口
 		// getDBFindData();//单选多选接口
 		// selectDetailData();// 配置表单 详细界面数据接口
-		 saveFormData();//配置表单 保存数据接口
-		 //upateFormData();//配置表单 更新数据接口
-		// "13510107574","111111"
+		// saveFormData();//配置表单 保存数据接口
+		// upateFormData();//配置表单 更新数据接口
 		// loginIM(MD5Utils.encode("13510107574"),
 		// MD5Utils.encode("111111"));//登录IM系统
 		// addWorkReport();//添加日报
-
 		// getStagePoints();
 		// api_isTurnToCustomer();
-		// vr_type，vr_nichestep
-        //getCompoData("VisitRecord", "vr_type");
-        //getCompoData("VisitRecord", "vr_nichestep");
-		 //api_getWorkDate();//获取班次
+		// getCompoData("VisitRecord", "vr_type");
+		// getCompoData("VisitRecord", "vr_nichestep");
+		// api_getWorkDate();//获取班次
+		// loadUrlNoParams("https://www.baidu.com/");//测试url
+		// login();//定时任务
 	}
-
-	
-	
 
 	/**
 	 * 登录管理平台
@@ -149,7 +143,8 @@ public class ApiUU {
 				.addHeader("content-type", "text/html;charset:utf-8")
 				.post(formBody).build();
 		OkhttpUtils.println(url);
-		OkhttpUtils.println("user:"+user+" password:"+password+" master:"+master);
+		OkhttpUtils.println("user:" + user + " password:" + password
+				+ " master:" + master);
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onResponse(Call call, Response response)
@@ -170,44 +165,49 @@ public class ApiUU {
 
 	// 登录 B2BString user, String password
 	public static void loginB2B() {
-		String url ="https://account.ubtob.com/sso/login";
-		RequestBody formBody = new FormBody.Builder()
-		.add("appId", "sso")
-		.add("username", "13266703535")
-		.add("spaceId", "81744")
-		.add("password", "1")
-		.build();
+		String url = "https://account.ubtob.com/sso/login";
+		RequestBody formBody = new FormBody.Builder().add("appId", "sso")
+				.add("username", "13266703535").add("spaceId", "81744")
+				.add("password", "1").build();
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8")
-				.post(formBody)
-				.build();
+				.post(formBody).build();
 		OkhttpUtils.println(url);
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
-			
 
 			@Override
 			public void onResponse(Call call, Response response)
 					throws IOException {
-				OkhttpUtils.println("size:"+JSON.toJSONString(response.headers().size()));
-				OkhttpUtils.println("size 4:"+JSON.toJSONString(response.headers().name(4)));
-				OkhttpUtils.println("size 5:"+JSON.toJSONString(response.headers().name(5)));
-				//打印完整的cookie
-				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toString()));
-				//打印完整的json格式数据
-				OkhttpUtils.println("all hearders:"+JSON.toJSONString(response.headers().toMultimap()));
-				//打印多个key为 Set-Cookie的值
-			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.headers("Set-Cookie")));
-			    //打印多个key，多个key会自动放入数组里面
-			    OkhttpUtils.println("set-cookie:"+JSON.toJSONString(response.header("Set-Cookie")));
-			    OkhttpUtils.println("set-cookie 5:"+JSON.toJSONString(response.headers().value(5)));
-			    OkhttpUtils.println("set-cookie 6:"+JSON.toJSONString(response.headers().value(6)));
-			    OkhttpUtils.println(JSON.toJSONString(response));
+				OkhttpUtils.println("size:"
+						+ JSON.toJSONString(response.headers().size()));
+				OkhttpUtils.println("size 4:"
+						+ JSON.toJSONString(response.headers().name(4)));
+				OkhttpUtils.println("size 5:"
+						+ JSON.toJSONString(response.headers().name(5)));
+				// 打印完整的cookie
+				OkhttpUtils.println("all hearders:"
+						+ JSON.toJSONString(response.headers().toString()));
+				// 打印完整的json格式数据
+				OkhttpUtils.println("all hearders:"
+						+ JSON.toJSONString(response.headers().toMultimap()));
+				// 打印多个key为 Set-Cookie的值
+				OkhttpUtils.println("set-cookie:"
+						+ JSON.toJSONString(response.headers("Set-Cookie")));
+				// 打印多个key，多个key会自动放入数组里面
+				OkhttpUtils.println("set-cookie:"
+						+ JSON.toJSONString(response.header("Set-Cookie")));
+				OkhttpUtils.println("set-cookie 5:"
+						+ JSON.toJSONString(response.headers().value(5)));
+				OkhttpUtils.println("set-cookie 6:"
+						+ JSON.toJSONString(response.headers().value(6)));
+				OkhttpUtils.println(JSON.toJSONString(response));
 				String json = OkhttpUtils.getResponseString(response);
 				OkhttpUtils.println("b2b登录：" + json);
-				
-			   cookies=	response.headers().value(5)+";"+response.headers().value(6);
+
+				cookies = response.headers().value(5) + ";"
+						+ response.headers().value(6);
 				checkLoginAtB2B(cookies);
-				
+
 			}
 
 			@Override
@@ -217,16 +217,14 @@ public class ApiUU {
 		});
 	}
 
-	
-	public static void checkLoginAtB2B(String cookie){
-		String url ="http://uas.ubtob.com/authentication";
+	public static void checkLoginAtB2B(String cookie) {
+		String url = "http://uas.ubtob.com/authentication";
 		OkhttpUtils.println(cookie);
-//		cookie="JSESSIONID=AAD026810600CE98B72C1B035133B7AD; Path=/; HttpOnly,uid=4sjrtiHZOu3sG71-9lOyB1jEPXOxBgJ_3jjuugBiDcZs9xlBhPHqdaypUNveDTUwUV8V2UZiz_XyiF54d5oA8etWywLg7AiREkmq93ydcqvCVc4-lBf0bGEQMIIvck2mx-4UFRkgZW0SinAqerzvnjG20OD4co1xYOH3GvPFYozb_8vt7AARwVeoDvRWutb8Fn-30hx4ABq-71kD7qCxpVZVFV08Z18APcJLGWy3djt4tegS8kFjXdwfjNHgjUBhlxlbbJz2561foZeffYi4K51ayiZVLZjfo4hPHlbNMrCP-InSzgVh_kEzq4PmSr_2QWXbwH_PzLiT_QUf1oKLjECvqXpW0bJquxlEWRLRAXpmmGpu96yGszEdJ2d-XtHeCjXHOgBSe_UWEVFpM9us57u5rBiOWGF_qKb2X2sV3ZuQWAu2mCRRp8jFRP0lYGwjywCg2Lk-CPjHxGsSyKorqpHk6JNRAOLp2DVEKgRFDxHP9VpKfDYlHf756eDHW0Jpiym962jTu3ARMNbUaUMrOkmoS9DhuvhxdbyuK7KecyEG2flEdL6cA75Seb6z_egZw26Df3cFTPbtKseXGk4X3XU3vEmAAwl9ABOuz0Iuq6vkS46gfg..;domain=.ubtob.com;path=/;HTTPOnly;";
-//		OkhttpUtils.println(cookie);
+		// cookie="JSESSIONID=AAD026810600CE98B72C1B035133B7AD; Path=/; HttpOnly,uid=4sjrtiHZOu3sG71-9lOyB1jEPXOxBgJ_3jjuugBiDcZs9xlBhPHqdaypUNveDTUwUV8V2UZiz_XyiF54d5oA8etWywLg7AiREkmq93ydcqvCVc4-lBf0bGEQMIIvck2mx-4UFRkgZW0SinAqerzvnjG20OD4co1xYOH3GvPFYozb_8vt7AARwVeoDvRWutb8Fn-30hx4ABq-71kD7qCxpVZVFV08Z18APcJLGWy3djt4tegS8kFjXdwfjNHgjUBhlxlbbJz2561foZeffYi4K51ayiZVLZjfo4hPHlbNMrCP-InSzgVh_kEzq4PmSr_2QWXbwH_PzLiT_QUf1oKLjECvqXpW0bJquxlEWRLRAXpmmGpu96yGszEdJ2d-XtHeCjXHOgBSe_UWEVFpM9us57u5rBiOWGF_qKb2X2sV3ZuQWAu2mCRRp8jFRP0lYGwjywCg2Lk-CPjHxGsSyKorqpHk6JNRAOLp2DVEKgRFDxHP9VpKfDYlHf756eDHW0Jpiym962jTu3ARMNbUaUMrOkmoS9DhuvhxdbyuK7KecyEG2flEdL6cA75Seb6z_egZw26Df3cFTPbtKseXGk4X3XU3vEmAAwl9ABOuz0Iuq6vkS46gfg..;domain=.ubtob.com;path=/;HTTPOnly;";
+		// OkhttpUtils.println(cookie);
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie",  cookie)
-				.build();
+				.addHeader("Cookie", cookie).build();
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
 			@Override
 			public void onResponse(Call call, Response response)
@@ -241,17 +239,46 @@ public class ApiUU {
 			}
 		});
 	}
-	
+
+	/**
+	 * 更新班次接口
+	 */
+	public static void api_updateWorkDate() {
+		String url = baseurl + "mobile/updateWorkDate.action";
+		String formStore = "{\"wd_offdutyone\":\"12:00\",\"wd_ondutythree\":\"\",\"wd_defaultor\":\"\",\"wd_code\":\"2017030036\",\"wd_man\":\"A01,A135,A011,敖峰,BYQY,C,C0001,C000104,C000102,C000101,C00010306,C00010305,C00010304,C00010303,C00010302,C00010301,C00010204,C00010203,C00010202,C00010201,C00010105,C00010104,C00010103,C00010102,C00010101,C00010204010,C00010204009,C00010204008,C00010204007,C00010204006,C00010204005,C00010204004,C00010204003,C00010204002,C00010204001,C00010203007,C00010203006,C00010203005,C00010203004,C00010203003,C00010203002,C00010203001,C00010202008,C00010202007,C00010202006,C00010202005,C00010202004,C00010202003,C00010202002,C00010202001,C00010201008,C00010201007,C00010201006,C00010201005,C00010201004,C00010201003,C00010201002,C00010201001,曹秋莲,CCS,曾绘龙,曾起飞,测试,测试,测试,ceshi,测试,测试,测试,测试H2,测试新增,CH,CH02,CH01,陈爱平,陈爱平,程会,程会,陈虎,陈佳,陈静,陈劲松,陈金金,陈璐,陈萍,陈瑞鸿,陈姝君,陈姝君,陈晓东,陈小虎,陈小龙,陈小小虎,陈玄奘,陈真,陈正亮,陈正明,陈正明,陈宗华,醇亲王,CS033,CS030,CS029,CS024,CS023,CS022,CS021,CS020,CS019,CS016,CS015,CS014,CS013,CS010,CS009,CS008,CS007,CS006,CS005,cscscs,cscscs,CYYT,大安,大毛,邓国超,丁无,丁一,丁一,丁英琳,丁正元,董必伟,方龙海,付家华,龚鹏明,恭亲王,苟安,管理员,管理员,郭丽亚,国胜,何建清,黄俊,黄耀鹏,黄玉林,胡兴文,江勇,康燕波,酷酷,Leo,连冰花,廖华,廖益强,李聪元,李党武,李剑辉,李明亮,林子健,刘杰,刘俊娟,刘莉,刘萌冰,刘明辉,流陌陌,刘鹏,刘鹏,刘鹏1,刘玉栋,刘兆星,李洋洋,龙晓兰,lp,卢浩光,卢浩光,罗强,罗研飞,吕全明,马,马超,马丹,马昭,马昭,马昭,梅林聪,起飞,庆亲王,邱永红,饶猛,沈佳,SO,孙曲芳,孙土桂,谭岳鸿,谭焯怡,test,test001,天派测试,王二,王凯,王焜坤,WANGPANZ,王文曜,王一,韦学先,翁理科,翁理科,吴事原,吴事原,wusy,wwy,肖成龙,晓兰,小马,肖舒婷,熊晨阳,熊志新,许春山,徐健,徐诗,杨丹,叶芊,业务经理001,业务员001,叶鈺柳,应鹏,易紫燕,柚子,YS02,YS01,余佳,余佳1,臧亚诚,ZGB,ZGS1,ZGS1,张頔,张佩盛,张一二,张一一,张长,章政,张仲林,赵斌,赵文,钟军秀,中文明,钟燕玲,钟勇斌,周兵,周袁,邹美玲,1,6,5,333,555,1314,5555, 胡志强\",\"wd_degree\":2,\"wd_name\":\"很知足\",\"wd_offdutytwo\":\"18:00\",\"wd_emcode\":\"A01,A135,A011,AOF,BYQY,E3344,C0001,C000104,C000102,C000101,C00010306,C00010305,C00010304,C00010303,C00010302,C00010301,C00010204,C00010203,C00010202,C00010201,C00010105,C00010104,C00010103,C00010102,C00010101,C00010204010,C00010204009,C00010204008,C00010204007,C00010204006,C00010204005,C00010204004,C00010204003,C00010204002,C00010204001,C00010203007,C00010203006,C00010203005,C00010203004,C00010203003,C00010203002,C00010203001,C00010202008,C00010202007,C00010202006,C00010202005,C00010202004,C00010202003,C00010202002,C00010202001,C00010201008,C00010201007,C00010201006,C00010201005,C00010201004,C00010201003,C00010201002,C00010201001,U0770,CCS,U0737,U0764,test201703001,cscscs,CESHI1,CESHI,89859,888,123123,UTEST02,20170227,CH,CH02,CH01,U0758,CHENAP,U0202,CHENGH,A021,U0762,U0501,CHENJINSONG,CHENJJ,U0326,chenp,CRH,U0709,CHENSJ,CXD,CXH,A023,A0211,CHENXZ,CHENZ,CHENZL,CHENZM,CHENZHENGMING,CHENZH,A233,CS033,CS030,CS029,CS024,CS023,CS022,CS021,CS020,CS019,CS016,CS015,CS014,CS013,CS010,CS009,CS008,CS007,CS006,CS005,test13141,test0001,CYYT,1103,A1,DENGGC,test20161212,CS1001,CS0607,dingyl,U0412,U0751,U0747,A020,U0736,GONGQW,GOUA,admin,ADMIN,U0409,A033,U0732,U0768,A0232323,U0323,HUXW,U0726,U0739,A0011,CHENJS,LIANBH,U0503,LIAOYQ,licy,U0708,U0731,U0707,U0761,L00010102002,LIUJ,U0502,U0723,U0712,U0711,liupeng,U0755,LIUPENG1,LIUYD,U0717,LIYY,U0763,lp,luhg,U0730,LUOQ,LUOYF,LVQM,ma,mazz,MAD,mazhao,U0754,MAZ,meilc,SZ001,A356,QIUYH,AH0001,A001,CT6666,A019,U0314,A036,U0714,test20170301,test201731,CAOXH,2015121902,U0715,U0734,111111,WWY,WANGYI,WXX,WENGLK,U0703,WSY,W1314,WUSY,wwytest55,U0752,U1122,XIAOMA,xiaost,XIONGCY,U0741,U0103,U0705,XUSHI,U0721,U0713,TEST008,TEST001,U0733,YINGP,U0725,A0001,YS02,YS01,U1112,YUJ,U0745,ZGB,ZGS12,ZGS1,U0767,U0727,ZHANGYIER,ZHANGYIYI,ZHANGCHANG,U0728,ZHANGZL,ZHAOBIN,ZHAOWEN,U0722,AYA051,zhongyl,U0101,U0735,zhouy,ZML,CESHI2,6,5,wwytest3,01,CS0405,C00010204011,U0729\",\"wd_offdutythree\":\"\",\"wd_ondutyone\":\"08:00\",\"wd_day\":\"7\",\"wd_ondutytwo\":\"13:30\",\"wd_pcount\":257,\"wd_id\":6536,\"wd_earlytime\":2,\"wd_defaultorcode\":\"\"}";
+		RequestBody formBody = new FormBody.Builder().add("caller", "WorkDate")
+				.add("master", "UAS_TEST")
+				// .add("emcode", emcode)
+				.add("formStore", formStore).build();
+		OkhttpUtils.println(url);
+		Request request = new Request.Builder().url(url)
+				.header("cookie", "JSESSIONID=" + sessionId)
+				.addHeader("sessionUser", emcode)
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.post(formBody).build();
+		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onResponse(Call call, Response response)
+					throws IOException {
+				String json = OkhttpUtils.getResponseString(response);
+				OkhttpUtils.println("更新班次接口：" + json);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(e);
+			}
+		});
+
+	}
+
 	/**
 	 * 获取班次
 	 */
-	public static void api_getWorkDate(){
+	public static void api_getWorkDate() {
 		String url = baseurl + "mobile/getWorkDate.action";
-		RequestBody formBody = new FormBody.Builder()
-				.add("date", "20170214")
-				.add("master", master)
-				.add("emcode", emcode)
-				.build();
+		RequestBody formBody = new FormBody.Builder().add("date", "20170214")
+				.add("master", master).add("emcode", emcode).build();
 		OkhttpUtils.println(url);
 		Request request = new Request.Builder().url(url)
 				.header("cookie", "JSESSIONID=" + sessionId)
@@ -271,9 +298,9 @@ public class ApiUU {
 				OkhttpUtils.onFailurePrintln(e);
 			}
 		});
-		
+
 	}
-	
+
 	public static void api_isTurnToCustomer() {
 		String url = baseurl + "/mobile/crm/isTurnToCustomer.action";
 		RequestBody formBody = new FormBody.Builder()
@@ -382,7 +409,7 @@ public class ApiUU {
 			}
 		});
 	}
-	
+
 	/**
 	 * 接口 获取动态表单数据--请假单
 	 * 
@@ -464,7 +491,8 @@ public class ApiUU {
 			@Override
 			public void onResponse(Call call, Response response)
 					throws IOException {
-				OkhttpUtils.println(OkhttpUtils.getResponseString(response));;
+				OkhttpUtils.println(OkhttpUtils.getResponseString(response));
+				;
 			}
 
 			@Override
@@ -669,8 +697,7 @@ public class ApiUU {
 		loadUrlNoParams("http://github.laowch.com/json/_monthly");
 		loadUrlNoParams("http://github.laowch.com/json/_yearly");// 无效
 	}
-	
-	
+
 	/**
 	 * @定时任务
 	 */
@@ -679,10 +706,10 @@ public class ApiUU {
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
-//				loginManage("13530100540", "58278668");// 管理平台登录
-				if(cookies==null){
+				// loginManage("13530100540", "58278668");// 管理平台登录
+				if (cookies == null) {
 					loginB2B();
-				}else{
+				} else {
 					checkLoginAtB2B(cookies);
 				}
 			}
