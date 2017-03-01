@@ -57,10 +57,7 @@ public class PlatformApi {
 		OkhttpUtils.println(password);
 		RequestBody formBody = new FormBody.Builder()
 				// .add("appId", "sso")
-				.add("appId", "b2b")
-				.add("username", username)
-				.add("spaceId", "76035")
-				.add("password", password)
+				.add("appId", "b2b").add("username", username).add("spaceId", "76035").add("password", password)
 				.build();
 		Request request = new Request.Builder().url(url).addHeader("content-type", "text/html;charset:utf-8")
 				.post(formBody).build();

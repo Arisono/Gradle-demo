@@ -78,8 +78,10 @@ public class ApiUU {
 	 * @param password
 	 */
 	public static void loginManage(String phone, String password) {
-		//192.168.253.192:8080/platform-manage//manage.ubtob.com
-		String url = "http://manage.ubtob.com/public/account?user=" + phone
+		//192.168.253.192:8080/platform-manage
+		//manage.ubtob.com
+		//192.168.253.60:9090/platform-manage
+		String url = "http://192.168.253.60:9090/platform-manage/public/account?user=" + phone
 				+ "&password=" + password;
 		url = url + "&_timestamp=" + System.currentTimeMillis();
 		url = url + "&_signature=" + HmacUtils.encode(url);

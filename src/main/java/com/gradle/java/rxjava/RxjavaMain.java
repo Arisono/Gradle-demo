@@ -30,11 +30,11 @@ public class RxjavaMain {
 
 		// rxBus();//rxbus测试
 
-		// observeOn();//观察事件
+		 observeOn();//观察事件
 
 		// subscribeOn();//订阅事件
 
-		doOnNext();// doOnNext()
+		//doOnNext();// doOnNext()
 	}
 
 	private static void doOnNext() {
