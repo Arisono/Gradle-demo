@@ -21,6 +21,10 @@ import com.gradle.java.utils.ExceptionUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+/**
+ * @author Arison
+ * okhttp工具类
+ */
 @SuppressWarnings("unused")
 public class OkhttpUtils {
 	
