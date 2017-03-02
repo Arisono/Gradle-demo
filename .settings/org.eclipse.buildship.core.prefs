@@ -1,6 +1,6 @@
 build.commands=org.eclipse.jdt.core.javabuilder
 connection.arguments=
-connection.gradle.distribution=GRADLE_DISTRIBUTION(LOCAL_INSTALLATION(D\:\\Android\\Android Studio\\gradle\\gradle-2.10))
+connection.gradle.distribution=GRADLE_DISTRIBUTION(LOCAL_INSTALLATION(C\:\\Android\\android-studio\\gradle\\gradle-2.10))
 connection.java.home=C\:\\Android\\Java\\jdk1.8.0_92
 connection.jvm.arguments=
 connection.project.dir=
