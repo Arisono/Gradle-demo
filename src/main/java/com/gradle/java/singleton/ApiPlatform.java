@@ -1,7 +1,5 @@
 package com.gradle.java.singleton;
 
-import com.gradle.api.uas.OkhttpUtils;
-
 /**
  * Created by Arison on 2017/3/2.
  */

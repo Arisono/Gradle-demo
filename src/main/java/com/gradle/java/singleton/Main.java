@@ -1,10 +1,6 @@
 package com.gradle.java.singleton;
 
-import java.io.IOException;
 import java.util.Date;
-import java.util.List;
-
-import com.gradle.api.uas.OkhttpUtils;
 import com.gradle.java.utils.DateFormatUtil;
 
 
