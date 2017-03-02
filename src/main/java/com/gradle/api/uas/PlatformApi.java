@@ -1,6 +1,8 @@
 package com.gradle.api.uas;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 
@@ -21,8 +23,8 @@ public class PlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
 	private static String cookies = "";
-	private static String username = "18328587849";
-	private static String password = "123456";
+	private static String username = "15012345678";//15012345679 111111//18328587849:123456
+	private static String password = "111111";
 	
 	private static final String OBTAIN_ANNOUNCE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
 	private static final String PUNCH_ADDRESS_URL = "http://192.168.253.60:9090/platform-b2b/mobile/clockAddress/getSignCardAddress?enuu=10030994";
@@ -46,6 +48,21 @@ public class PlatformApi {
 	}
 
 	/**
+	 * 登录成功之后的回调
+	 */
+	protected static void loginCall() {
+		//get
+		interfaceTest(OBTAIN_ANNOUNCE_URL, cookies, "OBTAIN_ANNOUNCE_URL");
+		interfaceTest(WORK_ORDER_URL, cookies, "WORK_ORDER_URL");
+		//post
+		Map<String, Object> params=new HashMap<>();
+		params.put("param1", "value1");
+		params.put("param2", "value1");
+		params.put("param3", "value1");
+		params.put("param4", "value1");
+		interfaceParams(WORK_ORDER_URL, params,  "WORK_ORDER_URL");
+	}
+	/**
 	 * 登录 B2BString user, String password
 	 * 
 	 * @param url
@@ -57,7 +74,10 @@ public class PlatformApi {
 		OkhttpUtils.println(password);
 		RequestBody formBody = new FormBody.Builder()
 				// .add("appId", "sso")
-				.add("appId", "b2b").add("username", username).add("spaceId", "76035").add("password", password)
+				.add("appId", "b2b")
+				.add("username", username)
+				.add("spaceId", "76035")
+				.add("password", password)
 				.build();
 		Request request = new Request.Builder().url(url).addHeader("content-type", "text/html;charset:utf-8")
 				.post(formBody).build();
@@ -96,7 +116,7 @@ public class PlatformApi {
 				cookies = cookies.substring(0, cookies.length() - 1);
 				// checkLoginAtB2B(cookies);
 				
-				interfaceTest(NEWS_CENTER_URL, cookies, "新闻中心");
+				loginCall();
 			}
 
 			@Override
@@ -105,6 +125,8 @@ public class PlatformApi {
 			}
 		});
 	}
+
+
 
 	/**
 	 * 测试B2B登录cookie是否有效
@@ -140,8 +162,11 @@ public class PlatformApi {
 	 * @param testName
 	 */
 	public static void interfaceTest(String url, String cookie, String testName) {
-		Request request = new Request.Builder().url(url).addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie", cookie).build();
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.addHeader("Cookie", cookie)
+				.build();
 
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
 
@@ -157,5 +182,9 @@ public class PlatformApi {
 			}
 		});
 
+	}
+	
+	public static void interfaceParams(String url, Map<String, Object> params,String testName){
+		
 	}
 }
