@@ -14,8 +14,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * @author RaoMeng
- *
+ * @author RaoMeng,Arison
+ * 平台接口测试
  */
 @SuppressWarnings("unused")
 public class PlatformApi {
@@ -55,12 +55,12 @@ public class PlatformApi {
 		interfaceTest(OBTAIN_ANNOUNCE_URL, cookies, "OBTAIN_ANNOUNCE_URL");
 		interfaceTest(WORK_ORDER_URL, cookies, "WORK_ORDER_URL");
 		//post
-		Map<String, Object> params=new HashMap<>();
-		params.put("param1", "value1");
-		params.put("param2", "value1");
-		params.put("param3", "value1");
-		params.put("param4", "value1");
-		interfaceParams(WORK_ORDER_URL, params,  "WORK_ORDER_URL");
+//		Map<String, Object> params=new HashMap<>();
+//		params.put("param1", "value1");
+//		params.put("param2", "value1");
+//		params.put("param3", "value1");
+//		params.put("param4", "value1");
+//		interfaceParams(WORK_ORDER_URL, params,  "WORK_ORDER_URL");
 	}
 	/**
 	 * 登录 B2BString user, String password
@@ -184,6 +184,12 @@ public class PlatformApi {
 
 	}
 	
+	/**
+	 * post请求回调
+	 * @param url
+	 * @param params
+	 * @param testName
+	 */
 	public static void interfaceParams(String url, Map<String, Object> params,String testName){
 		
 	}
