@@ -18,4 +18,10 @@ public class ApiUAS extends ApiBase implements ApiModel {
     public String getCookie() {
         return null;
     }
+    
+    @Override
+    public String getLogin() {
+    	
+    	return "uas login api";
+    }
 }

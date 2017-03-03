@@ -12,32 +12,31 @@ import com.gradle.java.utils.DateFormatUtil;
 public class Main {
 
 	public static void main(String[] args) {
-//		for (int i=0;i<100000;i++) {
-//			ApiConfig.getInstance(new ApiPlatform()).getmApiConfig().init();
-//		}
-		printLnMemory();
-//		while(true){
-//			OkhttpUtils.println();
-//		}
+      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase());
 	}
 	
+	public static ApiModel getApiModel(){
+		int i=0;
+		if(i==0){
+			return new ApiUAS();
+		}else{
+			return new ApiPlatform();
+		}
+	}
 	
 	private static void printLnMemory(){
 		Runtime run = Runtime.getRuntime();
-		
-		 System.out.println("memory> total:" + run.totalMemory() + " free:" + run.freeMemory() + " used:" + (run.totalMemory()-run.freeMemory()) );
-		run.gc();
+		System.out.println("memory> total:" + run.totalMemory() + " free:" + run.freeMemory() + " used:" + (run.totalMemory()-run.freeMemory()) );
 		System.out.println("time: " + (new Date()));
 		// 获取开始时内存使用量
 		long startMem = run.totalMemory()-run.freeMemory();
 		System.out.println("memory> total:" + run.totalMemory() + " free:" + run.freeMemory() + " used:" + startMem );
         System.out.println("开始："+DateFormatUtil.getDateTime());
 		for (int i=0;i<9999999;i++) {
-			ApiConfig.getInstance(new ApiPlatform()).getmApiConfig().init();
-		
+			ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
 			//new ApiPlatform();
 		}
-		 System.out.println("结束："+DateFormatUtil.getDateTime());
+		System.out.println("结束："+DateFormatUtil.getDateTime());
 		while(true){
 			try {
 				Thread.sleep(500);
@@ -45,7 +44,7 @@ public class Main {
 				e.printStackTrace();
 			}
 			for (int i=0;i<500000;i++) {
-				ApiConfig.getInstance(new ApiPlatform()).getmApiConfig().init();
+				ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
 //				new ApiPlatform();
 			}
 			System.out.println("time: " + (new Date()));

@@ -38,7 +38,7 @@ public class ApiPlatform extends ApiBase implements ApiModel{
     
     public String getLogin() {
    
-        return login;
+        return "b2b login api";
     }
 
     public void setLogin(String login) {
