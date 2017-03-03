@@ -23,6 +23,7 @@ public class PlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
 	private static String cookies = "";
+
 	private static String username = "15012345678";//15012345679 111111//18328587849:123456
 	private static String password = "111111";
 	
@@ -115,7 +116,7 @@ public class PlatformApi {
 				// response.headers("Set-Cookie")[0]+";"+response.headers().value(6);
 				cookies = cookies.substring(0, cookies.length() - 1);
 				// checkLoginAtB2B(cookies);
-				
+
 				loginCall();
 			}
 
