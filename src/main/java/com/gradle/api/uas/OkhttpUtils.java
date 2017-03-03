@@ -21,14 +21,18 @@ import com.gradle.java.utils.ExceptionUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
+/**
+ * @author Arison
+ * okhttp工具类
+ */
 @SuppressWarnings("unused")
 public class OkhttpUtils {
 	
 	private static boolean debug = true;// 是否日志打印
 	
 	public static OkHttpClient client = new OkHttpClient.Builder()
-	.connectTimeout(11, TimeUnit.SECONDS)
-	.readTimeout(11, TimeUnit.SECONDS)
+	.connectTimeout(10, TimeUnit.SECONDS)
+	.readTimeout(10, TimeUnit.SECONDS)
 	//信任所有证书
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())
 	.hostnameVerifier(new TrustAllHostnameVerifier())

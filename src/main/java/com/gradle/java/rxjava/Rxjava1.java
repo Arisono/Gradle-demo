@@ -9,6 +9,7 @@ import com.gradle.api.uas.OkhttpUtils;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -25,121 +26,165 @@ public class Rxjava1 {
 	public static void main(String[] args) {
 		// method1();//subscribe() 有订阅回调
 		// method2(); //subscribe() 没有订阅回调
-        // ----操作符----
+		// ----操作符----
 		// filter();
 		// takeFirst();
-		 map();
-		
-//		doOnNext();
-		
+		// map();
+
+		doOnNext();
+
 	}
-	
-	
+
 	private static void doOnNext() {
-	    Observable.create(new Observable.OnSubscribe<Integer>() {
-		@Override
-		public void call(Subscriber<? super Integer> subscriber) {
-	            subscriber.onNext(1);
-	            subscriber.onNext(2);
-	            subscriber.onNext(3);
-	            subscriber.onNext(4);
-	            //subscriber.onCompleted();
-		}
-	     })
-	     .subscribeOn(RxjavaMain.getNamedScheduler("线程1"))
-         .doOnNext(new Action1<Integer>() {
-          @Override
-          public void call(Integer item) {
-        	  RxjavaMain.threadInfo("doOnNext:"+item);
-        	  try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		Observable.create(new Observable.OnSubscribe<Integer>() {
+			@Override
+			public void call(Subscriber<? super Integer> subscriber) {
+				RxjavaMain.threadInfo("发送事件---> call():");
+				subscriber.onNext(1);// doOnNext函数监听
+				//subscriber.onNext(2);
+				// subscriber.onNext(3);
+				// subscriber.onNext(4);
+				// subscriber.onCompleted();
 			}
-//            if( item > 3 ) {
-//              throw new RuntimeException( "Item exceeds maximum value" );
-//            }
-          }
-        }).subscribe(new Subscriber<Integer>() {
-        @Override
-        public void onNext(Integer item) {
-            System.out.println("Next: " + item);
-        }
+		}).subscribeOn(RxjavaMain.getNamedScheduler("运行在线程1上..."))
+		       
+				.doOnNext(new Action1<Integer>() {
+					@Override
+					public void call(Integer item) {
+						RxjavaMain.threadInfo("doOnNext1:" + item);
+						item++;
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				})
+				
+				.doOnSubscribe(new Action0() {
 
-        @Override
-        public void onError(Throwable error) {
-            System.err.println("Error: " + error.getMessage());
-        }
+					@Override
+					public void call() {
+						RxjavaMain.threadInfo("线程任务2");
 
-        @Override
-        public void onCompleted() {
-            System.out.println("Sequence complete.");
-        }
-    });
+					}
+				})
+				.doOnSubscribe(new Action0() {
+
+					@Override
+					public void call() {
+						RxjavaMain.threadInfo("线程任务3");
+
+					}
+				})
+				.doOnSubscribe(new Action0() {
+
+					@Override
+					public void call() {
+						RxjavaMain.threadInfo("线程任务4");
+
+					}
+				})
+				.subscribeOn(RxjavaMain.getNamedScheduler("运行在线程2上..."))
+				.doOnSubscribe(new Action0() {
+
+					@Override
+					public void call() {
+						RxjavaMain.threadInfo("线程任务5");
+
+					}
+				})
+				.doOnNext(new Action1<Integer>() {
+
+					@Override
+					public void call(Integer t) {
+
+						RxjavaMain.threadInfo("doOnNext2:" + t);
+					}
+
+				})
+				 .filter(new Func1<Integer, Boolean>() {
+
+					@Override
+					public Boolean call(Integer t) {
+					     RxjavaMain.threadInfo("过滤器执行：");
+						return true;
+					}
+				})
+				.subscribe(new Subscriber<Integer>() {
+					@Override
+					public void onNext(Integer item) {
+						RxjavaMain.threadInfo("onNext:" + item);
+					}
+
+					@Override
+					public void onError(Throwable error) {
+						System.err.println("Error: " + error.getMessage());
+					}
+
+					@Override
+					public void onCompleted() {
+						System.out.println("Sequence complete.");
+					}
+				});
 	}
 
 	/**
-	 * map()
-	 * 把原数据通过函数加工生成我们期望的数据
+	 * map() 把原数据通过函数加工生成我们期望的数据
 	 */
 	public static void map() {
-		Observable.from(new String[]{"This", "is", "RxJava"})
-        .map(new Func1<String, String>() {
-            @Override
-            public String call(String s) {
-                return s.toUpperCase();
-            }
-        })
-        .toList()//转成List
-        .map(new Func1<List<String>, List<String>>() {
-            @Override
-            public List<String> call(List<String> strings) {
-                Collections.reverse(strings);
-                return strings;
-            }
-        })
-//        .observeOn(AndroidSchedulers.mainThread())
-//        .subscribeOn(Schedulers.io())
-        .subscribe(new Action1<List<String>>() {
-            @Override
-            public void call(List<String> s) {
-             OkhttpUtils.println(JSON.toJSONString(s));
-            }
-        });
-		
-		
-		Observable.just("test").map(new Func1<String, String>() {
-            @Override
-            public String call(String s) {
-                return "http://www.baidu.com/" + s;
-            }
-        })
-        .map(o -> "百度接口："+o)
-        .toList()
-        .map(new Func1<List<String>, List<String>>() {
-        	public java.util.List<String> call(java.util.List<String> t) {
-        		t.add("騰訊接口：http://www.tencent.com");
-        		return t;
-        	};
-		})
-        .map(o -> JSON.toJSONString(o))
-        .map(new Func1<String, List<String>>() {
-        	@SuppressWarnings("unchecked")
-			public List<String> call(String t) {
-        		return (List<String>) JSON.parse(t);
-        	};
-		})
-        .subscribe(new Action1<List<String>>() {
-            @Override
-            public void call(List<String> s) {
-            	OkhttpUtils.println(JSON.toJSONString(s));
-            }
-           
-        });
-		
-		
-		
-		
+		Observable.from(new String[] { "This", "is", "RxJava" })
+				.map(new Func1<String, String>() {
+					@Override
+					public String call(String s) {
+						return s.toUpperCase();
+					}
+				}).toList()// 转成List
+				.map(new Func1<List<String>, List<String>>() {
+					@Override
+					public List<String> call(List<String> strings) {
+						Collections.reverse(strings);
+						return strings;
+					}
+				})
+				// .observeOn(AndroidSchedulers.mainThread())
+				// .subscribeOn(Schedulers.io())
+				.subscribe(new Action1<List<String>>() {
+					@Override
+					public void call(List<String> s) {
+						OkhttpUtils.println(JSON.toJSONString(s));
+					}
+				});
+
+		Observable
+				.just("test")
+				.map(new Func1<String, String>() {
+					@Override
+					public String call(String s) {
+						return "http://www.baidu.com/" + s;
+					}
+				})
+				.map(o -> "百度接口：" + o)
+				.toList()
+				.map(new Func1<List<String>, List<String>>() {
+					public java.util.List<String> call(java.util.List<String> t) {
+						t.add("騰訊接口：http://www.tencent.com");
+						return t;
+					};
+				}).map(o -> JSON.toJSONString(o))
+				.map(new Func1<String, List<String>>() {
+					@SuppressWarnings("unchecked")
+					public List<String> call(String t) {
+						return (List<String>) JSON.parse(t);
+					};
+				}).subscribe(new Action1<List<String>>() {
+					@Override
+					public void call(List<String> s) {
+						OkhttpUtils.println(JSON.toJSONString(s));
+					}
+
+				});
+
 	}
 
 	/**
@@ -197,13 +242,6 @@ public class Rxjava1 {
 		});
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	private static void method2() {
 		Observable.create(new Observable.OnSubscribe<String>() {
 			@Override
