@@ -21,8 +21,8 @@ public class PlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
 	private static String cookies = "";
-	private static String username = "18328587849";
-	private static String password = "123456";
+	private static String username = "1000002802";//18328587849
+	private static String password = "111111";
 	
 	private static final String OBTAIN_ANNOUNCE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
 	private static final String PUNCH_ADDRESS_URL = "http://192.168.253.60:9090/platform-b2b/mobile/clockAddress/getSignCardAddress?enuu=10030994";
@@ -96,7 +96,7 @@ public class PlatformApi {
 				cookies = cookies.substring(0, cookies.length() - 1);
 				// checkLoginAtB2B(cookies);
 				
-				interfaceTest(NEWS_CENTER_URL, cookies, "新闻中心");
+				interfaceTest(WORK_ORDER_URL, cookies, "接口返回");
 			}
 
 			@Override
