@@ -39,19 +39,19 @@ public class Rxjava1 {
 		Observable.create(new Observable.OnSubscribe<Integer>() {
 			@Override
 			public void call(Subscriber<? super Integer> subscriber) {
-				RxjavaMain.threadInfo("发送事件---> call():");
+				RxjavaUtils.threadInfo("发送事件---> call():");
 				subscriber.onNext(1);// doOnNext函数监听
 				//subscriber.onNext(2);
 				// subscriber.onNext(3);
 				// subscriber.onNext(4);
 				// subscriber.onCompleted();
 			}
-		}).subscribeOn(RxjavaMain.getNamedScheduler("运行在线程1上..."))
+		}).subscribeOn(RxjavaUtils.getNamedScheduler("运行在线程1上..."))
 		       
 				.doOnNext(new Action1<Integer>() {
 					@Override
 					public void call(Integer item) {
-						RxjavaMain.threadInfo("doOnNext1:" + item);
+						RxjavaUtils.threadInfo("doOnNext1:" + item);
 						item++;
 						try {
 							Thread.sleep(2000);
@@ -65,7 +65,7 @@ public class Rxjava1 {
 
 					@Override
 					public void call() {
-						RxjavaMain.threadInfo("线程任务2");
+						RxjavaUtils.threadInfo("线程任务2");
 
 					}
 				})
@@ -73,7 +73,7 @@ public class Rxjava1 {
 
 					@Override
 					public void call() {
-						RxjavaMain.threadInfo("线程任务3");
+						RxjavaUtils.threadInfo("线程任务3");
 
 					}
 				})
@@ -81,16 +81,16 @@ public class Rxjava1 {
 
 					@Override
 					public void call() {
-						RxjavaMain.threadInfo("线程任务4");
+						RxjavaUtils.threadInfo("线程任务4");
 
 					}
 				})
-				.subscribeOn(RxjavaMain.getNamedScheduler("运行在线程2上..."))
+				.subscribeOn(RxjavaUtils.getNamedScheduler("运行在线程2上..."))
 				.doOnSubscribe(new Action0() {
 
 					@Override
 					public void call() {
-						RxjavaMain.threadInfo("线程任务5");
+						RxjavaUtils.threadInfo("线程任务5");
 
 					}
 				})
@@ -99,7 +99,7 @@ public class Rxjava1 {
 					@Override
 					public void call(Integer t) {
 
-						RxjavaMain.threadInfo("doOnNext2:" + t);
+						RxjavaUtils.threadInfo("doOnNext2:" + t);
 					}
 
 				})
@@ -107,14 +107,14 @@ public class Rxjava1 {
 
 					@Override
 					public Boolean call(Integer t) {
-					     RxjavaMain.threadInfo("过滤器执行：");
+					     RxjavaUtils.threadInfo("过滤器执行：");
 						return true;
 					}
 				})
 				.subscribe(new Subscriber<Integer>() {
 					@Override
 					public void onNext(Integer item) {
-						RxjavaMain.threadInfo("onNext:" + item);
+						RxjavaUtils.threadInfo("onNext:" + item);
 					}
 
 					@Override

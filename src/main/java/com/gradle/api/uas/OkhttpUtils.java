@@ -43,10 +43,71 @@ public class OkhttpUtils {
 	 * 打印日志
 	 * @param msg
 	 */
+	public static void println(String msg,int type) {
+		if (debug) {
+			System.out.println(getLineInfo(type) + msg);
+		}
+	}
+	
+	/**
+	 * 打印日志
+	 * @param msg
+	 */
 	public static void println(String msg) {
 		if (debug) {
-			System.out.println(getLineInfo(false) + msg);
+			System.out.println(getLineInfo(typeSimple) + msg);
 		}
+	}
+	
+	/**
+	 * 打印日志
+	 * @param msg
+	 */
+	public static void println(String msg,int type,String method) {
+		if (debug) {
+			System.out.println(getLineInfo(type,method) + msg);
+		}
+	}
+	
+	/**
+	 * 打印日志
+	 * @param msg
+	 */
+	public static void println(String msg,String method) {
+		if (debug) {
+			System.out.println(getLineInfo(typeSimple,method) + msg);
+		}
+	}
+
+	public static final int typeAll=0;
+	public static final int typeSimple=1;
+	public static final int typeClass=2;
+	public static final int typeMiddle=3;
+	/**
+	 * 获取代码当前行数
+	 * 
+	 * @return
+	 */
+	public static String getLineInfo(int dispalyName,String method) {
+		Throwable root= new Throwable();
+		StackTraceElement ste = root.getStackTrace()[2];
+//        for(int i=0;i<root.getStackTrace().length;i++){
+//        	 method=root.getStackTrace()[i].getMethodName();
+//        	System.out.println(method);
+//        }
+		switch (dispalyName) {
+		case typeAll:
+			return "【"+ste.getFileName()+"】" + ":【第" + ste.getLineNumber() + "行】:【"+method+"】";
+		case typeSimple:
+			return "【第" + ste.getLineNumber() + "行】:";
+		case typeClass:
+			return ste.getFileName() + ":【第" + ste.getLineNumber() + "行】:";
+		case typeMiddle:
+			return  "【第" + ste.getLineNumber() + "行】:"+ "【"+method+"】";
+		default:
+			break;
+		}
+		return null;
 	}
 
 	/**
@@ -54,15 +115,23 @@ public class OkhttpUtils {
 	 * 
 	 * @return
 	 */
-	public static String getLineInfo(boolean dispalyName) {
-		StackTraceElement ste = new Throwable().getStackTrace()[2];
-		if (dispalyName) {
-			return ste.getFileName() + ":【第" + ste.getLineNumber() + "行】:";
-		} else {
+	public static String getLineInfo(int dispalyName) {
+		Throwable root= new Throwable();
+		StackTraceElement ste = root.getStackTrace()[2];
+		switch (dispalyName) {
+		case typeAll:
+			return "【"+ste.getFileName()+"】" + ":【第" + ste.getLineNumber() + "行】";
+		case typeSimple:
 			return "【第" + ste.getLineNumber() + "行】:";
+		case typeClass:
+			return ste.getFileName() + ":【第" + ste.getLineNumber() + "行】:";
+		case typeMiddle:
+			return  "【第" + ste.getLineNumber() + "行】:";
+		default:
+			break;
 		}
+		return null;
 	}
-
 	/**
 	 * 统一的网络失败回调方法
 	 * 

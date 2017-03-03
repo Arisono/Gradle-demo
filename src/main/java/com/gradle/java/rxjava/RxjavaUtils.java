@@ -22,7 +22,7 @@ import rx.subscriptions.CompositeSubscription;
  * @author Arison 注册事件-接收消息 博文资料参考： http://www.jianshu.com/p/59c3d6bb6a6b
  */
 @SuppressWarnings("unused")
-public class RxjavaMain {
+public class RxjavaUtils {
 
 	private final static CompositeSubscription mAllSubscription = new CompositeSubscription();
 
@@ -143,11 +143,11 @@ public class RxjavaMain {
 				new DownloadRepoMessageEvent("我这是利用rxjava技术来发送消息！"));
 	}
 
-	protected static void showMessage(String message) {
+	public static void showMessage(String message) {
 		System.out.println(message);
 	}
 
-	protected static void registerSubscription(Subscription subscription) {
+	public static void registerSubscription(Subscription subscription) {
 		mAllSubscription.add(subscription);
 	}
 
