@@ -3,8 +3,11 @@ package com.gradle.api.uas;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.java.utils.StringUtils;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,7 +48,7 @@ public class PlatformApi {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		loginB2B(url_login_test, username, password);
+	   taskRun();
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class PlatformApi {
 				// response.headers("Set-Cookie")[0]+";"+response.headers().value(6);
 				cookies = cookies.substring(0, cookies.length() - 1);
 				// checkLoginAtB2B(cookies);
-
+                OkhttpUtils.println("cookies:"+cookies);
 				loginCall();
 			}
 
@@ -193,5 +196,22 @@ public class PlatformApi {
 	 */
 	public static void interfaceParams(String url, Map<String, Object> params,String testName){
 		
+	}
+	
+	
+	public static void taskRun() {
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				if(StringUtils.isEmpty(cookies)){
+					loginB2B(url_login_test, username, password);
+					}else{
+						OkhttpUtils.println("會話保持："+cookies);
+						loginCall();
+					}
+			}
+		};
+		timer.schedule(task, 5, 1000);
 	}
 }

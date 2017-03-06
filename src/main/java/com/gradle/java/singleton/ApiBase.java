@@ -5,7 +5,7 @@ package com.gradle.java.singleton;
  */
 public abstract class ApiBase {
     //定义各种公共接口
-    public String login;//登录
+    public String login="parent login url";//登录
     public String getMasters;//获取账套
 
 

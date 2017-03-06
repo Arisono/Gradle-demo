@@ -12,7 +12,7 @@ import com.gradle.java.utils.DateFormatUtil;
 public class Main {
 
 	public static void main(String[] args) {
-      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase());
+      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase().login);
 	}
 	
 	public static ApiModel getApiModel(){
@@ -24,6 +24,7 @@ public class Main {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private static void printLnMemory(){
 		Runtime run = Runtime.getRuntime();
 		System.out.println("memory> total:" + run.totalMemory() + " free:" + run.freeMemory() + " used:" + (run.totalMemory()-run.freeMemory()) );
@@ -33,7 +34,7 @@ public class Main {
 		System.out.println("memory> total:" + run.totalMemory() + " free:" + run.freeMemory() + " used:" + startMem );
         System.out.println("开始："+DateFormatUtil.getDateTime());
 		for (int i=0;i<9999999;i++) {
-			ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
+//			ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
 			//new ApiPlatform();
 		}
 		System.out.println("结束："+DateFormatUtil.getDateTime());
@@ -44,7 +45,7 @@ public class Main {
 				e.printStackTrace();
 			}
 			for (int i=0;i<500000;i++) {
-				ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
+//				ApiConfig.getInstance(ApiPlatform.getInstance()).getmApiConfig().init();
 //				new ApiPlatform();
 			}
 			System.out.println("time: " + (new Date()));
