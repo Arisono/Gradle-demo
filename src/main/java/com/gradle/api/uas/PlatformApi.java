@@ -40,7 +40,7 @@ public class PlatformApi {
 	private static final String WORK_SCHEDULE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workData/getWorkData?enuu=10030994";
 	private static final String WORK_OVERTIME_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workOvertime/getWorkOvertime?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
 	private static final String WORK_ORDER_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workSchedule/getWorkSchedule?enuu=10030994&emcode=1000003217";
-	
+		
 	/**
 	 * @param args
 	 */

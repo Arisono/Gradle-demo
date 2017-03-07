@@ -12,7 +12,7 @@ import com.gradle.java.utils.DateFormatUtil;
 public class Main {
 
 	public static void main(String[] args) {
-      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase());
+      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase().getLogin());
 	}
 	
 	public static ApiModel getApiModel(){
