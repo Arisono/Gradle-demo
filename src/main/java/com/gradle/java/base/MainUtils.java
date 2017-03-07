@@ -2,7 +2,10 @@ package com.gradle.java.base;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,8 +36,14 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-		System.out.println(JSON.toJSONString(timeAddMuilt("08:30","12:29")));;
-		System.out.println("12:30".compareTo("12:30"));
+//		System.out.println(JSON.toJSONString(timeAddMuilt("08:30","12:29")));;
+//		System.out.println("12:30".compareTo("12:30"));
+		try {
+			System.out.println(URLDecoder.decode(URLEncoder.encode("e321r213%wafwe", "utf-8"), "utf-8"));
+			System.out.println(URLEncoder.encode("%", "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 //		test07();
 		
 	}

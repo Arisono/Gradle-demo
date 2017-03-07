@@ -6,14 +6,15 @@ package com.gradle.java.singleton;
 public class ApiPlatform extends ApiBase implements ApiModel{
     //登录
     private  String cookie="";
-
+    public String login="b2b api login";//登录
+    
     private static ApiPlatform instance;
     
     
    
     public ApiPlatform() {
 		super();
-		
+//		init();
 	}
 
 
@@ -30,11 +31,10 @@ public class ApiPlatform extends ApiBase implements ApiModel{
     }
 
     
-    @Override
-    public void init() {
-         login="";
-        //OkhttpUtils.println("init():"+this.getClass().getName());
-    }
+//    @Override
+//    public void init() {
+//      setLogin(login);
+//    }
     
     public String getLogin() {
    
