@@ -14,20 +14,13 @@ import com.gradle.java.utils.DateFormatUtil;
 public class Main {
 
 	public static void main(String[] args) {
-      System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase().login);
-      if (getApiModel() instanceof PlatformApi) {
+      System.out.println(ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase().login);
+      if (ApiUtils.getApiModel() instanceof PlatformApi) {
 		
 	  }
 	}
 	
-	public static ApiModel getApiModel(){
-		int i=0;
-		if(i==0){
-			return new ApiUAS();
-		}else{
-			return new ApiPlatform();
-		}
-	}
+
 	
 	@SuppressWarnings("unused")
 	private static void printLnMemory(){

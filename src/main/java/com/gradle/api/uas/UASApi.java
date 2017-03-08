@@ -8,6 +8,7 @@ import java.util.TimerTask;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.rxjava.RxjavaUtils;
@@ -30,7 +31,7 @@ import rx.Subscriber;
  * @author Arison RaoMeng
  */
 @SuppressWarnings("unused")
-public class ApiUU {
+public class UASApi {
 
 	private static final String baseurl_normal = "http://218.18.115.198:8888/ERP/";
 	private static final String baseurl_uas = "http://218.17.158.219:8090/ERP/";

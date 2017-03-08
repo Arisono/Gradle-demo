@@ -1,4 +1,4 @@
-package com.gradle.api.uas;
+package com.gradle.android.utils;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -138,7 +138,7 @@ public class OkhttpUtils {
 	 * @param e
 	 */
 	public static void onFailurePrintln(IOException e) {
-		println("onFailure:" + ExceptionUtils.printExceptionStack(e));
+		//println("onFailure:" + ExceptionUtils.printExceptionStack(e));
 		if (e instanceof ConnectException) {
 			println("服务器拒绝访问！");
 		} else if (e instanceof SocketTimeoutException) {

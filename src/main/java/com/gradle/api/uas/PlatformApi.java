@@ -1,19 +1,27 @@
 package com.gradle.api.uas;
 
 import java.io.IOException;
+import java.nio.Buffer;
+import java.security.KeyStore.Entry;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.java.singleton.ApiConfig;
+import com.gradle.java.singleton.ApiUtils;
 import com.gradle.java.utils.DateFormatUtil;
 import com.gradle.java.utils.StringUtils;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.FormBody.Builder;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -24,36 +32,16 @@ import okhttp3.Response;
  */
 @SuppressWarnings("unused")
 public class PlatformApi {
-	// 18328587849 123456 //测试
+	
+	private final static String METHOD_GET="get";
+	private final static String METHOD_POST="post";
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
 	private static String cookies = "";
-	private static String url_basic="http://218.17.158.219:9090/platform-b2b/";
-
-	private static String username = "15012345678";//15012345679 111111//18328587849:123456
+	private static String username = "15012345678";
 	private static String password = "111111";
 	
 
-	private static  String OBTAIN_ANNOUNCE_URL = url_basic+"mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
-	private static  String PUNCH_ADDRESS_URL = url_basic+"mobile/clockAddress/getSignCardAddress?enuu=10030994";
-	private static  String PUNCH_SCHEDULE_URL = url_basic+"mobile/clockSetCenter/getSignCardInfo?emcode=%27271000003217%27&enuu=10030994";
-	private static  String TRAVEL_REQUEST_URL = url_basic+"mobile/feePlease/getFeePlease?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
-	private static  String NEWS_CENTER_URL = url_basic+"mobile/newsCenter/getAllNews?pageNumber=1&pageSize=10&enuu=10030994";
-	private static  String NOTIFICATION_CENTER_URL = url_basic+"mobile/noticeCenter/getAllNotices?pageNumber=1&pageSize=10&enuu=10030994";
-	private static  String PUNCH_RECORD_URL = url_basic+"mobile/signCardLog/getListdata?emcode=1000003217&pageNumber=1&pageSize=10";
-	private static  String USER_INFO_QUERY_URL = url_basic+"mobile/userCenter/getUserInfo?emcode=1000003217&enuu=10030994";
-	
-	private static  String LEAVE_APPLICATION_URL =
-			url_basic+"mobile/vacation/getAllVacation?"
-					+ "emcode=1000009169&enuu=10041166&pageNumber=1&pageSize=10";
-	private static  String LEAVE_APPLICATION_URL1 =
-			url_basic+"mobile/vacation/getAllVacation?"
-					+ "emcode=1000003217&enuu=10030994&pageNumber=1&pageSize=10";
-	private static  String DAILY_WORK_URL = url_basic+"mobile/workDaily/getWorkDaily?emcode=1000003217&pageNumber=1&pageSize=10&enuu=10030994";
-	private static  String WORK_SCHEDULE_URL = url_basic+"mobile/workData/getWorkData?enuu=10030994";
-	private static  String WORK_OVERTIME_URL = url_basic+"mobile/workOvertime/getWorkOvertime?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
-	private static  String WORK_ORDER_URL = url_basic+"mobile/workSchedule/getWorkSchedule?enuu=10030994&emcode=1000003217";
-	
 
 	/**
 	 * @param args
@@ -66,18 +54,15 @@ public class PlatformApi {
 	 * 登录成功之后的回调
 	 */
 	protected static void loginCall() {
-		//get
-		interfaceTest(LEAVE_APPLICATION_URL, cookies, "OBTAIN_ANNOUNCE_URL");
-		interfaceTest(LEAVE_APPLICATION_URL1, cookies, "OBTAIN_ANNOUNCE_URL");
-		//interfaceTest(WORK_ORDER_URL, cookies, "WORK_ORDER_URL");
-		//post
-//		Map<String, Object> params=new HashMap<>();
-//		params.put("param1", "value1");
-//		params.put("param2", "value1");
-//		params.put("param3", "value1");
-//		params.put("param4", "value1");
-//		interfaceParams(WORK_ORDER_URL, params,  "WORK_ORDER_URL");
+		String url=ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase().list_vacation;
+		Map<String, Object> params=new HashMap<>();
+		params.put("emcode", "1000009169");
+		params.put("enuu", "10041166");
+		params.put("pageNumber", "1");
+		params.put("pageSize", "10");
+		sendHttp(url, params, "请假列表", METHOD_GET);
 	}
+	
 	/**
 	 * 登录 B2BString user, String password
 	 * 
@@ -89,13 +74,14 @@ public class PlatformApi {
 		OkhttpUtils.println(username);
 		OkhttpUtils.println(password);
 		RequestBody formBody = new FormBody.Builder()
-				// .add("appId", "sso")
 				.add("appId", "b2b")
 				.add("username", username)
 				.add("spaceId", "76035")
 				.add("password", password)
 				.build();
-		Request request = new Request.Builder().url(url).addHeader("content-type", "text/html;charset:utf-8")
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("content-type", "text/html;charset:utf-8")
 				.post(formBody).build();
 		OkhttpUtils.println(url);
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
@@ -127,11 +113,7 @@ public class PlatformApi {
 				for (String iterable_element : response.headers("Set-Cookie")) {
 					cookies = cookies + iterable_element + ";";
 				}
-				// cookies=
-				// response.headers("Set-Cookie")[0]+";"+response.headers().value(6);
 				cookies = cookies.substring(0, cookies.length() - 1);
-				// checkLoginAtB2B(cookies);
-                OkhttpUtils.println("cookies:"+cookies);
 				loginCall();
 			}
 
@@ -142,75 +124,112 @@ public class PlatformApi {
 		});
 	}
 
-
-
-	/**
-	 * 测试B2B登录cookie是否有效
-	 * 
-	 * @param cookie
-	 */
-	public static void checkLoginAtB2B(String cookie) {
-		String url = url_basic+"mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
-		OkhttpUtils.println(cookie);
-		// cookie="JSESSIONID=AAD026810600CE98B72C1B035133B7AD; Path=/;
-		// HttpOnly,uid=4sjrtiHZOu3sG71-9lOyB1jEPXOxBgJ_3jjuugBiDcZs9xlBhPHqdaypUNveDTUwUV8V2UZiz_XyiF54d5oA8etWywLg7AiREkmq93ydcqvCVc4-lBf0bGEQMIIvck2mx-4UFRkgZW0SinAqerzvnjG20OD4co1xYOH3GvPFYozb_8vt7AARwVeoDvRWutb8Fn-30hx4ABq-71kD7qCxpVZVFV08Z18APcJLGWy3djt4tegS8kFjXdwfjNHgjUBhlxlbbJz2561foZeffYi4K51ayiZVLZjfo4hPHlbNMrCP-InSzgVh_kEzq4PmSr_2QWXbwH_PzLiT_QUf1oKLjECvqXpW0bJquxlEWRLRAXpmmGpu96yGszEdJ2d-XtHeCjXHOgBSe_UWEVFpM9us57u5rBiOWGF_qKb2X2sV3ZuQWAu2mCRRp8jFRP0lYGwjywCg2Lk-CPjHxGsSyKorqpHk6JNRAOLp2DVEKgRFDxHP9VpKfDYlHf756eDHW0Jpiym962jTu3ARMNbUaUMrOkmoS9DhuvhxdbyuK7KecyEG2flEdL6cA75Seb6z_egZw26Df3cFTPbtKseXGk4X3XU3vEmAAwl9ABOuz0Iuq6vkS46gfg..;domain=.ubtob.com;path=/;HTTPOnly;";
-		// OkhttpUtils.println(cookie);
-		Request request = new Request.Builder().url(url).addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie", cookie).build();
-		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				String json = OkhttpUtils.getResponseString(response);
-				OkhttpUtils.println("B2B登录检查：：" + json);
-			}
-
-			@Override
-			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
-			}
-		});
-	}
-
-	/**
-	 * 测试Get请求接口
-	 * @param url
-	 * @param cookie
-	 * @param testName
-	 */
-	public static void interfaceTest(String url, String cookie, String testName) {
-		Request request = new Request.Builder()
-				.url(url)
-				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie", cookie)
-				.build();
-        OkhttpUtils.println(""+DateFormatUtil.getStrDate4Date(new Date(),"yyyy-MM-dd"));
-		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				String requestJson = OkhttpUtils.getResponseString(response);
-				OkhttpUtils.println(testName + ":" + requestJson);
-			}
-
-			@Override
-			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
-			}
-		});
-
-	}
 	
 	/**
+	 * Arison
 	 * post请求回调
 	 * @param url
 	 * @param params
 	 * @param testName
 	 */
-	public static void interfaceParams(String url, Map<String, Object> params,String testName){
+	public static void sendHttp(String url, Map<String, Object> params,String tag,String method){
+		if ("get".equals(method)) {
+			sendGetHttp(url, params, tag);
+		}
+		if("post".equals(method)){
+			sendPostHttp(url,params,tag);
+		}
 		
 	}
 	
 	
+	/** post http
+	 * @param url
+	 * @param params
+	 * @param tag
+	 */
+	public static void sendPostHttp(String url,Map<String,Object> params,String tag){
+		Builder paramBuilder = new FormBody.Builder();
+		if (!params.isEmpty()) {
+		Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
+		while (entries.hasNext()) {  
+		    Map.Entry<String, Object> entry = entries.next();  
+		    paramBuilder.add(String.valueOf(entry.getKey()),  String.valueOf(entry.getValue()));
+		}  
+		RequestBody formBody=paramBuilder.build();
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.addHeader("Cookie", cookies)
+				.post(formBody)
+				.build();
+		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String requestJson = OkhttpUtils.getResponseString(response);
+				OkhttpUtils.println(tag + ":" + requestJson);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(e);
+			}
+		});
+		
+		}
+
+	}
+	
+	
+	/** get http 
+	 * @param url
+	 * @param tag
+	 */
+	public static void sendGetHttp(String url,Map<String,Object> params,String tag){
+		 StringBuilder buf = new StringBuilder(url);
+		if (!params.isEmpty()) { 
+			 
+	            if (url.indexOf("?") == -1)
+	                buf.append("?");
+	            else if (!url.endsWith("&"))
+	                buf.append("&");
+			Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
+			while (entries.hasNext()) {  
+			    Map.Entry<String, Object> entry = entries.next();  
+			    buf.append(String.valueOf(entry.getKey()))
+                .append("=")
+                .append(String.valueOf(entry.getValue()))
+                .append("&");
+			}  
+			  buf.deleteCharAt(buf.length() - 1);
+		}
+		
+		Request request = new Request.Builder()
+				.url(buf.toString())
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.addHeader("Cookie",cookies)
+				.build();
+		OkhttpUtils.println(tag+":"+buf.toString());
+		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String requestJson = OkhttpUtils.getResponseString(response);
+				OkhttpUtils.println(tag + ":" + requestJson);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(e);
+			}
+		});
+		
+	}
+	
+	/**
+	 * 循环任务
+	 */
 	public static void taskRun() {
 		Timer timer = new Timer();
 		TimerTask task = new TimerTask() {

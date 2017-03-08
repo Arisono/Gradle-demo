@@ -8,8 +8,6 @@ public class ApiConfig {
     private static ApiConfig mInstance;
     
     private ApiModel mApiConfig;
-//    private ApiBase mApiBase;
-    
 
     public ApiConfig(ApiModel api) {
         this.mApiConfig = api;
@@ -32,7 +30,6 @@ public class ApiConfig {
     }
     
     public ApiBase getmApiBase() {
-//    	mApiConfig.init();
         return (ApiBase) mApiConfig;
     }
 

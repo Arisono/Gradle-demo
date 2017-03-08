@@ -3,20 +3,41 @@ package com.gradle.java.utils;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gradle.android.utils.OkhttpUtils;
 
 
 /**
  * @author Arison
  * 怎样解析JSON数据？
  */
+@SuppressWarnings("unused")
 public class FastJsonUtil {
 
 	public static void main(String[] args) {
-		parseObject();
+		
+//		String json="{\"emcode\":1000003217,\"enuu\":10030994,\"feePleaseDetails\":[{\"fpd_address\":\"英唐大厦6楼\",\"fpd_detno\":\"1\",\"fpd_id\":1,\"location\":\"英唐大厦三楼\"},{\"fpd_address\":\"英唐大厦66楼\",\"fpd_detno\":\"2\",\"fpd_id\":2,\"location\":\"英唐大厦99楼\"}],\"fp_auditdate\":1488195993000,\"fp_auditman\":\"何建清\",\"fp_code\":\"20170229001\",\"fp_id\":2,\"fp_people2\":\"测试人\",\"fp_preenddate\":1488195993000,\"fp_prestartdate\":1488195993000,\"fp_recorddate\":1488195993000,\"fp_status\":\"申请中\",\"fp_statuscode\":311,\"fp_v3\":\"这个是个测试\"}";
+//		sysJsonObject(json);
+	}
+
+     
+	/**
+	 * 打印jsonObject
+	 * @param json
+	 */
+	private static void sysJsonObject(String json) {
+		if(StringUtils.isEmpty(json)){
+		json="{\"emcode\":1000003217,\"enuu\":10030994,\"va_code\":\"12312999\",\"va_date\":1488200530000,\"va_emname\":\"何建清\",\"va_endtime\":1488200530000,\"va_id\":1,\"va_recorder\":\"何建清\",\"va_remark\":\"测试请假单\",\"va_startime\":1488200530000,\"va_status\":\"申请中\",\"va_statuscode\":311,\"va_vacationtype\":\"事假\"}";
+		}
+		JSONObject root=JSON.parseObject(json);
+        Set<String> lists=root.keySet();
+        for(int i=0;i<lists.size();i++){
+        	OkhttpUtils.println(""+lists.toArray()[i]+" :"+ root.values().toArray()[i]);
+        }
 	}
 	
 	

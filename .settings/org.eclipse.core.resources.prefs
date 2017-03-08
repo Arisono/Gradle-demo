@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/java/com/gradle/api/uas/ApiUU.java=UTF-8
+encoding//src/main/java/com/gradle/api/uas/UASApi.java=UTF-8
 encoding//src/main/java/com/gradle/java/utils/DateFormatUtil.java=UTF-8
 encoding//src/main/java/com/gradle/java/utils/HmacEncoder.java=UTF-8
 encoding/<project>=UTF-8

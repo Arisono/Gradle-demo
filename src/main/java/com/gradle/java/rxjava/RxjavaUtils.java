@@ -4,10 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
+import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
+import com.gradle.java.utils.StringUtils;
 
 import rx.Observable;
 import rx.Observer;
@@ -28,9 +32,12 @@ public class RxjavaUtils {
 
 	public static void main(String[] args) {
 
-		// rxBus();//rxbus测试
+		 //rxBus();//rxbus测试
+		 //rxBusMethod();
+		
+		taskRun();
 
-		 observeOn();//观察事件
+		// observeOn();//观察事件
 
 		// subscribeOn();//订阅事件
 
@@ -142,6 +149,46 @@ public class RxjavaUtils {
 		RxBus.getInstance().send(
 				new DownloadRepoMessageEvent("我这是利用rxjava技术来发送消息！"));
 	}
+	static Subscription mSubscription;
+	/**
+	 * 测试rxbus
+	 */
+	public static void rxBusMethod() {
+		// 注册 ---被观察者
+		if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+			OkhttpUtils.println("mSubscription:unsubscribe()");
+            mSubscription.unsubscribe();
+        }
+		 mSubscription=RxBus.getInstance().toObservable()
+				.filter(o -> o instanceof DownloadRepoMessageEvent)
+				.map(o -> (DownloadRepoMessageEvent) o)
+				// .observeOn(AndroidSchedulers.mainThread())
+				.doOnNext(o -> showMessage(o.getMessage())).subscribe();
+		OkhttpUtils.println("isUnsubscribed():"+mSubscription.isUnsubscribed());
+		// 发送消息 ---观察者
+		RxBus.getInstance().send(
+				new DownloadRepoMessageEvent("我这是利用rxjava技术来发送消息！"));
+		OkhttpUtils.println("isUnsubscribed():"+mSubscription.isUnsubscribed());
+		
+	}
+	
+	/**
+	 * 循环任务
+	 */
+	public static void taskRun() {
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				rxBusMethod();
+			}
+		};
+		timer.schedule(task, 5, 5000);
+	}
+	
+	
+	
+	
 
 	public static void showMessage(String message) {
 		System.out.println(message);
