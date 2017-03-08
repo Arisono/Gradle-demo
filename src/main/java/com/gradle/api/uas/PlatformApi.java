@@ -33,6 +33,7 @@ public class PlatformApi {
 	private static String username = "15012345678";//15012345679 111111//18328587849:123456
 	private static String password = "111111";
 	
+
 	private static  String OBTAIN_ANNOUNCE_URL = url_basic+"mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
 	private static  String PUNCH_ADDRESS_URL = url_basic+"mobile/clockAddress/getSignCardAddress?enuu=10030994";
 	private static  String PUNCH_SCHEDULE_URL = url_basic+"mobile/clockSetCenter/getSignCardInfo?emcode=%27271000003217%27&enuu=10030994";
@@ -53,6 +54,7 @@ public class PlatformApi {
 	private static  String WORK_OVERTIME_URL = url_basic+"mobile/workOvertime/getWorkOvertime?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
 	private static  String WORK_ORDER_URL = url_basic+"mobile/workSchedule/getWorkSchedule?enuu=10030994&emcode=1000003217";
 	
+
 	/**
 	 * @param args
 	 */
