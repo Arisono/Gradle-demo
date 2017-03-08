@@ -13,6 +13,9 @@ import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.utils.OkhttpUtils;
+
+import com.gradle.java.singleton.ApiBase;
+
 import com.gradle.java.singleton.ApiConfig;
 import com.gradle.java.singleton.ApiUtils;
 import com.gradle.java.utils.DateFormatUtil;
@@ -40,31 +43,72 @@ public class PlatformApi {
 	private static String cookies = "";
 	private static String username = "15012345678";
 	private static String password = "111111";
-	
+	private static ApiBase url=ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase();
 
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 	   taskRun();
 	}
 
-	/**
-	 * 登录成功之后的回调
-	 */
+
 	protected static void loginCall() {
-		String url=ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase().list_vacation;
+
 		Map<String, Object> params=new HashMap<>();
 		params.put("emcode", "1000009169");
 		params.put("enuu", "10041166");
 		params.put("pageNumber", "1");
 		params.put("pageSize", "10");
-		sendHttp(url, params, "请假列表", METHOD_GET);
+		sendHttp(url.list_vacation, params, "请假列表", METHOD_GET);
+//		sendHttp(url.list_feePlease, params, "出差列表", METHOD_GET);
+//		sendHttp(url.list_workOvertime, params, "加班列表", METHOD_GET);
+		saveData();
 	}
+
+
+    
+	private static void saveData() {
+		String formStore=
+			    "{\n"+
+			            "        \"FP_N6\": null,\n"+
+			            "        \"FP_PEOPLE2\": null,\n"+
+			            "        \"emcode\": \"1000009169\",\n"+
+			            "        \"enuu\": \"10030994\",\n"+
+			            "        \"fp_code\": null,\n"+
+			            "        \"fp_department\": null,\n"+
+			            "        \"fp_id\": 0,\n"+
+			            "        \"fp_kind\": null,\n"+
+			            "        \"fp_preenddate\": \"2017-03-08 23:05:00\",\n"+
+			            "        \"fp_prestartdate\": \"2017-03-08 16:04:00\",\n"+
+			            "        \"fp_recorddate\": null,\n"+
+			            "        \"fp_recordman\": null,\n"+
+			            "        \"fp_status\": null,\n"+
+			            "        \"fp_statuscode\": null,\n"+
+			            "        \"fp_type\": null,\n"+
+			            "        \"fp_v3\": \"测试\",\n"+
+			            "        \"fp_v6\": null\n"+
+			            "    }\n";
+		String gridStore= "[{\n"+
+	            "        \"FPD_D4\": null,\n"+
+	            "        \"FPD_D6\": null,\n"+
+	            "        \"Fpd_location\": \"测试\",\n"+
+	            "        \"fpd_d2\": null,\n"+
+	            "        \"fpd_date1\": null,\n"+
+	            "        \"fpd_date2\": null,\n"+
+	            "        \"fpd_detno\": 0,\n"+
+	            "        \"fpd_fpid\": 0,\n"+
+	            "        \"fpd_id\": 0,\n"+
+	            "        \"fpd_location\": \"测试\"\n"+
+	            "    }]";
+		
+		Map<String, Object> params=new HashMap<>();
+		params.put("formStore", formStore);
+		params.put("gridStore", gridStore);
+		
+		sendHttp(url.save_feePlease, params, "出差单保存：", METHOD_POST);
+	}
+
 	
 	/**
-	 * 登录 B2BString user, String password
+	 * 登录 B2B
 	 * 
 	 * @param url
 	 * @param username
@@ -143,7 +187,8 @@ public class PlatformApi {
 	}
 	
 	
-	/** post http
+	/** 
+	 * post http
 	 * @param url
 	 * @param params
 	 * @param tag
@@ -156,6 +201,7 @@ public class PlatformApi {
 		    Map.Entry<String, Object> entry = entries.next();  
 		    paramBuilder.add(String.valueOf(entry.getKey()),  String.valueOf(entry.getValue()));
 		}  
+		OkhttpUtils.println(tag+":"+url);
 		RequestBody formBody=paramBuilder.build();
 		Request request = new Request.Builder()
 				.url(url)
@@ -182,7 +228,8 @@ public class PlatformApi {
 	}
 	
 	
-	/** get http 
+	/** 
+	 * get http 
 	 * @param url
 	 * @param tag
 	 */
