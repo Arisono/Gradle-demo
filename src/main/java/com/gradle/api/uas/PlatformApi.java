@@ -57,9 +57,10 @@ public class PlatformApi {
 		params.put("enuu", "10041166");
 		params.put("pageNumber", "1");
 		params.put("pageSize", "10");
-		sendHttp(url.list_vacation, params, "请假列表", METHOD_GET);
+//		sendHttp(url.list_vacation, params, "请假列表", METHOD_GET);
 //		sendHttp(url.list_feePlease, params, "出差列表", METHOD_GET);
 //		sendHttp(url.list_workOvertime, params, "加班列表", METHOD_GET);
+
 		saveData();
 	}
 
@@ -86,7 +87,7 @@ public class PlatformApi {
 			            "        \"fp_v3\": \"测试\",\n"+
 			            "        \"fp_v6\": null\n"+
 			            "    }\n";
-		String gridStore= "[{\n"+
+		String gridStore= "{\n"+
 	            "        \"FPD_D4\": null,\n"+
 	            "        \"FPD_D6\": null,\n"+
 	            "        \"Fpd_location\": \"测试\",\n"+
@@ -97,7 +98,7 @@ public class PlatformApi {
 	            "        \"fpd_fpid\": 0,\n"+
 	            "        \"fpd_id\": 0,\n"+
 	            "        \"fpd_location\": \"测试\"\n"+
-	            "    }]";
+	            "    }";
 		
 		Map<String, Object> params=new HashMap<>();
 		params.put("formStore", formStore);
