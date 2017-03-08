@@ -1,12 +1,14 @@
 package com.gradle.api.uas;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.java.utils.DateFormatUtil;
 import com.gradle.java.utils.StringUtils;
 
 import okhttp3.Call;
@@ -26,23 +28,30 @@ public class PlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
 	private static String cookies = "";
+	private static String url_basic="http://218.17.158.219:9090/platform-b2b/";
 
 	private static String username = "15012345678";//15012345679 111111//18328587849:123456
 	private static String password = "111111";
 	
-	private static final String OBTAIN_ANNOUNCE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
-	private static final String PUNCH_ADDRESS_URL = "http://192.168.253.60:9090/platform-b2b/mobile/clockAddress/getSignCardAddress?enuu=10030994";
-	private static final String PUNCH_SCHEDULE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/clockSetCenter/getSignCardInfo?emcode=%27271000003217%27&enuu=10030994";
-	private static final String TRAVEL_REQUEST_URL = "http://192.168.253.60:9090/platform-b2b/mobile/feePlease/getFeePlease?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
-	private static final String NEWS_CENTER_URL = "http://192.168.253.60:9090/platform-b2b/mobile/newsCenter/getAllNews?pageNumber=1&pageSize=10&enuu=10030994";
-	private static final String NOTIFICATION_CENTER_URL = "http://192.168.253.60:9090/platform-b2b/mobile/noticeCenter/getAllNotices?pageNumber=1&pageSize=10&enuu=10030994";
-	private static final String PUNCH_RECORD_URL = "http://192.168.253.60:9090/platform-b2b/mobile/signCardLog/getListdata?emcode=1000003217&pageNumber=1&pageSize=10";
-	private static final String USER_INFO_QUERY_URL = "http://192.168.253.60:9090/platform-b2b/mobile/userCenter/getUserInfo?emcode=1000003217&enuu=10030994";
-	private static final String LEAVE_APPLICATION_URL = "http://192.168.253.60:9090/platform-b2b/mobile/vacation/getAllVacation?emcode=1000003217&enuu=10030994&pageNumber=1&pageSize=10";
-	private static final String DAILY_WORK_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workDaily/getWorkDaily?emcode=1000003217&pageNumber=1&pageSize=10&enuu=10030994";
-	private static final String WORK_SCHEDULE_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workData/getWorkData?enuu=10030994";
-	private static final String WORK_OVERTIME_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workOvertime/getWorkOvertime?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
-	private static final String WORK_ORDER_URL = "http://192.168.253.60:9090/platform-b2b/mobile/workSchedule/getWorkSchedule?enuu=10030994&emcode=1000003217";
+	private static  String OBTAIN_ANNOUNCE_URL = url_basic+"mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
+	private static  String PUNCH_ADDRESS_URL = url_basic+"mobile/clockAddress/getSignCardAddress?enuu=10030994";
+	private static  String PUNCH_SCHEDULE_URL = url_basic+"mobile/clockSetCenter/getSignCardInfo?emcode=%27271000003217%27&enuu=10030994";
+	private static  String TRAVEL_REQUEST_URL = url_basic+"mobile/feePlease/getFeePlease?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
+	private static  String NEWS_CENTER_URL = url_basic+"mobile/newsCenter/getAllNews?pageNumber=1&pageSize=10&enuu=10030994";
+	private static  String NOTIFICATION_CENTER_URL = url_basic+"mobile/noticeCenter/getAllNotices?pageNumber=1&pageSize=10&enuu=10030994";
+	private static  String PUNCH_RECORD_URL = url_basic+"mobile/signCardLog/getListdata?emcode=1000003217&pageNumber=1&pageSize=10";
+	private static  String USER_INFO_QUERY_URL = url_basic+"mobile/userCenter/getUserInfo?emcode=1000003217&enuu=10030994";
+	
+	private static  String LEAVE_APPLICATION_URL =
+			url_basic+"mobile/vacation/getAllVacation?"
+					+ "emcode=1000009169&enuu=10041166&pageNumber=1&pageSize=10";
+	private static  String LEAVE_APPLICATION_URL1 =
+			url_basic+"mobile/vacation/getAllVacation?"
+					+ "emcode=1000003217&enuu=10030994&pageNumber=1&pageSize=10";
+	private static  String DAILY_WORK_URL = url_basic+"mobile/workDaily/getWorkDaily?emcode=1000003217&pageNumber=1&pageSize=10&enuu=10030994";
+	private static  String WORK_SCHEDULE_URL = url_basic+"mobile/workData/getWorkData?enuu=10030994";
+	private static  String WORK_OVERTIME_URL = url_basic+"mobile/workOvertime/getWorkOvertime?enuu=10030994&emcode=1000003217&pageNumber=1&pageSize=10";
+	private static  String WORK_ORDER_URL = url_basic+"mobile/workSchedule/getWorkSchedule?enuu=10030994&emcode=1000003217";
 	
 	/**
 	 * @param args
@@ -56,8 +65,9 @@ public class PlatformApi {
 	 */
 	protected static void loginCall() {
 		//get
-		interfaceTest(OBTAIN_ANNOUNCE_URL, cookies, "OBTAIN_ANNOUNCE_URL");
-		interfaceTest(WORK_ORDER_URL, cookies, "WORK_ORDER_URL");
+		interfaceTest(LEAVE_APPLICATION_URL, cookies, "OBTAIN_ANNOUNCE_URL");
+		interfaceTest(LEAVE_APPLICATION_URL1, cookies, "OBTAIN_ANNOUNCE_URL");
+		//interfaceTest(WORK_ORDER_URL, cookies, "WORK_ORDER_URL");
 		//post
 //		Map<String, Object> params=new HashMap<>();
 //		params.put("param1", "value1");
@@ -138,7 +148,7 @@ public class PlatformApi {
 	 * @param cookie
 	 */
 	public static void checkLoginAtB2B(String cookie) {
-		String url = "http://192.168.253.60:9090/platform-b2b/mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
+		String url = url_basic+"mobile/bulletinCenter/getAllbulletins?pageNumber=1&pageSize=10&enuu=10030994";
 		OkhttpUtils.println(cookie);
 		// cookie="JSESSIONID=AAD026810600CE98B72C1B035133B7AD; Path=/;
 		// HttpOnly,uid=4sjrtiHZOu3sG71-9lOyB1jEPXOxBgJ_3jjuugBiDcZs9xlBhPHqdaypUNveDTUwUV8V2UZiz_XyiF54d5oA8etWywLg7AiREkmq93ydcqvCVc4-lBf0bGEQMIIvck2mx-4UFRkgZW0SinAqerzvnjG20OD4co1xYOH3GvPFYozb_8vt7AARwVeoDvRWutb8Fn-30hx4ABq-71kD7qCxpVZVFV08Z18APcJLGWy3djt4tegS8kFjXdwfjNHgjUBhlxlbbJz2561foZeffYi4K51ayiZVLZjfo4hPHlbNMrCP-InSzgVh_kEzq4PmSr_2QWXbwH_PzLiT_QUf1oKLjECvqXpW0bJquxlEWRLRAXpmmGpu96yGszEdJ2d-XtHeCjXHOgBSe_UWEVFpM9us57u5rBiOWGF_qKb2X2sV3ZuQWAu2mCRRp8jFRP0lYGwjywCg2Lk-CPjHxGsSyKorqpHk6JNRAOLp2DVEKgRFDxHP9VpKfDYlHf756eDHW0Jpiym962jTu3ARMNbUaUMrOkmoS9DhuvhxdbyuK7KecyEG2flEdL6cA75Seb6z_egZw26Df3cFTPbtKseXGk4X3XU3vEmAAwl9ABOuz0Iuq6vkS46gfg..;domain=.ubtob.com;path=/;HTTPOnly;";
@@ -171,7 +181,7 @@ public class PlatformApi {
 				.addHeader("content-type", "text/html;charset:utf-8")
 				.addHeader("Cookie", cookie)
 				.build();
-
+        OkhttpUtils.println(""+DateFormatUtil.getStrDate4Date(new Date(),"yyyy-MM-dd"));
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
 
 			@Override
@@ -212,6 +222,6 @@ public class PlatformApi {
 					}
 			}
 		};
-		timer.schedule(task, 5, 1000);
+		timer.schedule(task, 5, 1000000);
 	}
 }

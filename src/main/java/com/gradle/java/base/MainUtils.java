@@ -40,7 +40,8 @@ public class MainUtils {
 //		System.out.println("12:30".compareTo("12:30"));
 		try {
 			System.out.println(URLDecoder.decode(URLEncoder.encode("e321r213%wafwe", "utf-8"), "utf-8"));
-			System.out.println(URLEncoder.encode("%", "utf-8"));
+			System.out.println(URLEncoder.encode("25%", "utf-8"));
+			//System.out.println(URLEncoder.encode("", "utf-8"));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

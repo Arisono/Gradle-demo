@@ -1,6 +1,8 @@
 package com.gradle.java.singleton;
 
 import java.util.Date;
+
+import com.gradle.api.uas.PlatformApi;
 import com.gradle.java.utils.DateFormatUtil;
 
 
@@ -13,6 +15,9 @@ public class Main {
 
 	public static void main(String[] args) {
       System.out.println(ApiConfig.getInstance(getApiModel()).getmApiBase().login);
+      if (getApiModel() instanceof PlatformApi) {
+		
+	  }
 	}
 	
 	public static ApiModel getApiModel(){
