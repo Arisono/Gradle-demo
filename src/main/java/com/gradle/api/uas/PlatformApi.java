@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.utils.OkhttpUtils;
-
+import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.singleton.ApiBase;
 
 import com.gradle.java.singleton.ApiConfig;
@@ -25,6 +25,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.FormBody.Builder;
+import rx.Observer;
+import rx.functions.Action1;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -43,68 +45,108 @@ public class PlatformApi {
 	private static String cookies = "";
 	private static String username = "15012345678";
 	private static String password = "111111";
+	
+	/**
+	 * 统一的接口地址封装
+	 */
 	private static ApiBase url=ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase();
 
+	/**
+	 * main函数
+	 * @param args
+	 */
 	public static void main(String[] args) {
+		//执行登录
 	   taskRun();
+	   //执行异步任务
+	   RxBus.getInstance().toObservable()
+	   .subscribe(new Observer<Object>() {
+
+		@Override
+		public void onCompleted() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void onError(Throwable e) {
+			// TODO Auto-generated method stub
+			
+		}
+         
+		@Override
+		public void onNext(Object t) {
+			//网络接口返回结果---这里打印
+			OkhttpUtils.println(t.toString());
+		}
+	});
 	}
 
 
+	/**
+	 * 登录成功后的回调方法
+	 * 支持get post接口调用
+	 * 所有的接口测试写在这里！！！
+	 */
 	protected static void loginCall() {
-
 		Map<String, Object> params=new HashMap<>();
 		params.put("emcode", "1000009169");
 		params.put("enuu", "10041166");
 		params.put("pageNumber", "1");
 		params.put("pageSize", "10");
-//		sendHttp(url.list_vacation, params, "请假列表", METHOD_GET);
-//		sendHttp(url.list_feePlease, params, "出差列表", METHOD_GET);
-//		sendHttp(url.list_workOvertime, params, "加班列表", METHOD_GET);
-
-		saveData();
+		OkhttpUtils.sendHttp(url.list_vacation, params, cookies ,"请假列表", METHOD_GET);
+		OkhttpUtils.sendHttp(url.list_feePlease, params, cookies ,"出差列表", METHOD_GET);
+		OkhttpUtils.sendHttp(url.list_workOvertime, params,cookies , "加班列表", METHOD_GET);
+        
+	
+		OkhttpUtils.sendHttp(url.daily_work_url, params,cookies , "日报列表", METHOD_GET);
+//		loginParamsCall();
 	}
 
 
     
-	private static void saveData() {
+	/**
+	 * 表单数据录入专有测试方法
+	 * 保存json数据  统一测试方法
+	 */
+	private static void loginParamsCall() {
 		String formStore=
-			    "{\n"+
-			            "        \"FP_N6\": null,\n"+
-			            "        \"FP_PEOPLE2\": null,\n"+
-			            "        \"emcode\": \"1000009169\",\n"+
-			            "        \"enuu\": \"10030994\",\n"+
-			            "        \"fp_code\": null,\n"+
-			            "        \"fp_department\": null,\n"+
-			            "        \"fp_id\": 0,\n"+
-			            "        \"fp_kind\": null,\n"+
-			            "        \"fp_preenddate\": \"2017-03-08 23:05:00\",\n"+
-			            "        \"fp_prestartdate\": \"2017-03-08 16:04:00\",\n"+
-			            "        \"fp_recorddate\": null,\n"+
-			            "        \"fp_recordman\": null,\n"+
-			            "        \"fp_status\": null,\n"+
-			            "        \"fp_statuscode\": null,\n"+
-			            "        \"fp_type\": null,\n"+
-			            "        \"fp_v3\": \"测试\",\n"+
-			            "        \"fp_v6\": null\n"+
-			            "    }\n";
-		String gridStore= "{\n"+
-	            "        \"FPD_D4\": null,\n"+
-	            "        \"FPD_D6\": null,\n"+
-	            "        \"Fpd_location\": \"测试\",\n"+
-	            "        \"fpd_d2\": null,\n"+
-	            "        \"fpd_date1\": null,\n"+
-	            "        \"fpd_date2\": null,\n"+
-	            "        \"fpd_detno\": 0,\n"+
-	            "        \"fpd_fpid\": 0,\n"+
-	            "        \"fpd_id\": 0,\n"+
-	            "        \"fpd_location\": \"测试\"\n"+
-	            "    }";
-		
+					"{\n"+
+					"        \"FP_N6\": null,\n"+
+					"        \"FP_PEOPLE2\": null,\n"+
+					"        \"emcode\": \"1000009169\",\n"+
+					"        \"enuu\": \"10030994\",\n"+
+					"        \"fp_code\": null,\n"+
+					"        \"fp_department\": null,\n"+
+					"        \"fp_id\": 0,\n"+
+					"        \"fp_kind\": null,\n"+
+					"        \"fp_preenddate\": \"2017-03-08 23:05:00\",\n"+
+					"        \"fp_prestartdate\": \"2017-03-08 16:04:00\",\n"+
+					"        \"fp_recorddate\": null,\n"+
+					"        \"fp_recordman\": null,\n"+
+					"        \"fp_status\": null,\n"+
+					"        \"fp_statuscode\": null,\n"+
+					"        \"fp_type\": null,\n"+
+					"        \"fp_v3\": \"测试\",\n"+
+					"        \"fp_v6\": null\n"+
+					"    }\n";
+		String gridStore= 
+					"{\n"+
+					"        \"FPD_D4\": null,\n"+
+					"        \"FPD_D6\": null,\n"+
+					"        \"Fpd_location\": \"测试\",\n"+
+					"        \"fpd_d2\": null,\n"+
+					"        \"fpd_date1\": null,\n"+
+					"        \"fpd_date2\": null,\n"+
+					"        \"fpd_detno\": 0,\n"+
+					"        \"fpd_fpid\": 0,\n"+
+					"        \"fpd_id\": 0,\n"+
+					"        \"fpd_location\": \"测试\"\n"+
+					"    }";
 		Map<String, Object> params=new HashMap<>();
 		params.put("formStore", formStore);
 		params.put("gridStore", gridStore);
-		
-		sendHttp(url.save_feePlease, params, "出差单保存：", METHOD_POST);
+		OkhttpUtils.sendHttp(url.save_feePlease, params,cookies ,"出差单保存：", METHOD_POST);
 	}
 
 	
@@ -116,8 +158,6 @@ public class PlatformApi {
 	 * @param password
 	 */
 	public static void loginB2B(String url, String username, String password) {
-		OkhttpUtils.println(username);
-		OkhttpUtils.println(password);
 		RequestBody formBody = new FormBody.Builder()
 				.add("appId", "b2b")
 				.add("username", username)
@@ -170,110 +210,7 @@ public class PlatformApi {
 	}
 
 	
-	/**
-	 * Arison
-	 * post请求回调
-	 * @param url
-	 * @param params
-	 * @param testName
-	 */
-	public static void sendHttp(String url, Map<String, Object> params,String tag,String method){
-		if ("get".equals(method)) {
-			sendGetHttp(url, params, tag);
-		}
-		if("post".equals(method)){
-			sendPostHttp(url,params,tag);
-		}
-		
-	}
 	
-	
-	/** 
-	 * post http
-	 * @param url
-	 * @param params
-	 * @param tag
-	 */
-	public static void sendPostHttp(String url,Map<String,Object> params,String tag){
-		Builder paramBuilder = new FormBody.Builder();
-		if (!params.isEmpty()) {
-		Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
-		while (entries.hasNext()) {  
-		    Map.Entry<String, Object> entry = entries.next();  
-		    paramBuilder.add(String.valueOf(entry.getKey()),  String.valueOf(entry.getValue()));
-		}  
-		OkhttpUtils.println(tag+":"+url);
-		RequestBody formBody=paramBuilder.build();
-		Request request = new Request.Builder()
-				.url(url)
-				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie", cookies)
-				.post(formBody)
-				.build();
-		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				String requestJson = OkhttpUtils.getResponseString(response);
-				OkhttpUtils.println(tag + ":" + requestJson);
-			}
-
-			@Override
-			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
-			}
-		});
-		
-		}
-
-	}
-	
-	
-	/** 
-	 * get http 
-	 * @param url
-	 * @param tag
-	 */
-	public static void sendGetHttp(String url,Map<String,Object> params,String tag){
-		 StringBuilder buf = new StringBuilder(url);
-		if (!params.isEmpty()) { 
-			 
-	            if (url.indexOf("?") == -1)
-	                buf.append("?");
-	            else if (!url.endsWith("&"))
-	                buf.append("&");
-			Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
-			while (entries.hasNext()) {  
-			    Map.Entry<String, Object> entry = entries.next();  
-			    buf.append(String.valueOf(entry.getKey()))
-                .append("=")
-                .append(String.valueOf(entry.getValue()))
-                .append("&");
-			}  
-			  buf.deleteCharAt(buf.length() - 1);
-		}
-		
-		Request request = new Request.Builder()
-				.url(buf.toString())
-				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie",cookies)
-				.build();
-		OkhttpUtils.println(tag+":"+buf.toString());
-		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException {
-				String requestJson = OkhttpUtils.getResponseString(response);
-				OkhttpUtils.println(tag + ":" + requestJson);
-			}
-
-			@Override
-			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
-			}
-		});
-		
-	}
 	
 	/**
 	 * 循环任务

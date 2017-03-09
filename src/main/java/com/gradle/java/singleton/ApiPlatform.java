@@ -11,7 +11,7 @@ public class ApiPlatform extends ApiBase implements ApiModel{
    
     private final String mBaseUrl_test = "http://192.168.253.192:8088/platform-b2b/";
     private final String mBaseUrl_developer = "http://218.17.158.219:9090/platform-b2b/";
-    private final String mBaseUrl = mBaseUrl_test;
+    private final String mBaseUrl = mBaseUrl_developer;
     
     
    
@@ -25,6 +25,8 @@ public class ApiPlatform extends ApiBase implements ApiModel{
         setSave_vacation(mBaseUrl+"");
         setSave_feePlease(mBaseUrl+"mobile/feePlease/saveFeePlease");
         setSave_workOvertime(mBaseUrl+"");
+        
+        setDaily_work_url(mBaseUrl+"mobile/workDaily/getWorkDaily");
 	}
 
 
