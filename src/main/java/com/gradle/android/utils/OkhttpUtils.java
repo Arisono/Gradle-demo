@@ -6,6 +6,8 @@ import java.net.SocketTimeoutException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
@@ -16,10 +18,17 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.utils.ExceptionUtils;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.FormBody.Builder;
 
 /**
  * @author Arison
@@ -91,10 +100,6 @@ public class OkhttpUtils {
 	public static String getLineInfo(int dispalyName,String method) {
 		Throwable root= new Throwable();
 		StackTraceElement ste = root.getStackTrace()[2];
-//        for(int i=0;i<root.getStackTrace().length;i++){
-//        	 method=root.getStackTrace()[i].getMethodName();
-//        	System.out.println(method);
-//        }
 		switch (dispalyName) {
 		case typeAll:
 			return "【"+ste.getFileName()+"】" + ":【第" + ste.getLineNumber() + "行】:【"+method+"】";
@@ -197,4 +202,112 @@ public class OkhttpUtils {
 	    return ssfFactory;  
 	}  
 
+	
+	
+	/**
+	 * Arison
+	 * post请求回调
+	 * @param url
+	 * @param params
+	 * @param testName
+	 */
+	public static void sendHttp(String url, Map<String, Object> params,String cookies,String tag,String method){
+		if ("get".equals(method)) {
+			sendGetHttp(url, params,cookies, tag);
+		}
+		if("post".equals(method)){
+			sendPostHttp(url,params,cookies,tag);
+		}
+		
+	}
+	
+	
+	/** 
+	 * post http
+	 * @param url
+	 * @param params
+	 * @param tag
+	 */
+	public static void sendPostHttp(String url,Map<String,Object> params,String cookies,String tag){
+		Builder paramBuilder = new FormBody.Builder();
+		if (!params.isEmpty()) {
+		Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
+		while (entries.hasNext()) {  
+		    Map.Entry<String, Object> entry = entries.next();  
+		    paramBuilder.add(String.valueOf(entry.getKey()),  String.valueOf(entry.getValue()));
+		}  
+		OkhttpUtils.println(tag+":"+url);
+		RequestBody formBody=paramBuilder.build();
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.addHeader("Cookie", cookies)
+				.post(formBody)
+				.build();
+		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String requestJson = OkhttpUtils.getResponseString(response);
+				//OkhttpUtils.println(tag + ":" + requestJson);
+				RxBus.getInstance().send(tag + ":" +requestJson);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(e);
+			}
+		});
+		
+		}
+
+	}
+	
+	
+	/** 
+	 * get http 
+	 * @param url
+	 * @param tag
+	 */
+	public static void sendGetHttp(String url,Map<String,Object> params,String cookies,String tag){
+		 StringBuilder buf = new StringBuilder(url);
+		if (!params.isEmpty()) { 
+			 
+	            if (url.indexOf("?") == -1)
+	                buf.append("?");
+	            else if (!url.endsWith("&"))
+	                buf.append("&");
+			Iterator<Map.Entry<String, Object>> entries=    params.entrySet().iterator();
+			while (entries.hasNext()) {  
+			    Map.Entry<String, Object> entry = entries.next();  
+			    buf.append(String.valueOf(entry.getKey()))
+                .append("=")
+                .append(String.valueOf(entry.getValue()))
+                .append("&");
+			}  
+			  buf.deleteCharAt(buf.length() - 1);
+		}
+		
+		Request request = new Request.Builder()
+				.url(buf.toString())
+				.addHeader("content-type", "text/html;charset:utf-8")
+				.addHeader("Cookie",cookies)
+				.build();
+		OkhttpUtils.println(tag+":"+buf.toString());
+		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String requestJson = OkhttpUtils.getResponseString(response);
+				//OkhttpUtils.println(tag + ":" + requestJson);
+				RxBus.getInstance().send(tag + ":" +requestJson);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(e);
+			}
+		});
+		
+	}
 }
