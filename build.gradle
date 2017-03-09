@@ -36,7 +36,7 @@ dependencies {
     
     //JSON解析  
     //https://mvnrepository.com/artifact/com.alibaba/fastjson
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.1.41'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.24'
     
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'

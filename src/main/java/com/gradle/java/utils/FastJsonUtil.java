@@ -2,12 +2,18 @@ package com.gradle.java.utils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.ValueFilter;
 import com.gradle.android.utils.OkhttpUtils;
 
 
@@ -20,8 +26,42 @@ public class FastJsonUtil {
 
 	public static void main(String[] args) {
 		
-//		String json="{\"emcode\":1000003217,\"enuu\":10030994,\"feePleaseDetails\":[{\"fpd_address\":\"英唐大厦6楼\",\"fpd_detno\":\"1\",\"fpd_id\":1,\"location\":\"英唐大厦三楼\"},{\"fpd_address\":\"英唐大厦66楼\",\"fpd_detno\":\"2\",\"fpd_id\":2,\"location\":\"英唐大厦99楼\"}],\"fp_auditdate\":1488195993000,\"fp_auditman\":\"何建清\",\"fp_code\":\"20170229001\",\"fp_id\":2,\"fp_people2\":\"测试人\",\"fp_preenddate\":1488195993000,\"fp_prestartdate\":1488195993000,\"fp_recorddate\":1488195993000,\"fp_status\":\"申请中\",\"fp_statuscode\":311,\"fp_v3\":\"这个是个测试\"}";
-//		sysJsonObject(json);
+		  testParseObject();
+		
+	}
+
+
+	/**
+	 * 序列化与反序列  排序问题
+	 * fastjson
+	 */
+	private static void testParseObject() {
+		  JSONObject map=new JSONObject(true);
+          map.put("请假类型","1");
+          map.put("单据状态","2");
+          map.put("开始时间","3");
+          map.put("结束时间","4");
+          map.put("请假原因","5");
+          OkhttpUtils.println(map.toString());
+          
+          //单嵌套
+          // OkhttpUtils.println(map.toString());
+          //JSONObject root=JSON.parseObject(map.toString());
+          LinkedHashMap<String, Object> root=JSON.parseObject(map.toString(),new TypeReference<LinkedHashMap<String, Object>>(){} );
+          //OkhttpUtils.println(JSON.toJSONString(root));
+          //JSONObject json=new JSONObject(true);
+          //json.putAll(root);
+          Collection<Object> lists=root.values();
+          for (Object object : lists) {
+			//OkhttpUtils.println(object.toString());
+		  }
+          //组合嵌套JSON
+          String mapStr="{\"key1\":\"value1\",\"key2\":{\"key21\":\"value21\",\"key22\":\"value22\",\"key23\":\"value23\",\"key24\":\"value24\"},\"key3\":\"value3\",\"key4\":\"value4\",\"key5\":\"value5\",\"key6\":\"value6\"}";
+          LinkedHashMap<String, Object> rootStr=JSON.parseObject(mapStr.toString(),new TypeReference<LinkedHashMap<String, Object>>(){} ,Feature.OrderedField);
+	      OkhttpUtils.println(JSON.toJSONString(rootStr));
+	      // OkhttpUtils.println(rootStr.toString());
+	      JSONObject key2=JSON.parseObject(mapStr,Feature.OrderedField).getJSONObject("key2");
+	      OkhttpUtils.println(key2.toString());
 	}
 
      
