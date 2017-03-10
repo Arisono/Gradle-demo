@@ -9,12 +9,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.java.encryption.MD5Utils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.rxjava.RxjavaUtils;
 import com.gradle.java.utils.HmacUtils;
-import com.gradle.java.utils.MD5Utils;
-
 
 import okhttp3.Call;
 import okhttp3.Callback;

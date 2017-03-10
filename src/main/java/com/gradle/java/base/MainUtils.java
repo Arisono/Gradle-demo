@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -36,7 +37,18 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-//		System.out.println(JSON.toJSONString(timeAddMuilt("08:30","12:29")));;
+      
+		char y='"';
+        boolean b=y=='"';
+		System.out.println(b);
+		
+		String str="\"";
+		new StringCharacterIterator(str).first();
+		
+	}
+
+	private static void test08() {
+		//		System.out.println(JSON.toJSONString(timeAddMuilt("08:30","12:29")));;
 //		System.out.println("12:30".compareTo("12:30"));
 		try {
 			System.out.println(URLDecoder.decode(URLEncoder.encode("e321r213%wafwe", "utf-8"), "utf-8"));
@@ -46,7 +58,6 @@ public class MainUtils {
 			e.printStackTrace();
 		}
 //		test07();
-		
 	}
 
 	/**

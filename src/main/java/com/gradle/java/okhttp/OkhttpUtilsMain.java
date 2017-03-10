@@ -1,4 +1,4 @@
-package com.gradle.http.okhttp;
+package com.gradle.java.okhttp;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,8 +13,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.codec.binary.Base64;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.java.encryption.RSAUtils;
 import com.gradle.java.utils.ExceptionUtils;
-import com.gradle.java.utils.RSAUtils;
 
 import okhttp3.Call;
 import okhttp3.Callback;

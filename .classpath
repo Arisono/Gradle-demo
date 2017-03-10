@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="libs/ezmorph-1.0.6.jar"/>
 	<classpathentry kind="lib" path="libs/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/commons-beanutils-1.9.2.jar"/>
+	<classpathentry kind="lib" path="libs/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

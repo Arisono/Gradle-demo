@@ -1,4 +1,4 @@
-package com.gradle.java.utils;
+package com.gradle.java.encryption;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -14,6 +14,7 @@ import java.util.Arrays;
  * 盐加密和普通加密
  */  
 public class MD5Utils {  
+	
     private final static String HEX_NUMS_STR = "0123456789ABCDEF";  
     private final static Integer SALT_LENGTH = 15;  
   
@@ -150,19 +151,4 @@ public class MD5Utils {
     return null;
     }
     
-    public static void main(String[] args) {
-    	//非盐加密
-    	System.out.println(encode("13266699268"));
-    	System.out.println(encode("111111"));
-    	//盐加密
-//		try {
-//			String pwd=getEncryptedPwd("123456");
-//			System.out.println(pwd);
-//			System.out.println(validPasswd("123456", "9C8C6E5E844BE0E337CECADF2ED6F71E692B8943C5F2AB248194232D7997EB"));
-//		} catch (NoSuchAlgorithmException e) {
-//			e.printStackTrace();
-//		} catch (UnsupportedEncodingException e) {
-//			e.printStackTrace();
-//		}
-	}
 }
