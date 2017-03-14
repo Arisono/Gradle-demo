@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.android.utils.RegexUtil;
 import com.gradle.java.model.Users;
 import com.gradle.java.utils.DateFormatUtil;
@@ -37,14 +38,39 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-      
+		final int vardata=getNumber();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+              OkhttpUtils.println(vardata+"");				
+			}
+		}).start();
+		
+	}
+	
+	public static int getNumber(){
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return 8;
+	}
+
+	private static void test10() {
+		char i='1';
+		i++;
+		System.out.println(i);
+	}
+
+	private static void test09() {
 		char y='"';
         boolean b=y=='"';
 		System.out.println(b);
 		
 		String str="\"";
 		new StringCharacterIterator(str).first();
-		
 	}
 
 	private static void test08() {
