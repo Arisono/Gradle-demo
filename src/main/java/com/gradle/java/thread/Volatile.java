@@ -1,6 +1,6 @@
 package com.gradle.java.thread;
 
-public class ThreadMain {
+public class Volatile {
 	
 	public volatile int inc = 0;
 
@@ -10,7 +10,7 @@ public class ThreadMain {
 
 	public static void main(String[] args) {
 
-		final ThreadMain test = new ThreadMain();
+		final Volatile test = new Volatile();
 		for (int i = 0; i < 10; i++) {
 			new Thread() {
 				public void run() {
