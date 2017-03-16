@@ -199,6 +199,7 @@ public class PlatformApi {
 					cookies = cookies + iterable_element + ";";
 				}
 				cookies = cookies.substring(0, cookies.length() - 1);
+				OkhttpUtils.println("cookies:" +cookies );
 				loginCall();
 			}
 
