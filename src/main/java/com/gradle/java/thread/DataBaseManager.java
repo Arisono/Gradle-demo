@@ -46,6 +46,18 @@ public class DataBaseManager {
 					DataBaseManager.getInstance().closeDataBase();
 				}
 			},""+i).start();
+			
+           new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					//切记,打开,关闭数据库的操作不能直接SQLiteDatabase.getInstance().openDB();SQLiteDatabase.getInstance().closeDB();
+					//必须调用管理者单例类DataBaseManager 来调用打开和关闭操作,从而解决多线程下访问sqlite数据库的问题
+					DataBaseManager.getInstance().openDataBase();
+					DataBaseManager.getInstance().closeDataBase();
+					
+				}
+			},""+i).start();
 		}
 
 	}

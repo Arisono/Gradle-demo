@@ -39,8 +39,8 @@ public class UASApi {
 	private static final String master_uas = "UAS";
 	private static final String master_test = "USOFT_MALL";
 
-	private static final String master = master_normal;// UAS//USOFTSYS//DATACENTER
-	private static final String baseurl = baseurl_normal;// 正式账套
+	private static final String master = master_uas;// UAS//USOFTSYS//DATACENTER
+	private static final String baseurl = baseurl_uas;// 正式账套
 	private static String sessionId;
 	private static String emcode;
 	private static String cookies;
@@ -48,9 +48,8 @@ public class UASApi {
 	public static void main(String[] args) {
 		//loginManage("15012345678", "111111");// 管理平台登录
 		loginManage("13266699268", "111111");// 管理平台登录
-		//loginERP("13266699268", "111111", master); // uas系统登录13691965521
-		// loginB2B();
-		
+		loginERP("13266699268", "111111", master); // uas系统登录13691965521
+		//loginB2B();
 	}
 
 	/**
@@ -59,7 +58,7 @@ public class UASApi {
 	protected static void callbackResquest() {
 		//api_updateWorkDate();// 更新班次接口
 		// getNotApproved();//获取审批流接口
-		// getFormandGridDetail("Ask4Leave");// 配置表单 生成表单接口 Workovertime
+		 getFormandGridDetail("FeePlease!CCSQ");// 配置表单 生成表单接口 Workovertime  FeePlease!CCSQ
 		// getFormandGridDetail("FeePlease!CCSQ");
 		// getCompoData();//下拉接口
 		// getDBFindData();//单选多选接口
@@ -77,10 +76,8 @@ public class UASApi {
 		// loadUrlNoParams("https://www.baidu.com/");//测试url
 		// login();//定时任务
 		
-		
+
 		//startTaskCard("2017-03-03");
-	
-	
 	}
 
 	private static void startTaskCard(String date) {
@@ -138,6 +135,8 @@ public class UASApi {
 			public void onResponse(Call call, Response response)
 					throws IOException {
 				String json = OkhttpUtils.getResponseString(response);
+				//String account=JSON.parseArray(json).getJSONObject(0).getString("account");
+				RxBus.getInstance().send("管理平台："+json);
 				OkhttpUtils.println("管理平台登录接口返回值：" + json);
 			}
 
@@ -186,7 +185,8 @@ public class UASApi {
 	public static void loginERP(String user, String password, String master) {
 		String url = baseurl + "mobile/login.action";
 		RequestBody formBody = new FormBody.Builder().add("username", user)
-				.add("password", password).add("master", master).build();
+				.add("password", password)
+				.add("master", master).build();
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8")
 				.post(formBody).build();

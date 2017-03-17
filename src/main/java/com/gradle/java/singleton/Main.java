@@ -2,6 +2,8 @@ package com.gradle.java.singleton;
 
 import java.util.Date;
 
+import com.gradle.api.config.ApiConfig;
+import com.gradle.api.config.ApiUtils;
 import com.gradle.api.uas.PlatformApi;
 import com.gradle.java.utils.DateFormatUtil;
 

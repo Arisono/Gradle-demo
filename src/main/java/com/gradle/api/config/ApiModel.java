@@ -1,4 +1,4 @@
-package com.gradle.java.singleton;
+package com.gradle.api.config;
 
 
 /**
