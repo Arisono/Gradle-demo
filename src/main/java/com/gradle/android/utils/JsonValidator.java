@@ -18,7 +18,7 @@ public class JsonValidator {
     }
 
     public static void main(String[] args) {
-        String jsonStr = "\"程序错误\"";
+        String jsonStr = "\";\"";
         System.out.println(jsonStr + ":" + new JsonValidator().validate(jsonStr));
     }
 

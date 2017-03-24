@@ -1,12 +1,27 @@
-package com.gradle.java.singleton;
+package com.gradle.api.config;
 
 /**
  * Created by Arison on 2017/3/2.
  */
 public abstract class ApiBase {
+	
+	public  String mBaseUrl;
     //定义各种公共接口
     public String login;//登录
     public String getMasters;//获取账套
+    
+    
+    public String getUsersInfo;//人员信息
+    //审批流接口
+    public String getAuditTodo;//待审批
+    public String getAuditDone;//已审批
+    
+    //任务
+    public String task_save;
+    public String task_list;
+    public String task_reply;
+    public String task_change;
+    
     
     //消息
     public String obtain_announce_url;//公告中心：通过企业uu获取所有公告
@@ -166,7 +181,19 @@ public abstract class ApiBase {
 	public void setWork_order_url(String work_order_url) {
 		this.work_order_url = work_order_url;
 	}
+	public String getGetAuditTodo() {
+		return getAuditTodo;
+	}
+	public void setGetAuditTodo(String getAuditTodo) {
+		this.getAuditTodo = getAuditTodo;
+	}
+	public String getmBaseUrl() {
+		return mBaseUrl;
+	}
+	public void setmBaseUrl(String mBaseUrl) {
+		this.mBaseUrl = mBaseUrl;
+	}
     
-   
+    
     
 }

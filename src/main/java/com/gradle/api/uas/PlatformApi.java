@@ -13,11 +13,11 @@ import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.api.config.ApiBase;
+import com.gradle.api.config.ApiConfig;
+import com.gradle.api.config.ApiPlatform;
+import com.gradle.api.config.ApiUtils;
 import com.gradle.java.rxjava.RxBus;
-import com.gradle.java.singleton.ApiBase;
-
-import com.gradle.java.singleton.ApiConfig;
-import com.gradle.java.singleton.ApiUtils;
 import com.gradle.java.utils.DateFormatUtil;
 import com.gradle.java.utils.StringUtils;
 
@@ -35,6 +35,10 @@ import okhttp3.Response;
  * @author RaoMeng,Arison
  * 平台接口测试
  */
+/**
+ * @author Arison
+ *
+ */
 @SuppressWarnings("unused")
 public class PlatformApi {
 	
@@ -42,10 +46,12 @@ public class PlatformApi {
 	private final static String METHOD_POST="post";
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
-	private static String cookies = "";
-	private static String username = "15012345678";
+	private static String username = "15012345679";
 	private static String password = "111111";
-	
+	private static String cookies = "";
+	private static String enuu = "";
+	private static String emcode = "";
+	private static Map<String, Object> params=new HashMap<>();
 	/**
 	 * 统一的接口地址封装
 	 */
@@ -56,51 +62,146 @@ public class PlatformApi {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//测试环境  正式环境
+		url.setmBaseUrl(ApiPlatform.mBaseUrl_test);
+		//管理平台登录---参数
+		UASApi.loginManage(username, password);// 管理平台登录
 		//执行登录
-	   taskRun();
-	   //执行异步任务
-	   RxBus.getInstance().toObservable()
-	   .subscribe(new Observer<Object>() {
-
-		@Override
-		public void onCompleted() {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onError(Throwable e) {
-			// TODO Auto-generated method stub
-			
-		}
-         
-		@Override
-		public void onNext(Object t) {
-			//网络接口返回结果---这里打印
-			OkhttpUtils.println(t.toString());
-		}
-	});
+	    taskRun();
+	    //执行异步任务
+	    observer();
 	}
-
-
+	
 	/**
 	 * 登录成功后的回调方法
 	 * 支持get post接口调用
 	 * 所有的接口测试写在这里！！！
 	 */
 	protected static void loginCall() {
-		Map<String, Object> params=new HashMap<>();
+		//考勤单据
+		//api_attendance();
+	    //日报列表
+		//api_worklogs();
+		loginParamsCall();
+		//审批流列表
+		api_approval();
+	    //任务接口测试
+		api_task();
+	}
+
+
+	private static void api_worklogs() {
+		Map<String, Object> params;
+		params=new HashMap<>();
 		params.put("emcode", "1000009169");
 		params.put("enuu", "10041166");
 		params.put("pageNumber", "1");
 		params.put("pageSize", "10");
+		OkhttpUtils.sendHttp(url.daily_work_url, params,cookies , "日报列表", METHOD_GET);
+	}
+
+
+	private static void api_approval() {
+		Map<String, Object> params;
+		params=new HashMap<>();
+		params.put("emuu", "1000002802");//1000009169
+		params.put("enuu", "10030994");//10041166
+		params.put("count", "10");
+		params.put("page", "1");
+		OkhttpUtils.sendHttp(url.getAuditTodo, params,cookies , "审批流列表-未审批", METHOD_GET);
+		OkhttpUtils.sendHttp(url.getAuditDone, params,cookies , "审批流列表-已审批", METHOD_GET);
+		
+		//单据详情
+		params=new HashMap<>();
+		params.put("id", "21");
+		params.put("whichpage", "3");
+		OkhttpUtils.sendGetHttp(url.mBaseUrl+"mobile/detailCenter/getDetail", params, cookies, "审批流详情");;
+	}
+
+
+	/**考勤单据
+	 * @return
+	 */
+	private static Map<String, Object> api_attendance() {
+		Map<String, Object> params;
+		params=new HashMap<>();
+		params.put("emcode", "1000009169");
+		params.put("enuu", "10041166");
+		params.put("pageNumber", "1");
+		params.put("pageSize", "10");
+		//考勤单据
 		OkhttpUtils.sendHttp(url.list_vacation, params, cookies ,"请假列表", METHOD_GET);
 		OkhttpUtils.sendHttp(url.list_feePlease, params, cookies ,"出差列表", METHOD_GET);
 		OkhttpUtils.sendHttp(url.list_workOvertime, params,cookies , "加班列表", METHOD_GET);
-        
-	
-		OkhttpUtils.sendHttp(url.daily_work_url, params,cookies , "日报列表", METHOD_GET);
-//		loginParamsCall();
+		return params;
+	}
+
+
+	private static void api_task() {
+		String formStore= "{\n" +
+                "\"detail\":\"测试\",\n" +
+                "\"recordercode\":\"1000009169\",\n" +
+                "\"uu\":\"10030994\",\n" +
+                "\"taskname\":\"刘的请假单\",\n" +//任务名称
+//                "\"recorder\":\"10041166\",\n" +
+//                "\"doman\":\"余佳\",\n" +
+                "\"domancode\":\"1000009169,1000009169,1000009169\",\n" +
+                "\"startdate\":\"2017-03-20 09:12:00\",\n" +
+                "\"enddate\":\"2017-03-20 12:12:00\"\n" +
+                "}";
+		String formStore1="{\n" +
+	               "\"detail\":\"liujie 测试\",\n" +
+	               "\"recordercode\":\"1000009169\",\n" +
+	               "\"recorder\":\"10041166\",\n" +
+	               "\"doman\":\"余佳,曹秋莲\",\n" +
+	               "\"domancode\":\"U1112,U0770\",\n" +
+	               "\"startdate\":\"2017-03-20 09:12:00\",\n" +
+	               "\"enddate\":\"2017-03-20 12:12:00\"\n" +
+	               "}\n";
+		//保存
+		Map<String, Object> params;
+		params=new HashMap<>();
+		params.put("formStore", formStore);
+		OkhttpUtils.sendPostHttp(url.task_save, params, cookies, "任务保存：");
+		//列表
+		String statu="";
+		params=new HashMap<>();
+		params.put("emuu", "1000009169");
+		params.put("enuu", "10030994");
+		params.put("pageNumber", "1");
+		params.put("pageSize", "200");
+		params.put("status", statu);
+		
+		OkhttpUtils.sendGetHttp(url.task_list, params, cookies, "任务列表"+statu+":");
+		
+		//获取任务回复
+		params=new HashMap<>();
+		params.put("id", "81");
+		OkhttpUtils.sendGetHttp(url.task_reply, params, cookies, "任务回复列表：");
+		//任务状态变更
+		formStore= "{\n" +
+	               "\"id\":\"81\",\n" +//单据id
+	               "\"status\":\"待确认\",\n" +//状态
+	               "\"statuscode\":\"unconfirmed\"\n" +//状态码
+	               "}";
+		String gridStore="{\n" +
+	              "\"taskid\":\"81\",\n" +//单据id
+	              "\"replyman\":\"1000009169\",\n" +//个人uu 
+	              "\"Replytime\":\"2017-03-22 09:00:00\",\n" +
+	              "\"Replydetail\":\"dsajfdsaf\",\n" +//回复内容
+	              "\"uu\":\"10030994\"\n" +//企业uu enUU
+	              "}";
+		
+		params=new HashMap<>();
+		params.put("formStore", formStore);
+		params.put("gridStore", gridStore);
+//		OkhttpUtils.println("formStore:"+formStore);
+//		OkhttpUtils.println("gridStore:"+gridStore);
+		OkhttpUtils.sendPostHttp(url.task_change, params, cookies, "任务变更状态：");
+		//通讯录人员列表
+		params=new HashMap<>();
+		params.put("enuu", "10041166");
+		OkhttpUtils.sendGetHttp(url.getUsersInfo, params, cookies, "人员列表：");
 	}
 
 
@@ -131,7 +232,7 @@ public class PlatformApi {
 					"        \"fp_v6\": null\n"+
 					"    }\n";
 		String gridStore= 
-					"{\n"+
+					"[{\n"+
 					"        \"FPD_D4\": null,\n"+
 					"        \"FPD_D6\": null,\n"+
 					"        \"Fpd_location\": \"测试\",\n"+
@@ -142,11 +243,35 @@ public class PlatformApi {
 					"        \"fpd_fpid\": 0,\n"+
 					"        \"fpd_id\": 0,\n"+
 					"        \"fpd_location\": \"测试\"\n"+
-					"    }";
+					"    }]";
 		Map<String, Object> params=new HashMap<>();
 		params.put("formStore", formStore);
 		params.put("gridStore", gridStore);
 		OkhttpUtils.sendHttp(url.save_feePlease, params,cookies ,"出差单保存：", METHOD_POST);
+		
+		//请假单
+		params=new HashMap<>();
+		params.put("formStore", formStore);
+		params.put("enuu", "10041166");
+		formStore="{\"emcode\":\"1000009169\","
+				+ "\"enuu\":\"10041166\","
+				+ "\"va_alldays\":0.0,"
+				+ "\"va_alltimes\":0.0,"
+				+ "\"va_code\":null,"
+				+ "\"va_date\":null,"
+				+ "\"va_emcode\":null,"
+				+ "\"va_emname\":null,"
+				+ "\"va_endtime\":\"2017-03-19 15:46:00\","
+				+ "\"va_holidaytype\":null,"
+				+ "\"va_id\":0,"
+				+ "\"va_mankind\":null,"
+				+ "\"va_recordor\":null,"
+				+ "\"va_remark\":\"句警察局\","
+				+ "\"va_startime\":\"2017-03-17 15:46:00\","
+				+ "\"va_status\":null,"
+				+ "\"va_statuscode\":null,"
+				+ "\"va_vacationtype\":\"病假\"}";
+		OkhttpUtils.sendHttp(url.save_vacation, params,cookies ,"请假单保存：", METHOD_POST);
 	}
 
 	
@@ -199,6 +324,7 @@ public class PlatformApi {
 					cookies = cookies + iterable_element + ";";
 				}
 				cookies = cookies.substring(0, cookies.length() - 1);
+				OkhttpUtils.println("cookies:" +cookies );
 				loginCall();
 			}
 
@@ -229,5 +355,30 @@ public class PlatformApi {
 			}
 		};
 		timer.schedule(task, 5, 1000000);
+	}
+	
+	
+	private static void observer() {
+		RxBus.getInstance().toObservable()
+		   .subscribe(new Observer<Object>() {
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				// TODO Auto-generated method stub
+				
+			}
+		     
+			@Override
+			public void onNext(Object t) {
+				//网络接口返回结果---这里打印
+				OkhttpUtils.println(t.toString());
+			}
+		});
 	}
 }

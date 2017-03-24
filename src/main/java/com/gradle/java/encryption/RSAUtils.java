@@ -1,4 +1,4 @@
-package com.gradle.java.utils;
+package com.gradle.java.encryption;
 
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
@@ -22,9 +22,9 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.apache.commons.codec.binary.Base64;
 
-//import org.apache.commons.codec.binary.Base64;
 
 public class RSAUtils {
+	
 	public static final String KEY_ALGORITHM = "RSA";
 	/** 貌似默认是RSA/NONE/PKCS1Padding，未验证 */
 	public static final String CIPHER_ALGORITHM = "RSA/ECB/PKCS1Padding";
@@ -61,11 +61,10 @@ public class RSAUtils {
 
 	/**
 	 * 生成密钥对。注意这里是生成密钥对KeyPair，再由密钥对获取公私钥
-	 * 
+	 * 生成RSA的公钥和私钥
 	 * @return
 	 */
 	public static Map<String, byte[]> generateKeyBytes() {
-
 		try {
 			KeyPairGenerator keyPairGenerator = KeyPairGenerator
 					.getInstance(KEY_ALGORITHM);
@@ -73,16 +72,29 @@ public class RSAUtils {
 			KeyPair keyPair = keyPairGenerator.generateKeyPair();
 			RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 			RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-
 			Map<String, byte[]> keyMap = new HashMap<String, byte[]>();
 			keyMap.put(PUBLIC_KEY, publicKey.getEncoded());
 			keyMap.put(PRIVATE_KEY, privateKey.getEncoded());
 			return keyMap;
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * 生成RSA的公钥和私钥
+	 */
+	public static Map<String, Object> generateKey() throws Exception{
+		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(KEY_ALGORITHM);
+		keyPairGenerator.initialize(KEY_SIZE);  //512-65536 & 64的倍数
+		KeyPair keyPair = keyPairGenerator.generateKeyPair();
+		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
+		Map<String, Object> keyMap = new HashMap<String, Object>();
+		keyMap.put(PUBLIC_KEY, publicKey);
+		keyMap.put(PRIVATE_KEY, privateKey);
+		return keyMap;
 	}
 
 	/**
@@ -119,7 +131,6 @@ public class RSAUtils {
 					.generatePrivate(pkcs8EncodedKeySpec);
 			return privateKey;
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -144,7 +155,17 @@ public class RSAUtils {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * 公钥加密
+	 */
+	public static byte[] encrypt(byte[] data, RSAPublicKey publicKey) throws Exception{
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+		byte[] cipherBytes = cipher.doFinal(data);
+		return cipherBytes;
+	}
+	
 	/**
 	 * 解密，三步走。
 	 * 
@@ -163,5 +184,16 @@ public class RSAUtils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+
+	/**
+	 * 私钥解密
+	 */
+	public static byte[] decrypt(byte[] data, RSAPrivateKey privateKey) throws Exception{
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.DECRYPT_MODE, privateKey);
+		byte[] plainBytes = cipher.doFinal(data);
+		return plainBytes;
 	}
 }
