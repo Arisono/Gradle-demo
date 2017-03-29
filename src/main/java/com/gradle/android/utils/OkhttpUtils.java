@@ -42,8 +42,7 @@ public class OkhttpUtils {
 	public static OkHttpClient client = new OkHttpClient.Builder()
 	.connectTimeout(10, TimeUnit.SECONDS)
 	.readTimeout(10, TimeUnit.SECONDS)
-	//信任所有证书
-	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())
+	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
 	.build();
 	

@@ -1,4 +1,4 @@
-package com.gradle.android.retrofit;
+package com.gradle.java.model;
 
 public class ErrorInfo<T> {
 

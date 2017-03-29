@@ -46,8 +46,8 @@ public class PlatformApi {
 	private final static String METHOD_POST="post";
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
-	private static String username = "15012345679";
-	private static String password = "111111";
+	private static String username = "13111110001";
+	private static String password = "1";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";

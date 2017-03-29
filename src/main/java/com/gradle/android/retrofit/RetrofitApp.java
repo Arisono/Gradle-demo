@@ -11,10 +11,14 @@ import java.util.Map;
 import org.apache.commons.collections.map.HashedMap;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.util.IOUtils;
 import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.java.model.ErrorInfo;
 import com.gradle.java.utils.ExceptionUtils;
 
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,8 +33,46 @@ public class RetrofitApp {
 	public static GitHubService service = retrofit.create(GitHubService.class);
 	
 	public static void main(String[] args) throws UnsupportedEncodingException {
+		runTask();
+       
+	}
+
+
+	private static void runTask() {
+		//demo01();
 		
-		
+		Map<String,Object> param=new HashMap<String, Object>();
+	    param.put("id1", "1");
+	    param.put("id2", "2");
+	    param.put("id3", "3");
+	    param.put("id4", "4");
+	    
+	    ErrorInfo<String> data=new ErrorInfo<>();
+	    data.setCode(500);
+	    data.setData("data");
+	    data.setMessage("msg");
+	    data.setUrl("url");
+	    //Call<Object> repos = service.postParam("/postParam", param);
+	    //Call<Object> repos = service.postBodyByString("/postBodyByString", "retrofit2.0", param);
+	    //Call<Object> repos = service.postBodyByObject("/postBodyByString", "retrofit2.0", param);
+	    
+	    //两种方式返回体有所区别，Object--->Model(具体实体类)
+	    //Call<Object> repos = service.postBodyByObject("/postBodyByString", data, param);
+	    //Call<Object> repos = service.postBodyByModel("/postBodyByModel", data, param);
+	    
+	    // Call<Object> repos = service.postBodyByMuli("/postBodyByMuli","test1", "test2", param);
+	    
+	    MultipartBody.Part body = 
+        MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
+MultipartBody.Part body2 = 
+MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
+	    Call<Object> repos = service.postBodyByMulile("/postBodyByMuli",body, body2, param);
+	    enqueueTask(repos);
+	}
+
+	
+	
+	private static void demo01() {
 		//get
 	    Map<String,Object> param=new HashMap<String, Object>();
 	    param.put("id1", "1");
@@ -59,16 +101,14 @@ public class RetrofitApp {
 	    Map<String,Object> header=new HashMap<String, Object>();
 	    header.put("Content-type", "application/json;charset=UTF-8");
 	    
-	    MultipartBody.Part body = 
-	            MultipartBody.Part.createFormData("body", "jstudy");
-	    MultipartBody.Part body2 = 
-	            MultipartBody.Part.createFormData("body2", "jstudy");
-
-
-	    Call<Object> repos = service.paramModel(body,body2,"model");
-	    
+//	    MultipartBody.Part body = 
+//	            MultipartBody.Part.createFormData("body", "jstudy");
+//	    MultipartBody.Part body2 = 
+//	            MultipartBody.Part.createFormData("body2", "jstudy");
+//        //多个请求体
+//	    Call<Object> repos = service.paramModel(body,body2,"model");
+	    Call<Object> repos = service.paramBody(data,"model");
 		enqueueTask(repos);
-       
 	}
 
 	private static void enqueueTask(Call<Object> repos) {
