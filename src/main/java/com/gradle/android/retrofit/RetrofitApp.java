@@ -24,8 +24,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Subscriber;
+
 @SuppressWarnings("unused")
 public class RetrofitApp {
+	
+	/**
+	 * 
+	 */
 	public static Retrofit retrofit = new Retrofit.Builder()
 		    .baseUrl("http://192.168.253.200:8080/")
 		    .addConverterFactory(GsonConverterFactory.create())
@@ -41,6 +47,40 @@ public class RetrofitApp {
 	private static void runTask() {
 		//demo01();
 		
+		//demo2();
+		
+		Map<String,Object> params=new HashMap<String, Object>();
+	    params.put("id1", "1");
+	    params.put("id2", "2");
+	    params.put("id3", "3");
+	    params.put("id4", "4");
+		RetrofitUtils.getInstance().getApiPostData(new Subscriber<Object>() {
+			
+			@Override
+			public void onNext(Object t) {
+				OkhttpUtils.println(t.toString());
+				
+			}
+			
+			@Override
+			public void onError(Throwable e) {
+				ExceptionUtils.printExceptionStack(e);
+				
+			}
+			
+			@Override
+			public void onCompleted() {
+				OkhttpUtils.println("onCompleted()");
+				
+			}
+		}, params);
+	}
+
+
+	/**
+	 * 主要测试post方法
+	 */
+	private static void demo2() {
 		Map<String,Object> param=new HashMap<String, Object>();
 	    param.put("id1", "1");
 	    param.put("id2", "2");
@@ -72,6 +112,9 @@ MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-dat
 
 	
 	
+	/**
+	 * Get，Post方法测试
+	 */
 	private static void demo01() {
 		//get
 	    Map<String,Object> param=new HashMap<String, Object>();

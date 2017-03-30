@@ -1,10 +1,19 @@
 package com.gradle.android.retrofit;
 
+import java.awt.List;
+import java.util.Map;
+
 import com.gradle.android.utils.OkhttpUtils;
+
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
+import rx.subjects.Subject;
 
 /**
  * @desc:封装统一的网络请求类
@@ -45,10 +54,20 @@ public class RetrofitUtils {
 		 private static final  RetrofitUtils INSANCE=new RetrofitUtils();
 	}
 	
-	public RetrofitUtils getInstance(){
+	public static RetrofitUtils getInstance(){
 		return SingletonHolder.INSANCE;
 	}
 	
 	
+	public void  getApiPostData(Subscriber<Object> s,Map<String,Object> params){
+		
+	Observable<Object> o=paramService.postBodyByString("/postBodyByString", "retrofit2.0", params);
+	toSubscribe(o, s);
+	
+	}
+	
+	private <T> void toSubscribe(Observable<T> o,Subscriber<T> s){
+		  o.subscribe(s);
+	}
 	
 }

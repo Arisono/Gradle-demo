@@ -19,7 +19,7 @@ dependencies {
     //retrofit
     compile group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.1.0'
     compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
   
     //Rxjava 
     compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.0.0' //rxjava2

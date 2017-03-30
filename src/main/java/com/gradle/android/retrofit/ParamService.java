@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.gradle.java.model.ErrorInfo;
 
-import io.reactivex.Observable;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,6 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
+import rx.Observable;
 
 
 /**
