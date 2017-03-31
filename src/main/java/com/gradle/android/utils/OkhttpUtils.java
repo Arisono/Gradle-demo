@@ -18,6 +18,8 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.android.Interceptor.CustomLogger;
+import com.gradle.android.Interceptor.LogInterceptor;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.utils.ExceptionUtils;
 
@@ -28,6 +30,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.FormBody.Builder;
 
 /**
@@ -44,6 +47,7 @@ public class OkhttpUtils {
 	.readTimeout(10, TimeUnit.SECONDS)
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
+	.addInterceptor(new LogInterceptor())
 	.build();
 	
 	

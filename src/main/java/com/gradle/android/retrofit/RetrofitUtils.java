@@ -4,8 +4,9 @@ import java.awt.List;
 import java.util.Map;
 
 import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.java.rxjava.RxjavaUtils;
 
-
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -36,12 +37,16 @@ public class RetrofitUtils {
 		//init okhttp
 		    //省略
 		
+		
+		
+ 
 		//init retrofit
 		retrofit = new Retrofit.Builder()
 				.client(OkhttpUtils.client)
 			    .baseUrl(BASE_URL)
 			    .addConverterFactory(GsonConverterFactory.create())
 			    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+			    
 			    .build();
 		
 		//init api service
@@ -59,15 +64,20 @@ public class RetrofitUtils {
 	}
 	
 	
-	public void  getApiPostData(Subscriber<Object> s,Map<String,Object> params){
+	public void  getApiPostData(Subscriber<Object> s,String url,Map<String,Object> params){
 		
-	Observable<Object> o=paramService.postBodyByString("/postBodyByString", "retrofit2.0", params);
+	Observable<Object> o=
+			//paramService.postBodyByString(url, "retrofit2.0", params);
+	paramService.postParam(url, params);
 	toSubscribe(o, s);
 	
 	}
 	
 	private <T> void toSubscribe(Observable<T> o,Subscriber<T> s){
-		  o.subscribe(s);
+		  o
+		  //.subscribeOn(Schedulers.newThread())
+		  .subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
+		  .subscribe(s);
 	}
 	
 }

@@ -12,6 +12,8 @@ import org.apache.commons.collections.map.HashedMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
+import com.gradle.android.subscriber.NetResquestSubscriber;
+import com.gradle.android.subscriber.SubscriberOnNextListener;
 import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.java.model.ErrorInfo;
 import com.gradle.java.utils.ExceptionUtils;
@@ -54,26 +56,35 @@ public class RetrofitApp {
 	    params.put("id2", "2");
 	    params.put("id3", "3");
 	    params.put("id4", "4");
-		RetrofitUtils.getInstance().getApiPostData(new Subscriber<Object>() {
-			
+//		RetrofitUtils.getInstance().getApiPostData(new Subscriber<Object>() {
+//			
+//			@Override
+//			public void onNext(Object t) {
+//				OkhttpUtils.println(t.toString());
+//				
+//			}
+//			
+//			@Override
+//			public void onError(Throwable e) {
+//				ExceptionUtils.printExceptionStack(e);
+//				
+//			}
+//			
+//			@Override
+//			public void onCompleted() {
+//				OkhttpUtils.println("onCompleted()");
+//				
+//			}
+//		}, params);
+		
+		RetrofitUtils.getInstance().getApiPostData(new NetResquestSubscriber<Object>(new SubscriberOnNextListener<Object>() {
+
 			@Override
 			public void onNext(Object t) {
 				OkhttpUtils.println(t.toString());
 				
 			}
-			
-			@Override
-			public void onError(Throwable e) {
-				ExceptionUtils.printExceptionStack(e);
-				
-			}
-			
-			@Override
-			public void onCompleted() {
-				OkhttpUtils.println("onCompleted()");
-				
-			}
-		}, params);
+		}),"/postParam", params);
 	}
 
 
@@ -92,7 +103,8 @@ public class RetrofitApp {
 	    data.setData("data");
 	    data.setMessage("msg");
 	    data.setUrl("url");
-	    //Call<Object> repos = service.postParam("/postParam", param);
+	    
+	    Call<Object> repos = service.postParam("/postParam", param);
 	    //Call<Object> repos = service.postBodyByString("/postBodyByString", "retrofit2.0", param);
 	    //Call<Object> repos = service.postBodyByObject("/postBodyByString", "retrofit2.0", param);
 	    
@@ -102,11 +114,11 @@ public class RetrofitApp {
 	    
 	    // Call<Object> repos = service.postBodyByMuli("/postBodyByMuli","test1", "test2", param);
 	    
-	    MultipartBody.Part body = 
-        MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
-MultipartBody.Part body2 = 
-MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
-	    Call<Object> repos = service.postBodyByMulile("/postBodyByMuli",body, body2, param);
+//	    MultipartBody.Part body = 
+//        MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
+//MultipartBody.Part body2 = 
+//MultipartBody.Part.create(RequestBody.create(MediaType.parse("multipart/form-data; charset=utf-8"), "12"));
+//	    Call<Object> repos = service.postBodyByMulile("/postBodyByMuli",body, body2, param);
 	    enqueueTask(repos);
 	}
 

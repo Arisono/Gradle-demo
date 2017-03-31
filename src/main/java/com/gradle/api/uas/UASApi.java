@@ -39,16 +39,16 @@ public class UASApi {
 	private static final String master_uas = "UAS";
 	private static final String master_test = "USOFT_MALL";
 
-	private static final String master = master_uas;// UAS//USOFTSYS//DATACENTER
-	private static final String baseurl = baseurl_uas;// 正式账套
+	private static final String master = master_test;// UAS//USOFTSYS//DATACENTER
+	private static final String baseurl = baseurl_test;// 正式账套
 	private static String sessionId;
 	private static String emcode;
 	private static String cookies;
 
 	public static void main(String[] args) {
-		//loginManage("15012345678", "111111");// 管理平台登录
-		loginManage("13266699268", "111111");// 管理平台登录
-		loginERP("13266699268", "111111", master); // uas系统登录13691965521
+		loginManage("15019241627", "LJJ123");// 管理平台登录
+//		loginManage("13266699268", "111111");// 管理平台登录
+		loginERP("15019241627", "LJJ123", master); // uas系统登录13691965521
 		//loginB2B();
 	}
 
