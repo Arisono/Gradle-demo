@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.ValueFilter;
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 
 
 /**

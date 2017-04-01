@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 import com.gradle.java.encryption.MD5Utils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.rxjava.RxBus;
@@ -206,6 +206,7 @@ public class UASApi {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.println("失败");;
 				OkhttpUtils.onFailurePrintln(e);
 			}
 		});

@@ -1,6 +1,6 @@
 package com.gradle.android.Interceptor;
 
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 
 import okhttp3.logging.HttpLoggingInterceptor.Logger;
 

@@ -1,4 +1,4 @@
-package com.gradle.android.utils;
+package com.gradle.android.retrofit;
 
 import java.io.IOException;
 import java.net.ConnectException;

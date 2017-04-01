@@ -14,7 +14,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
 import com.gradle.android.subscriber.NetResquestSubscriber;
 import com.gradle.android.subscriber.SubscriberOnNextListener;
-import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.java.model.ErrorInfo;
 import com.gradle.java.utils.ExceptionUtils;
 
@@ -85,6 +84,15 @@ public class RetrofitApp {
 				
 			}
 		}),"/postParam", params);
+		
+//		RetrofitUtils.getInstance().getApiGetData(new NetResquestSubscriber<Object>(new SubscriberOnNextListener<Object>() {
+//
+//			@Override
+//			public void onNext(Object t) {
+//				OkhttpUtils.println(t.toString());
+//				
+//			}
+//		}), "/getParam", params);
 	}
 
 

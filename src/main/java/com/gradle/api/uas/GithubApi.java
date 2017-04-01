@@ -2,7 +2,7 @@ package com.gradle.api.uas;
 
 import java.io.IOException;
 
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 
 import okhttp3.Call;
 import okhttp3.Callback;

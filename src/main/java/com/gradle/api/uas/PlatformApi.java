@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 import com.gradle.api.config.ApiBase;
 import com.gradle.api.config.ApiConfig;
 import com.gradle.api.config.ApiPlatform;
@@ -46,8 +46,8 @@ public class PlatformApi {
 	private final static String METHOD_POST="post";
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://account.ubtob.com/sso/login";
-	private static String username = "13111110001";
-	private static String password = "1";
+	private static String username = "15012345678";
+	private static String password = "111111";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -63,7 +63,7 @@ public class PlatformApi {
 	 */
 	public static void main(String[] args) {
 		//测试环境  正式环境
-		url.setmBaseUrl(ApiPlatform.mBaseUrl_test);
+		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer);
 		//管理平台登录---参数
 		UASApi.loginManage(username, password);// 管理平台登录
 		//执行登录

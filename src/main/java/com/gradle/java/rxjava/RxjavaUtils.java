@@ -9,7 +9,7 @@ import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.utils.StringUtils;
 

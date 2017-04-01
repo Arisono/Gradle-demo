@@ -3,7 +3,7 @@ package com.gradle.android.subscriber;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 
 import rx.Subscriber;
 

@@ -3,7 +3,6 @@ package com.gradle.android.retrofit;
 import java.awt.List;
 import java.util.Map;
 
-import com.gradle.android.utils.OkhttpUtils;
 import com.gradle.java.rxjava.RxjavaUtils;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -65,18 +64,20 @@ public class RetrofitUtils {
 	
 	
 	public void  getApiPostData(Subscriber<Object> s,String url,Map<String,Object> params){
-		
-	Observable<Object> o=
-			//paramService.postBodyByString(url, "retrofit2.0", params);
-	paramService.postParam(url, params);
-	toSubscribe(o, s);
+		Observable<Object> o=
+				paramService.postBodyByString("postBodyByString", "retrofit2.0", params);
+		//paramService.postParam(url, params);
+		toSubscribe(o, s);
+	}
 	
+	public void getApiGetData(Subscriber<Object> s,String url,Map<String,Object> params){
+		Observable<Object> o=
+		paramService.getParam(url, params);
+		toSubscribe(o, s);
 	}
 	
 	private <T> void toSubscribe(Observable<T> o,Subscriber<T> s){
-		  o
-		  //.subscribeOn(Schedulers.newThread())
-		  .subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
+		  o.subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
 		  .subscribe(s);
 	}
 	

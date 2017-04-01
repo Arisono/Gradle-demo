@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.android.utils.OkhttpUtils;
+import com.gradle.android.retrofit.OkhttpUtils;
 
 import rx.Observable;
 import rx.Observer;
