@@ -1,10 +1,12 @@
 package com.gradle.android.subscriber;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import com.gradle.android.retrofit.OkhttpUtils;
 
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
 
 /**
@@ -39,12 +41,19 @@ public class NetResquestSubscriber<T> extends Subscriber<T> {
 	@Override
 	public void onError(Throwable e) {
 		   if (e instanceof SocketTimeoutException) {
-			   OkhttpUtils.println("网络中断，请检查您的网络状态");
+			   OkhttpUtils.println("服务器响应超时");
 	        } else if (e instanceof ConnectException) {
-	           OkhttpUtils.println("网络中断，请检查您的网络状态");
+	           OkhttpUtils.println("服务器拒绝访问");
 	        } else {
 	           OkhttpUtils.println("error:" + e.getMessage());
 	        }
+		   HttpException he=(HttpException) e;
+		   OkhttpUtils.println("状态码："+ he.response().code());
+		   try {
+			OkhttpUtils.println("响应数据："+he.response().errorBody().string());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		   OkhttpUtils.println("关闭进度条");
 	}
 

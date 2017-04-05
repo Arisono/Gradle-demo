@@ -11,14 +11,13 @@ import com.gradle.java.utils.DateFormatUtil;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
-import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogInterceptor implements Interceptor {
 	
-	private boolean isDebug=true;
+	private boolean isDebug=false;
 
 	@Override
 	public Response intercept(Chain chain) throws IOException {

@@ -62,6 +62,7 @@ public class PlatformApi {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+	
 		//测试环境  正式环境
 		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer);
 		//管理平台登录---参数
@@ -82,11 +83,11 @@ public class PlatformApi {
 		//api_attendance();
 	    //日报列表
 		//api_worklogs();
-		loginParamsCall();
+		//loginParamsCall();
 		//审批流列表
-		api_approval();
+		//api_approval();
 	    //任务接口测试
-		api_task();
+		//api_task();
 	}
 
 
@@ -330,6 +331,7 @@ public class PlatformApi {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.println("登录b2b,超时响应");
 				OkhttpUtils.onFailurePrintln(e);
 			}
 		});

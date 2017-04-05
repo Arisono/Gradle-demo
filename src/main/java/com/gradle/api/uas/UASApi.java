@@ -31,24 +31,34 @@ import rx.Subscriber;
  */
 @SuppressWarnings("unused")
 public class UASApi {
-
-	private static final String baseurl_normal = "http://218.18.115.198:8888/ERP/";
-	private static final String baseurl_uas = "http://218.17.158.219:8090/ERP/";
-	private static final String baseurl_test = "http://218.18.115.198:8887/ERP/";
-	private static final String master_normal = "USOFTSYS";
-	private static final String master_uas = "UAS";
-	private static final String master_test = "USOFT_MALL";
-
-	private static final String master = master_test;// UAS//USOFTSYS//DATACENTER
-	private static final String baseurl = baseurl_test;// 正式账套
+   
 	private static String sessionId;
 	private static String emcode;
 	private static String cookies;
+	
+	
+	private static final String baseurl_normal = "http://218.18.115.198:8888/ERP/";
+	private static final String master_normal = "USOFTSYS";
+	
+	private static final String baseurl_uas = "http://218.17.158.219:8090/ERP/";
+	private static final String master_uas = "UAS";
+	//测试
+	private static final String baseurl_test = "http://218.17.26.162:8099/ERP/";
+	private static final String master_test = "SUOLING";
+	
+	private static final String phone_test="13266699268";
+	private static final String password_test="111111";
+
+	private static final String master = master_test;// UAS//USOFTSYS//DATACENTER
+	private static final String baseurl = baseurl_test;// 正式账套
+	
+	private static String phone=phone_test;
+	private static String password=password_test;
+			
 
 	public static void main(String[] args) {
-		loginManage("15019241627", "LJJ123");// 管理平台登录
-//		loginManage("13266699268", "111111");// 管理平台登录
-		loginERP("15019241627", "LJJ123", master); // uas系统登录13691965521
+		loginManage(phone, password);// 管理平台登录
+		loginERP(phone, password, master); // uas系统登录
 		//loginB2B();
 	}
 
@@ -58,7 +68,7 @@ public class UASApi {
 	protected static void callbackResquest() {
 		//api_updateWorkDate();// 更新班次接口
 		// getNotApproved();//获取审批流接口
-		 getFormandGridDetail("FeePlease!CCSQ");// 配置表单 生成表单接口 Workovertime  FeePlease!CCSQ
+		 //getFormandGridDetail("FeePlease!CCSQ");// 配置表单 生成表单接口 Workovertime  FeePlease!CCSQ
 		// getFormandGridDetail("FeePlease!CCSQ");
 		// getCompoData();//下拉接口
 		// getDBFindData();//单选多选接口
@@ -75,11 +85,41 @@ public class UASApi {
 		// api_getWorkDate();//获取班次
 		// loadUrlNoParams("https://www.baidu.com/");//测试url
 		// login();//定时任务
+		//startTaskCard("2017-03-03");//打卡签到
 		
+		getListMenuData();//动态表单，父级菜单
+	}
+	
+	
+	private static void getListMenuData(){
+		RxBus.getInstance().toObservable().subscribe(new Subscriber<Object>() {
 
-		//startTaskCard("2017-03-03");
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onNext(Object t) {
+			OkhttpUtils.println(t.toString());
+				
+			}
+		});
+		OkhttpUtils.sendGetHttp(baseurl+"mobile/oa/getmenuconfig.action", null, 
+				"JSESSIONID=" + sessionId, "菜单");
 	}
 
+	/**
+	 * 打卡签到
+	 * @param date
+	 */
 	private static void startTaskCard(String date) {
 		addMobileMac("addMobileMac");
 	

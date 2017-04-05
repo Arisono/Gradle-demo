@@ -1,7 +1,12 @@
 package com.gradle.java.rxjava;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import java.net.SocketTimeoutException;
+import java.rmi.ConnectException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.retrofit.OkhttpUtils;
@@ -26,13 +31,77 @@ public class Rxjava1 {
 	public static void main(String[] args) {
 		// method1();//subscribe() 有订阅回调
 		// method2(); //subscribe() 没有订阅回调
+		// doOnNext();
 		// ----操作符----
 		// filter();
 		// takeFirst();
 		// map();
+		// retryWhen();//retrywhen
 
-		doOnNext();
+	}
 
+	private static void retryWhen() {
+		Observable.create(new Observable.OnSubscribe<Integer>() {
+
+			@Override
+			public void call(Subscriber<? super Integer> t) {
+				OkhttpUtils.println("执行任务");
+				t.onNext(12);
+				OkhttpUtils.println("遇到错误....");
+//				t.onError(new RuntimeException("系统错误"));
+//			    t.onError(new ConnectException("服务器拒绝连接"));
+			    t.onError(new SocketTimeoutException("服务器连接超时"));
+			}
+		})
+		.retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+
+			@Override
+			public Observable<?> call(Observable<? extends Throwable> t) {
+				return t.flatMap(new Func1<Throwable, Observable<?>>() {
+                    private int count=0;
+					@Override
+					public Observable<?> call(Throwable t) {
+						if(t instanceof SocketTimeoutException){
+							OkhttpUtils.println("错误类型：服务器请求超时！！！");
+						}
+						if(t instanceof ConnectException){
+							OkhttpUtils.println("错误类型：服务器拒绝连接！！！");
+						}
+						if(t instanceof RuntimeException){
+							OkhttpUtils.println("错误类型：错误类型：运行时发生异常！！！");
+						}
+						if(++count<=5){
+							OkhttpUtils.println("网络请求重新连接"+count);
+							return Observable.timer(3000, TimeUnit.MILLISECONDS);
+						}
+						return Observable.error(t);
+					}
+				});
+			}
+
+			
+		})
+		.observeOn(RxjavaUtils.getNamedScheduler("线程1"))
+		.subscribe(new Subscriber<Integer>() {
+
+			@Override
+			public void onCompleted() {
+				OkhttpUtils.println("onCompleted()");
+				
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				OkhttpUtils.println(e.getMessage());
+				
+			}
+
+			@Override
+			public void onNext(Integer t) {
+				OkhttpUtils.println(""+t);
+				
+			}
+		});
 	}
 
 	private static void doOnNext() {

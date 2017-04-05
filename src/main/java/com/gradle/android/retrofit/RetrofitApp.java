@@ -12,9 +12,11 @@ import org.apache.commons.collections.map.HashedMap;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.util.IOUtils;
+import com.gradle.android.converter.StringConverterFactory;
 import com.gradle.android.subscriber.NetResquestSubscriber;
 import com.gradle.android.subscriber.SubscriberOnNextListener;
 import com.gradle.java.model.ErrorInfo;
+import com.gradle.java.model.HttpResult;
 import com.gradle.java.utils.ExceptionUtils;
 
 import okhttp3.MediaType;
@@ -29,19 +31,21 @@ import rx.Subscriber;
 
 @SuppressWarnings("unused")
 public class RetrofitApp {
-	
-	/**
-	 * 
-	 */
+
 	public static Retrofit retrofit = new Retrofit.Builder()
 		    .baseUrl("http://192.168.253.200:8080/")
+		    .addConverterFactory(StringConverterFactory.create())
 		    .addConverterFactory(GsonConverterFactory.create())
 		    .build();
+	
 	public static GitHubService service = retrofit.create(GitHubService.class);
 	
+	public static ParamService pService = retrofit.create(ParamService.class);
+	
 	public static void main(String[] args) throws UnsupportedEncodingException {
+		
 		runTask();
-       
+     
 	}
 
 
@@ -50,6 +54,19 @@ public class RetrofitApp {
 		
 		//demo2();
 		
+		retrofitRxjavaCall();
+		
+		//retrofitCall();
+	}
+
+
+	private static void retrofitCall() {
+		Call<Object> repos =pService.getExceptionCall("/json");
+		enqueueTask(repos);
+	}
+
+
+	private static void retrofitRxjavaCall() {
 		Map<String,Object> params=new HashMap<String, Object>();
 	    params.put("id1", "1");
 	    params.put("id2", "2");
@@ -76,14 +93,14 @@ public class RetrofitApp {
 //			}
 //		}, params);
 		
-		RetrofitUtils.getInstance().getApiPostData(new NetResquestSubscriber<Object>(new SubscriberOnNextListener<Object>() {
-
-			@Override
-			public void onNext(Object t) {
-				OkhttpUtils.println(t.toString());
-				
-			}
-		}),"/postParam", params);
+//		RetrofitUtils.getInstance().getApiPostData(new NetResquestSubscriber<Object>(new SubscriberOnNextListener<Object>() {
+//
+//			@Override
+//			public void onNext(Object t) {
+//				OkhttpUtils.println(t.toString());
+//				
+//			}
+//		}),"/postParam", params);
 		
 //		RetrofitUtils.getInstance().getApiGetData(new NetResquestSubscriber<Object>(new SubscriberOnNextListener<Object>() {
 //
@@ -93,13 +110,36 @@ public class RetrofitApp {
 //				
 //			}
 //		}), "/getParam", params);
+		
+		
+//		RetrofitUtils.getInstance().getApiGetExceptionData(new NetResquestSubscriber<>(new SubscriberOnNextListener<Object>() {
+//
+//			@Override
+//			public void onNext(Object t) {
+//				OkhttpUtils.println(t.toString());
+//				
+//			}
+//		}), "/json");
+		
+		
+		RetrofitUtils.getInstance().getApiGetException(new NetResquestSubscriber<>(new SubscriberOnNextListener<HttpResult<Object>>() {
+
+			@Override
+			public void onNext(HttpResult<Object> t) {
+//				OkhttpUtils.println("接口信息："+t.getMessage());
+//				OkhttpUtils.println("接口路径："+t.getPath());
+//				OkhttpUtils.println("状态码："+t.getStatus()+"");
+				OkhttpUtils.println("接口内容："+t.getSubjects().toString());
+				
+			}
+		}), "/exception03");
 	}
 
 
 	/**
 	 * 主要测试post方法
 	 */
-	private static void demo2() {
+	private static void retrofitCallPost() {
 		Map<String,Object> param=new HashMap<String, Object>();
 	    param.put("id1", "1");
 	    param.put("id2", "2");
@@ -135,7 +175,7 @@ public class RetrofitApp {
 	/**
 	 * Get，Post方法测试
 	 */
-	private static void demo01() {
+	private static void retrofitCallGet() {
 		//get
 	    Map<String,Object> param=new HashMap<String, Object>();
 	    param.put("id1", "1");
@@ -171,7 +211,8 @@ public class RetrofitApp {
 //        //多个请求体
 //	    Call<Object> repos = service.paramModel(body,body2,"model");
 	    Call<Object> repos = service.paramBody(data,"model");
-		enqueueTask(repos);
+		
+	    enqueueTask(repos);
 	}
 
 	private static void enqueueTask(Call<Object> repos) {
@@ -181,9 +222,10 @@ public class RetrofitApp {
 			public void onResponse(Call<Object> call, Response<Object> response) {
 				OkhttpUtils.println(call.request().url().toString());
 				OkhttpUtils.println(call.request().method());
+				OkhttpUtils.println("状态码："+response.code());
 				if(response.isSuccessful()){
 					OkhttpUtils.println("isSuccessful()："+JSON.toJSONString(response.isSuccessful()));
-					OkhttpUtils.println(JSON.toJSONString(response.body()));
+					OkhttpUtils.println(response.body().toString());
 				}else{
 					try {
 						OkhttpUtils.println("failure："+response.errorBody().string());

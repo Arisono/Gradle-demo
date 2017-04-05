@@ -61,7 +61,6 @@ public interface GitHubService {
 	// Call<Object> paramModel(@Part() MultipartBody.Part model,@Part()
 	// MultipartBody.Part body,@Query("name") String name);
 
-	
 	@Headers("Content-type:application/json;charset=UTF-8")
 	@POST("paramModel")
 	Call<Object> paramModel(@Body ErrorInfo<String> model, @Query("name") String name);
@@ -70,9 +69,9 @@ public interface GitHubService {
 	@POST("paramBody")
 	Call<Object> paramBody(@Body ErrorInfo<String> model, @Query("name") String name);
 
-    
 	/**
 	 * post 普通参数请求
+	 * 
 	 * @param url
 	 * @param param
 	 * @return
@@ -80,45 +79,48 @@ public interface GitHubService {
 	@FormUrlEncoded
 	@POST()
 	Call<Object> postParam(@Url String url, @FieldMap Map<String, Object> param);
-	
-	
+
 	/**
-	 * post 单个请求体 
+	 * post 单个请求体
+	 * 
 	 * @param url
 	 * @param param
 	 * @return
 	 */
 	@POST()
-	Call<Object> postBodyByString(@Url String url, @Body String body,@QueryMap Map<String, Object> param);
-	
+	Call<Object> postBodyByString(@Url String url, @Body String body, @QueryMap Map<String, Object> param);
+
 	/**
-	 * post 单个请求体 
+	 * post 单个请求体
+	 * 
 	 * @param url
 	 * @param param
 	 * @return
 	 */
 	@POST()
-	Call<Object> postBodyByObject(@Url String url, @Body Object body,@QueryMap Map<String, Object> param);
-	
-	
+	Call<Object> postBodyByObject(@Url String url, @Body Object body, @QueryMap Map<String, Object> param);
+
 	/**
-	 * post 单个请求体 
+	 * post 单个请求体
+	 * 
 	 * @param url
 	 * @param param
 	 * @return
 	 */
 	@POST()
-	Call<Object> postBodyByModel(@Url String url, @Body ErrorInfo<String> body,@QueryMap Map<String, Object> param);
+	Call<Object> postBodyByModel(@Url String url, @Body ErrorInfo<String> body, @QueryMap Map<String, Object> param);
+
 	/**
-	 * 不允许多个@Body注解
-	 * post 单个请求体 
+	 * 不允许多个@Body注解 post 单个请求体
+	 * 
 	 * @param url
 	 * @param param
 	 * @return
 	 */
 	@POST()
-	Call<Object> postBodyByMuli(@Url String url, @Body String body,@Body String body2,@QueryMap Map<String, Object> param);
-	
+	Call<Object> postBodyByMuli(@Url String url, @Body String body, @Body String body2,
+			@QueryMap Map<String, Object> param);
+
 	/**
 	 * @param url
 	 * @param body
@@ -128,5 +130,6 @@ public interface GitHubService {
 	 */
 	@Multipart
 	@POST()
-	Call<Object> postBodyByMulile(@Url String url, @Part MultipartBody.Part body,@Part MultipartBody.Part body2,@QueryMap Map<String, Object> param);
+	Call<Object> postBodyByMulile(@Url String url, @Part MultipartBody.Part body, @Part MultipartBody.Part body2,
+			@QueryMap Map<String, Object> param);
 }

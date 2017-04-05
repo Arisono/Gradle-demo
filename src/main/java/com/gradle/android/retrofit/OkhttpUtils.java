@@ -20,6 +20,7 @@ import javax.net.ssl.X509TrustManager;
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.Interceptor.CustomLogger;
 import com.gradle.android.Interceptor.LogInterceptor;
+import com.gradle.android.Interceptor.RetryIntercepter;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.utils.ExceptionUtils;
 
@@ -40,6 +41,8 @@ import okhttp3.FormBody.Builder;
 @SuppressWarnings("unused")
 public class OkhttpUtils {
 	
+	public static int maxLoadTimes=5;
+	private static int serverLoadTimes=0;//
 	private static boolean debug = true;// 是否日志打印
 	
 	public static OkHttpClient client = new OkHttpClient.Builder()
@@ -48,6 +51,7 @@ public class OkhttpUtils {
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
 	.addInterceptor(new LogInterceptor())
+//	.addInterceptor(new RetryIntercepter(3))
 	.build();
 	
 	
@@ -140,6 +144,7 @@ public class OkhttpUtils {
 		}
 		return null;
 	}
+	
 	/**
 	 * 统一的网络失败回调方法
 	 * 
@@ -215,6 +220,7 @@ public class OkhttpUtils {
 	 * @param testName
 	 */
 	public static void sendHttp(String url, Map<String, Object> params,String cookies,String tag,String method){
+		serverLoadTimes=0;
 		if ("get".equals(method)) {
 			sendGetHttp(url, params,cookies, tag);
 		}
@@ -252,13 +258,12 @@ public class OkhttpUtils {
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
 				String requestJson = OkhttpUtils.getResponseString(response);
-				//OkhttpUtils.println(tag + ":" + requestJson);
 				RxBus.getInstance().send(tag + ":" +requestJson);
 			}
 
 			@Override
 			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
+				OkhttpUtils.onFailurePrintln(call,e,this);
 			}
 		});
 		
@@ -274,6 +279,7 @@ public class OkhttpUtils {
 	 */
 	public static void sendGetHttp(String url,Map<String,Object> params,String cookies,String tag){
 		 StringBuilder buf = new StringBuilder(url);
+		 if(params!=null){
 		if (!params.isEmpty()) { 
 			 
 	            if (url.indexOf("?") == -1)
@@ -290,7 +296,7 @@ public class OkhttpUtils {
 			}  
 			  buf.deleteCharAt(buf.length() - 1);
 		}
-		
+		 }
 		Request request = new Request.Builder()
 				.url(buf.toString())
 				.addHeader("content-type", "text/html;charset:utf-8")
@@ -302,15 +308,32 @@ public class OkhttpUtils {
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
 				String requestJson = OkhttpUtils.getResponseString(response);
-				//OkhttpUtils.println(tag + ":" + requestJson);
 				RxBus.getInstance().send(tag + ":" +requestJson);
 			}
 
 			@Override
 			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.onFailurePrintln(e);
+				OkhttpUtils.onFailurePrintln(call,e,this);
 			}
 		});
 		
+	}
+
+	protected static void onFailurePrintln(Call call, IOException e,Callback callback) {
+		if (e instanceof ConnectException) {
+			println("服务器拒绝访问！");
+		} else if (e instanceof SocketTimeoutException) {
+			println("超时响应！");
+		}
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		if (serverLoadTimes<maxLoadTimes) {
+			 serverLoadTimes++;
+			 println("重新连接服务器"+serverLoadTimes);
+		     OkhttpUtils.client.newCall(call.request()).enqueue(callback);;
+		}		
 	}
 }

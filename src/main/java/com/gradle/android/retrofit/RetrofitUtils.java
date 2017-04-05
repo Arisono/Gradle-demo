@@ -1,19 +1,18 @@
 package com.gradle.android.retrofit;
 
-import java.awt.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import com.gradle.android.converter.StringConverterFactory;
+import com.gradle.java.model.HttpResult;
 import com.gradle.java.rxjava.RxjavaUtils;
 
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
-import rx.schedulers.Schedulers;
-import rx.subjects.Subject;
+import rx.functions.Func1;
 
 /**
  * @desc:封装统一的网络请求类
@@ -25,9 +24,11 @@ public class RetrofitUtils {
 	
 	public static final String BASE_URL="http://192.168.253.200:8080/";
 	public Retrofit retrofit;
+	private static int retryCount=2;
 	
 	//api service
 	private ParamService paramService;
+	@SuppressWarnings("unused")
 	private GitHubService gitHubService;
 
 	public RetrofitUtils() {
@@ -43,6 +44,7 @@ public class RetrofitUtils {
 		retrofit = new Retrofit.Builder()
 				.client(OkhttpUtils.client)
 			    .baseUrl(BASE_URL)
+			    .addConverterFactory(StringConverterFactory.create())
 			    .addConverterFactory(GsonConverterFactory.create())
 			    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
 			    
@@ -76,9 +78,84 @@ public class RetrofitUtils {
 		toSubscribe(o, s);
 	}
 	
+	public void getApiGetExceptionData(Subscriber<Object> s,String url){
+		Observable<Object> o=
+		paramService.getException(url);
+		toSubscribe(o, s);
+	}
+	
 	private <T> void toSubscribe(Observable<T> o,Subscriber<T> s){
-		  o.subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
+		  o.retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+
+			@Override
+			public Observable<?> call(Observable<? extends Throwable> t) {
+				
+				return t.flatMap(new Func1<Throwable, Observable<?>>() {
+				   private int count=0;
+					@Override
+					public Observable<?> call(Throwable t) {
+						if(++count<=retryCount){
+							OkhttpUtils.println("网络请求异常："+t.getMessage());
+							OkhttpUtils.println("网络请求重新连接: "+count);
+							return Observable.timer(10000, TimeUnit.MILLISECONDS);
+						}
+						return Observable.error(t);
+					}
+				});
+			}
+		}).map(new Func1<T, T>() {
+
+			@Override
+			public  T call(T t) {
+				return (T) t;
+			}
+		}).
+		  subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
 		  .subscribe(s);
 	}
 	
+	
+	public void getApiGetException(Subscriber<HttpResult<Object>> s,String url){
+		Observable<Object> o=
+		paramService.getException(url);
+		toSubscribeBy(o, s);
+	}
+	
+	
+	private <T> void toSubscribeBy(Observable<T> o,Subscriber<HttpResult<T>> s){
+		  o
+		  .retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+
+			@Override
+			public Observable<?> call(Observable<? extends Throwable> t) {
+				
+				return t.flatMap(new Func1<Throwable, Observable<?>>() {
+				   private int count=0;
+					@Override
+					public Observable<?> call(Throwable t) {
+						if(++count<=retryCount){
+							OkhttpUtils.println("网络请求异常："+t.getMessage());
+							OkhttpUtils.println("网络请求重新连接: "+count);
+							return Observable.timer(10000, TimeUnit.MILLISECONDS);
+						}
+						return Observable.error(t);
+					}
+				});
+			}
+		})
+		  .map(new Func1<T, HttpResult<T>>() {
+
+			@Override
+			public HttpResult<T> call(T t) {
+				HttpResult<T>  o=new HttpResult<>();
+				o.setSubjects(t);
+				o.setMessage("123456");
+				o.setPath("/json");
+				o.setStatus(200);
+				return o;
+			}
+		})
+		  .subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
+		  .subscribe(s);
+	}
 }
