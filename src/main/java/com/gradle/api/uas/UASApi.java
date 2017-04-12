@@ -57,8 +57,16 @@ public class UASApi {
 			
 
 	public static void main(String[] args) {
-		loginManage(phone, password);// 管理平台登录
-		loginERP(phone, password, master); // uas系统登录
+		
+		new Timer().schedule(new TimerTask() {
+			
+			@Override
+			public void run() {
+				loginManage(phone, password);// 管理平台登录
+				
+			}
+		}, 1000,3000);
+		//loginERP(phone, password, master); // uas系统登录
 		//loginB2B();
 	}
 
@@ -85,9 +93,9 @@ public class UASApi {
 		// api_getWorkDate();//获取班次
 		// loadUrlNoParams("https://www.baidu.com/");//测试url
 		// login();//定时任务
-		//startTaskCard("2017-03-03");//打卡签到
+		startTaskCard("2017-03-03");//打卡签到
 		
-		getListMenuData();//动态表单，父级菜单
+		//getListMenuData();//动态表单，父级菜单
 	}
 	
 	
@@ -167,7 +175,7 @@ public class UASApi {
 				+ "&password=" + password;
 		url = url + "&_timestamp=" + System.currentTimeMillis();
 		url = url + "&_signature=" + HmacUtils.encode(url);
-		OkhttpUtils.println("管理平台登录接口url:" + url);
+		OkhttpUtils.println("管理平台登录url:" + url);
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8").build();
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
@@ -177,7 +185,7 @@ public class UASApi {
 				String json = OkhttpUtils.getResponseString(response);
 				//String account=JSON.parseArray(json).getJSONObject(0).getString("account");
 				RxBus.getInstance().send("管理平台："+json);
-				OkhttpUtils.println("管理平台登录接口返回值：" + json);
+				OkhttpUtils.println("管理平台：" + json);
 			}
 
 			@Override

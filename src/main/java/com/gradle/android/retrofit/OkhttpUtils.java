@@ -69,7 +69,7 @@ public class OkhttpUtils {
 	 * 打印日志
 	 * @param msg
 	 */
-	public static void println(String msg) {
+	public static void println(Object msg) {
 		if (debug) {
 			System.out.println(getLineInfo(typeSimple) + msg);
 		}
