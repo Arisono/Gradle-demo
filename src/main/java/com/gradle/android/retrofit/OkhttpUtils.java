@@ -50,7 +50,7 @@ public class OkhttpUtils {
 	.readTimeout(10, TimeUnit.SECONDS)
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
-	.addInterceptor(new LogInterceptor())
+//	.addInterceptor(new LogInterceptor())
 //	.addInterceptor(new RetryIntercepter(3))
 	.build();
 	
@@ -176,7 +176,7 @@ public class OkhttpUtils {
 	
 	
 	//http://blog.csdn.net/u013686019/article/details/52856389  信任所有证书
-	private static class TrustAllCerts implements X509TrustManager {  
+	public static class TrustAllCerts implements X509TrustManager {  
 	    @Override  
 	    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {}  
 	  
@@ -189,14 +189,14 @@ public class OkhttpUtils {
 		
 	}  
 	
-	private static class TrustAllHostnameVerifier implements HostnameVerifier {  
+	public static class TrustAllHostnameVerifier implements HostnameVerifier {  
 	    @Override  
 	    public boolean verify(String hostname, SSLSession session) {  
 	        return true;  
 	    }  
 	}  
 	
-	private static SSLSocketFactory createSSLSocketFactory() {  
+	public static SSLSocketFactory createSSLSocketFactory() {  
 	    SSLSocketFactory ssfFactory = null;  
 	  
 	    try {  

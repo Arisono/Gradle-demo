@@ -29,8 +29,8 @@ import rx.schedulers.Schedulers;
 public class Rxjava1 {
 
 	public static void main(String[] args) {
-		// method1();//subscribe() 有订阅回调
-		// method2(); //subscribe() 没有订阅回调
+		 method1();//subscribe() 有订阅回调
+		 //method2(); //subscribe() 没有订阅回调
 		// doOnNext();
 		// ----操作符----
 		// filter();
@@ -336,7 +336,8 @@ public class Rxjava1 {
 				t.onCompleted();
 
 			}
-		}).subscribeOn(Schedulers.io()).subscribe(new Observer<String>() {
+		}).subscribeOn(Schedulers.io()).subscribe(
+				new Observer<String>() {
 
 			@Override
 			public void onCompleted() {

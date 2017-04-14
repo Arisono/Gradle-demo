@@ -13,6 +13,7 @@ import com.gradle.java.encryption.MD5Utils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.rxjava.RxjavaUtils;
+import com.gradle.java.utils.DateFormatUtil;
 import com.gradle.java.utils.HmacUtils;
 
 import okhttp3.Call;
@@ -65,7 +66,7 @@ public class UASApi {
 				loginManage(phone, password);// 管理平台登录
 				
 			}
-		}, 1000,3000);
+		}, 1000,1000);
 		//loginERP(phone, password, master); // uas系统登录
 		//loginB2B();
 	}
@@ -175,7 +176,7 @@ public class UASApi {
 				+ "&password=" + password;
 		url = url + "&_timestamp=" + System.currentTimeMillis();
 		url = url + "&_signature=" + HmacUtils.encode(url);
-		OkhttpUtils.println("管理平台登录url:" + url);
+		//OkhttpUtils.println("管理平台登录url:" + url);
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8").build();
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
@@ -185,11 +186,12 @@ public class UASApi {
 				String json = OkhttpUtils.getResponseString(response);
 				//String account=JSON.parseArray(json).getJSONObject(0).getString("account");
 				RxBus.getInstance().send("管理平台："+json);
-				OkhttpUtils.println("管理平台：" + json);
+				//OkhttpUtils.println("管理平台：" + json);
 			}
 
 			@Override
 			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.println("管理平台：异常"+e.getMessage()+" 时间："+DateFormatUtil.getDateTimeStr());
 				OkhttpUtils.onFailurePrintln(e);
 			}
 		});

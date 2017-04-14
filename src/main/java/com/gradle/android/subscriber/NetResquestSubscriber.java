@@ -46,14 +46,14 @@ public class NetResquestSubscriber<T> extends Subscriber<T> {
 	           OkhttpUtils.println("服务器拒绝访问");
 	        } else {
 	           OkhttpUtils.println("error:" + e.getMessage());
-	        }
-		   HttpException he=(HttpException) e;
-		   OkhttpUtils.println("状态码："+ he.response().code());
-		   try {
-			OkhttpUtils.println("响应数据："+he.response().errorBody().string());
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+	           HttpException he=(HttpException) e;
+			   OkhttpUtils.println("状态码："+ he.response().code());
+			   try {
+				OkhttpUtils.println("响应数据："+he.response().errorBody().string());
+			  } catch (IOException e1) {
+				e1.printStackTrace();
+			  }
+	       }
 		   OkhttpUtils.println("关闭进度条");
 	}
 

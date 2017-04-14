@@ -45,9 +45,11 @@ public class PlatformApi {
 	private final static String METHOD_GET="get";
 	private final static String METHOD_POST="post";
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
-	private static String url_login_formal = "https://account.ubtob.com/sso/login";
-	private static String username = "15012345678";
-	private static String password = "111111";
+	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
+	
+	private static String url_login = url_login_formal;
+	private static String username = "13111110001";
+	private static String password = "1";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -80,12 +82,12 @@ public class PlatformApi {
 	 */
 	protected static void loginCall() {
 		//考勤单据
-		//api_attendance();
+		api_attendance();
 	    //日报列表
-		//api_worklogs();
+		api_worklogs();
 		//loginParamsCall();
 		//审批流列表
-		//api_approval();
+		api_approval();
 	    //任务接口测试
 		//api_task();
 	}
@@ -287,7 +289,7 @@ public class PlatformApi {
 		RequestBody formBody = new FormBody.Builder()
 				.add("appId", "b2b")
 				.add("username", username)
-				.add("spaceId", "76035")
+				.add("spaceId", "81744")
 				.add("password", password)
 				.build();
 		Request request = new Request.Builder()
@@ -331,7 +333,7 @@ public class PlatformApi {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
-				OkhttpUtils.println("登录b2b,超时响应");
+				OkhttpUtils.println("登录b2b,超时响应"+e);
 				OkhttpUtils.onFailurePrintln(e);
 			}
 		});
@@ -349,7 +351,7 @@ public class PlatformApi {
 			@Override
 			public void run() {
 				if(StringUtils.isEmpty(cookies)){
-					loginB2B(url_login_test, username, password);
+					loginB2B(url_login, username, password);
 					}else{
 						OkhttpUtils.println("會話保持："+cookies);
 						loginCall();

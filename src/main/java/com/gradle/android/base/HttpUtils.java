@@ -3,7 +3,7 @@ package com.gradle.android.base;
 import java.util.Map;
 
 import com.gradle.android.base.HttpClient.Builder;
-
+@Deprecated
 public interface HttpUtils {
     
 	//初始化网络库

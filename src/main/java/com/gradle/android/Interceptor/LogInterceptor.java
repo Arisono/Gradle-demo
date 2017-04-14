@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import com.gradle.android.base.HttpClient;
 import com.gradle.android.retrofit.OkhttpUtils;
 import com.gradle.java.utils.DateFormatUtil;
 
@@ -17,14 +18,20 @@ import okhttp3.Response;
 
 public class LogInterceptor implements Interceptor {
 	
-	private boolean isDebug=false;
+	private HttpClient builder;
 
 	@Override
 	public Response intercept(Chain chain) throws IOException {
 		  Request request = chain.request();
-		  Map<String,Object> postParm=new HashMap<>();
+		  Map<String, Object> headers=new HashMap<>();
+		  Map<String, Object> params=new HashMap<>();
+		  
 		  //添加统一请求头
-		  request=request.newBuilder().addHeader("version", "v1.0").build();
+//		  if(builder.getHeaders().size()!=0){
+			  request=request.newBuilder().addHeader("version", "v1.0").build();
+			  request=request.newBuilder().addHeader("http", "okhttp3.0").build();
+//		  }
+		  
 		  //get请求    添加公共参数
 		  if(request.method().equals("GET")){
 			  HttpUrl httpUrl=request.url().newBuilder()
@@ -34,12 +41,12 @@ public class LogInterceptor implements Interceptor {
 			  request=request.newBuilder().url(httpUrl).build();
 		  }
 		  
+		  
+		  Map<String,Object> postParm=new HashMap<>();
 		  if(request.method().equals("POST")){
 			  if (request.body() instanceof FormBody) {
 		            FormBody.Builder bodyBuilder = new FormBody.Builder();
 		            FormBody formBody = (FormBody) request.body();
-		            
-                   
 		            //把原来的参数添加到新的构造器，（因为没找到直接添加，所以就new新的）
 		            for (int i = 0; i < formBody.size(); i++) {
 		            	postParm.put(formBody.encodedName(i), formBody.encodedValue(i));
@@ -67,19 +74,22 @@ public class LogInterceptor implements Interceptor {
 		  okhttp3.MediaType mediaType = response.body().contentType();
           String content = response.body().string();
           
-          if (isDebug) {
-        	  OkhttpUtils.println("------------------------------------------");
-    		  OkhttpUtils.println("请求头:"+JSON.toJSONString( response.request().headers().toMultimap()));
-    		  OkhttpUtils.println("url:"+JSON.toJSONString(response.request().url().toString()));
-    		  OkhttpUtils.println("参数:"+JSON.toJSONString(postParm));
-    		  
+         
+    	  OkhttpUtils.println("------------------------------------------");
+		  OkhttpUtils.println("请求头:"+JSON.toJSONString( response.request().headers().toMultimap()));
+		  OkhttpUtils.println("url:"+JSON.toJSONString(response.request().url().toString()));
+		  OkhttpUtils.println("参数:"+JSON.toJSONString(postParm));
 //    		  OkhttpUtils.println("响应头:"+JSON.toJSONString( response.headers().toMultimap()));
-//    		  OkhttpUtils.println("结果:"+content);
-    		  OkhttpUtils.println("------------------------------------------");
-		}
+		  OkhttpUtils.println("结果:"+content);
+		  OkhttpUtils.println("------------------------------------------");
+		
 		return response.newBuilder()
                 .body(okhttp3.ResponseBody.create(mediaType, content))
                 .build();
 	}
 
+	public void setBuilder(HttpClient builder) {
+		this.builder = builder;
+	}
+	
 }

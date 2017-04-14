@@ -38,12 +38,12 @@ public class BaiduPushUtils {
 //3662584296662527934
 	private static String[] channelIds = { 
 ////	"3860966617109273119",//米三
-        "3662584296662527934",//测试邓
-		"3537149100550334139",//测试 陈
-		"3683060365130437158",//测试 陈
+//        "3662584296662527934",//测试邓
+//		"3537149100550334139",//测试 陈
+//		"3683060365130437158",//测试 陈
 //		 "3955136970545093253", // 小米四 测试机
-		"3821126972469299968",//小明哥
-//		 "3661901606382112872" // me
+//		"3821126972469299968",//小明哥
+		 "3661901606382112872" // me
 //		,"4214122687662249823"//vivo 3,
 //		,"4593168493483957705"//产品
 	};
@@ -53,7 +53,7 @@ public class BaiduPushUtils {
 			PushServerException {
 		initBaiduPushClient();
 		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 1; i++) {
 			fixedThreadPool.execute(new Runnable() {
 
 				@Override
@@ -98,7 +98,7 @@ public class BaiduPushUtils {
 			// android客户端指定界面地址
 			notification
 					.put("pkg_content",
-							"#Intent;component=com.xzjmyk.pm.activity/.ui.message.uas.B2bMsgActivity;end");
+							"#Intent;component=com.xzjmyk.pm.activity/.ui.erp.activity.WebViewCommActivity;end");
 			// notification.put("url", "http://push.baidu.com");
 			JSONObject jsonCustormCont = new JSONObject();
 			jsonCustormCont.put("title", "待处理流程001"); // 鑷畾涔夊唴瀹癸紝key-value
@@ -109,6 +109,7 @@ public class BaiduPushUtils {
 			jsonCustormCont.put("uu", "10041166");
 			jsonCustormCont.put("pageTitle", "商务消息");
 			jsonCustormCont.put("masterId", "2929");
+			jsonCustormCont.put("platform", "B2B");
 			jsonCustormCont
 					.put("content",
 							"UU互联测试版本下载"
@@ -181,6 +182,7 @@ public class BaiduPushUtils {
 			jsonCustormCont.put("pageTitle", "商务消息");
 			jsonCustormCont.put("masterId", "2929");
 			jsonCustormCont.put("content", content);
+			jsonCustormCont.put("platform", "B2B");
 			notification.put("custom_content", jsonCustormCont);
 
 			PushBatchUniMsgRequest request = new PushBatchUniMsgRequest()

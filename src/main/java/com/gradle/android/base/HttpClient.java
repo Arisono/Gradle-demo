@@ -12,32 +12,44 @@ public class HttpClient {
 	private Map<String, Object> params = new HashMap<>();// 请求参数
 	private Map<String, Object> headers = new HashMap<>();//
 
-	private long timeout = 5;
+	private long retryTimeout = 5;
+	private long connectTimeout;
+	private long readTimeout;
+	private long writeTimeout;
 
 	private int method;// 方法
 	private boolean isSyn;// 是否是同步
 	private int cacheType;// 缓存类型
 	private int maxRetryCount;// 最大重试次数
 	private boolean isDebug;// 是否开启打印日志
+	private Builder mBuilder;
 	
+	private HttpBase httpBase;
 	
 	
 	public HttpClient() {
 		super();
 	}
 
-	public HttpClient(String baseUrl, Map<String, Object> params, Map<String, Object> headers, long timeout, int method,
-			boolean isSyn, int cacheType, int maxRetryCount, boolean isDebug) {
+	public HttpClient(Builder builder) {
 		super();
-		this.baseUrl = baseUrl;
-		this.params = params;
-		this.headers = headers;
-		this.timeout = timeout;
-		this.method = method;
-		this.isSyn = isSyn;
-		this.cacheType = cacheType;
-		this.maxRetryCount = maxRetryCount;
-		this.isDebug = isDebug;
+		setBuilder(builder);
+	}
+
+	private void setBuilder(Builder builder) {
+		this.baseUrl = builder.baseUrl;
+		this.params = builder.params;
+		this.headers = builder.headers;
+		this.retryTimeout = builder.retryTimeout;
+		this.connectTimeout=builder.connectTimeout;
+		this.readTimeout=builder.readTimeout;
+		this.writeTimeout=builder.writeTimeout;
+		this.method = builder.method;
+		this.isSyn = builder.isSyn;
+		this.cacheType = builder.cacheType;
+		this.maxRetryCount = builder.maxRetryCount;
+		this.isDebug = builder.isDebug;
+		this.httpBase=builder.httpBase;
 	}
 
 
@@ -47,10 +59,7 @@ public class HttpClient {
 		if (instance == null) {
 			synchronized (HttpClient.class) {
 				if (instance == null) {
-					instance = new HttpClient(builder.baseUrl,builder.params
-							,builder.headers,builder.timeout,builder.method,
-							builder.isSyn,builder.cacheType,builder.maxRetryCount
-							,builder.isDebug);
+					instance =newInstance(builder);
 				}
 			}
 		}
@@ -58,10 +67,7 @@ public class HttpClient {
 	}
 	
 	public static HttpClient newInstance(Builder builder){
-		instance = new HttpClient(builder.baseUrl,builder.params
-				,builder.headers,builder.timeout,builder.method,
-				builder.isSyn,builder.cacheType,builder.maxRetryCount
-				,builder.isDebug);
+		instance = new HttpClient(builder);
 		return instance;
 	}
 	
@@ -73,17 +79,24 @@ public class HttpClient {
 
 	
 	public static class Builder {
-		private String baseUrl;;
+		
+		private String baseUrl;
 		private Map<String, Object> params = new HashMap<>();// 请求参数
 		private Map<String, Object> headers = new HashMap<>();//
 
-		private long timeout = 5;
-
+		
+		private long connectTimeout;
+		private long readTimeout;
+		private long writeTimeout;
+		
 		private int method;// 方法
 		private boolean isSyn;// 是否是同步
 		private int cacheType;// 缓存类型
 		private int maxRetryCount;// 最大重试次数
+		private long retryTimeout = 5;//重试间隔时间
 		private boolean isDebug;// 是否开启打印日志
+		
+		private HttpBase httpBase;//具体的网络请求类
 
 		public Builder(String url) {
 			this.baseUrl = url;
@@ -99,8 +112,23 @@ public class HttpClient {
 			return this;
 		}
 
-		public Builder timeout(long time) {
-			this.timeout = time;
+		public Builder retryTimeout(long time) {
+			this.retryTimeout = time;
+			return this;
+		}
+		
+		public Builder connectTimeout(long time) {
+			this.connectTimeout = time;
+			return this;
+		}
+		
+		public Builder readTimeout(long time) {
+			this.readTimeout = time;
+			return this;
+		}
+		
+		public Builder writeTimeout(long time) {
+			this.writeTimeout = time;
 			return this;
 		}
 
@@ -128,9 +156,15 @@ public class HttpClient {
 			this.isSyn = isSyn;
 			return this;
 		}
+		
+		public Builder httpBase(HttpBase hb){
+			this.httpBase=hb;
+			return this;
+		}
 
 		public HttpClient build() {
-			return newInstance(this);
+			HttpClient client=newInstance(this);
+			return client;
 		}
 	}
 
@@ -145,10 +179,6 @@ public class HttpClient {
 
 	public Map<String, Object> getHeaders() {
 		return headers;
-	}
-
-	public long getTimeout() {
-		return timeout;
 	}
 
 	public int getMethod() {
@@ -171,5 +201,42 @@ public class HttpClient {
 		return isDebug;
 	}
 
+	public HttpBase Api() {
+		httpBase.setBuilder(this);
+		return httpBase;
+	}
+
+	public Builder getmBuilder() {
+		return mBuilder;
+	}
+
+	public void setmBuilder(Builder mBuilder) {
+		setBuilder(mBuilder);
+		this.mBuilder = mBuilder;
+	}
+    
+	
+	
+	public long getRetryTimeout() {
+		return retryTimeout;
+	}
+
+	public long getConnectTimeout() {
+		return connectTimeout;
+	}
+
+	public long getReadTimeout() {
+		return readTimeout;
+	}
+
+	public long getWriteTimeout() {
+		return writeTimeout;
+	}
+
+
+	public static class Method{
+		public static int GET=0;
+		public static int POST=1;
+	}
 	
 }
