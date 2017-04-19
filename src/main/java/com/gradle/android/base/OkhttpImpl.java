@@ -1,6 +1,5 @@
 package com.gradle.android.base;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import com.gradle.android.retrofit.OkhttpUtils;
@@ -51,6 +50,7 @@ public class OkhttpImpl extends HttpBase {
 		OkhttpUtils.sendPostHttp(BASE_URL+ builder.getBaseUrl(), builder.getParams(), "", "");
 	}
 	
+	@SuppressWarnings("unused")
 	private <T> void toSubscribe(Observable<T> o,Subscriber<T> s){
 		  o.retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
 

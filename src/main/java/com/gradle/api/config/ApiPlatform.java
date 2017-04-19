@@ -10,6 +10,7 @@ public class ApiPlatform extends ApiBase implements ApiModel{
    
     public static String mBaseUrl_test = "http://192.168.253.192:8088/platform-b2b/";
     public static String mBaseUrl_developer = "http://uas.ubtob.com/";
+    public static String mBaseUrl_devtest= "http://218.17.158.219:9090/platform-b2b/"; 
     private  String mBaseUrl = mBaseUrl_developer;
     
     

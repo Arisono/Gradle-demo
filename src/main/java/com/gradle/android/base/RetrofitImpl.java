@@ -20,13 +20,16 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 
+/**
+ * Retrofit封装Okhttp的方式进行网络操作
+ * @author Arison
+ *
+ */
 public class RetrofitImpl extends HttpBase {
 
 	public Retrofit retrofit;
-	
 	private static RetrofitImpl instance;
 	
-
 	public static RetrofitImpl getInstance(){
 		if(instance==null){
 			synchronized (RetrofitImpl.class) {
@@ -73,15 +76,18 @@ public class RetrofitImpl extends HttpBase {
 	
 	@Override
 	public void get(HttpClient builder, Subscriber<Object> s) {
+		//局部请求头
 	    ParamService paramService=	initApi(ParamService.class);
-	    Observable<Object> o=paramService.getParam(builder.getBaseUrl(), builder.getParams());
+	    Observable<Object> o=paramService.getParam(builder.getBaseUrl(), builder.getParams(),
+	    		builder.getHeaders());
 	    toSubscribe(o, s);
 	}
 
 	@Override
 	public void post(HttpClient builder, Subscriber<Object> s) {
 	    ParamService paramService=	initApi(ParamService.class);
-	    Observable<Object> o=paramService.postParam(builder.getBaseUrl(), builder.getParams());
+	    Observable<Object> o=paramService.postParam(builder.getBaseUrl(), builder.getParams()
+	    		,builder.getHeaders());
 	    toSubscribe(o, s);
 	}
 
@@ -115,9 +121,4 @@ public class RetrofitImpl extends HttpBase {
 		  subscribeOn(RxjavaUtils.getNamedScheduler("线程1"))
 		  .subscribe(s);
 	}
-
-	
-
-	
-
 }

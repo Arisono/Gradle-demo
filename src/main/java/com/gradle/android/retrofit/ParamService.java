@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -22,81 +23,63 @@ import rx.Observable;
  * @name:ParamService
  * @method:Rxjava+Retrofit
  * @author Arison
- *
  */
 public interface ParamService {
-
+   
 	@GET()
-	Call<Object> getExceptionCall(@Url String url);
-
+	Observable<Object> getParam(@Url String url);
+	
 	@GET()
-	Observable<Object> getException(@Url String url);
-
+	Observable<Object> getParam(@Url String url, 
+			@QueryMap Map<String, Object> param);
+	
 	@GET()
-	Observable<Object> getParam(@Url String url, @QueryMap Map<String, Object> param);
+	Observable<Object> getParam(@Url String url,
+			@QueryMap Map<String, Object> param,
+			@HeaderMap Map<String, Object> header);
 
-	/**
-	 * post 普通参数请求
-	 * 
-	 * @param url
-	 * @param param
-	 * @return
-	 */
 	@FormUrlEncoded
 	@POST()
-	Observable<Object> postParam(@Url String url, @FieldMap Map<String, Object> param);
+	Observable<Object> postParam(@Url String url);
+	
+	@FormUrlEncoded
+	@POST()
+	Observable<Object> postParam(@Url String url,
+			@FieldMap Map<String, Object> param);
+	
+	@FormUrlEncoded
+	@POST()
+	Observable<Object> postParam(@Url String url, 
+			@FieldMap Map<String, Object> param,
+			@HeaderMap Map<String, Object> header);
 
-	/**
-	 * post 单个请求体
-	 * 
-	 * @param url
-	 * @param param
-	 * @return
-	 */
+
 	@POST()
 	Observable<Object> postBodyByString(@Url String url, @Body String body, @QueryMap Map<String, Object> param);
 
-	/**
-	 * post 单个请求体
-	 * 
-	 * @param url
-	 * @param param
-	 * @return
-	 */
 	@POST()
 	Observable<Object> postBodyByObject(@Url String url, @Body Object body, @QueryMap Map<String, Object> param);
 
-	/**
-	 * post 单个请求体
-	 * 
-	 * @param url
-	 * @param param
-	 * @return
-	 */
 	@POST()
 	Observable<Object> postBodyByModel(@Url String url, @Body ErrorInfo<String> body,
 			@QueryMap Map<String, Object> param);
 
-	/**
-	 * 不允许多个@Body注解 post 单个请求体
-	 * 
-	 * @param url
-	 * @param param
-	 * @return
-	 */
 	@POST()
 	Observable<Object> postBodyByMuli(@Url String url, @Body String body, @Body String body2,
 			@QueryMap Map<String, Object> param);
 
-	/**
-	 * @param url
-	 * @param body
-	 * @param body2
-	 * @param param
-	 * @return
-	 */
+	@Deprecated
 	@Multipart
 	@POST()
 	Observable<Object> postBodyByMulile(@Url String url, @Part MultipartBody.Part body, @Part MultipartBody.Part body2,
 			@QueryMap Map<String, Object> param);
+	
+	
+	@Deprecated
+	@GET()
+	Call<Object> getExceptionCall(@Url String url);
+
+	@Deprecated
+	@GET()
+	Observable<Object> getException(@Url String url);
 }

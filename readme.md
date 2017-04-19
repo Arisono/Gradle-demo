@@ -14,9 +14,10 @@
 - 【Okhttp接口测试】在[com.gradle.api.uas](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/api/uas)包名下;
 - 【Java常用几种加密算法】在[com.gradle.java.encryption](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/encryption)包名下 ;[加密算法测试](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/test)
 - 【Rxjava的学习笔记】在[com.gradle.java.rxjava](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/rxjava)包名下;
-- 【LeetCode源码及题解】
-- 【设计模式源码与分析】
-- 【Java基本知识】
+- 【LeetCode源码及题解】在[com.gradle.java.leetcode](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/leetcode)包名下;
+- 【设计模式源码与分析】在[com.gradle.design](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/design)包名下;
+- 【Java基本知识】在[com.gradle.java](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java)包名下;
+- 【Rxjava+Retrofit+Okhttp组合使用】在[com.gradle.android.retrofit](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/android/retrofit)包名下;
 
   
 ## 文档参考
@@ -36,12 +37,22 @@
 
 ## 更新记录
 
+2017-04-20
+
+- 网络库完善：retrofit+okhttp+rxjava 框架进行基本的单个文件上传和下载。多个文件上传和下载。
+
+2017-04-19
+
+- builder设计模式的引入
+- 网络库完善：初步利用简单工厂模式来隔离  网络请求具体实现 ,你可以选择retrofit,okhttp,httpClient,HttpUrlConnection,Volley等具体框架或者类库,变换具体类改动比较小。后期打算整改为工厂模式,完全符合开闭原则。
+- 案例接口用的是本地服务器程序，有springboot搭建的web应用。[服务器源码](https://github.com/Arisono/Chapter)关于部署springboot 请自行百度。
 
 2017-04-05
 
-- 封装Retrofit+Rxjava+Okhttp 网络请求
-- 添加统一请求头，get，post添加公共参数，利用okhttp的烂机器机制
-- okhttp错误重试，rxjava错误重试机制，网络请求失败后再次尝试请求
+- 网络库完善： 封装Retrofit+Rxjava+Okhttp 网络请求
+- 网络库完善：添加统一请求头，get，post添加公共参数，利用okhttp的拦截器机制
+- 网络库完善：添加响应时间，超时时间，是否打印日志。
+- 网络库完善：okhttp错误重试，rxjava错误重试机制，网络请求失败后再次尝试请求
 
 2017-03-13
 

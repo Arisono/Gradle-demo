@@ -95,6 +95,7 @@ public class HttpClient {
 		private int maxRetryCount;// 最大重试次数
 		private long retryTimeout = 5;//重试间隔时间
 		private boolean isDebug;// 是否开启打印日志
+
 		
 		private HttpBase httpBase;//具体的网络请求类
 

@@ -47,9 +47,9 @@ public class PlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
 	
-	private static String url_login = url_login_formal;
-	private static String username = "13111110001";
-	private static String password = "1";
+	private static String url_login = url_login_test;
+	private static String username = "15012345678";
+	private static String password = "111111";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -66,7 +66,7 @@ public class PlatformApi {
 	public static void main(String[] args) {
 	
 		//测试环境  正式环境
-		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer);
+		url.setmBaseUrl(ApiPlatform.mBaseUrl_devtest);
 		//管理平台登录---参数
 		UASApi.loginManage(username, password);// 管理平台登录
 		//执行登录
@@ -82,10 +82,11 @@ public class PlatformApi {
 	 */
 	protected static void loginCall() {
 		//考勤单据
-		api_attendance();
+		//api_attendance();
 	    //日报列表
-		api_worklogs();
-		//loginParamsCall();
+		//api_worklogs();
+		//单据保存
+		loginParamsCall();
 		//审批流列表
 		api_approval();
 	    //任务接口测试
@@ -250,6 +251,8 @@ public class PlatformApi {
 		Map<String, Object> params=new HashMap<>();
 		params.put("formStore", formStore);
 		params.put("gridStore", gridStore);
+//		OkhttpUtils.println(formStore);
+//		OkhttpUtils.println(gridStore);
 		OkhttpUtils.sendHttp(url.save_feePlease, params,cookies ,"出差单保存：", METHOD_POST);
 		
 		//请假单
@@ -289,7 +292,8 @@ public class PlatformApi {
 		RequestBody formBody = new FormBody.Builder()
 				.add("appId", "b2b")
 				.add("username", username)
-				.add("spaceId", "81744")
+//				.add("spaceId", "81744")
+				.add("spaceId", "76035")
 				.add("password", password)
 				.build();
 		Request request = new Request.Builder()
