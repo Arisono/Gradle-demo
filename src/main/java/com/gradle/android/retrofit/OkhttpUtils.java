@@ -1,5 +1,6 @@
 package com.gradle.android.retrofit;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
@@ -16,6 +17,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.xml.ws.http.HTTPException;
 
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.Interceptor.CustomLogger;
@@ -33,6 +35,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.FormBody.Builder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 
 /**
  * @author Arison
@@ -50,7 +54,7 @@ public class OkhttpUtils {
 	.readTimeout(10, TimeUnit.SECONDS)
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
-//	.addInterceptor(new LogInterceptor())
+	.addInterceptor(new LogInterceptor())
 //	.addInterceptor(new RetryIntercepter(3))
 	.build();
 	
@@ -169,8 +173,9 @@ public class OkhttpUtils {
 			String json = response.body().string();
 			return json;
 		} else {
-			return "code:" + response.code() + "  message:"
-					+ response.message();
+			return "code:" + response.code() + "\n  message:"
+					+ response.message()+"\n errorBody:"+response.body().string()
+					+"\n 异常栈："+response;
 		}
 	}
 	
@@ -307,7 +312,8 @@ public class OkhttpUtils {
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
-				String requestJson = OkhttpUtils.getResponseString(response);
+				String requestJson;
+				requestJson = OkhttpUtils.getResponseString(response);
 				RxBus.getInstance().send(tag + ":" +requestJson);
 			}
 
@@ -315,15 +321,98 @@ public class OkhttpUtils {
 			public void onFailure(Call call, IOException e) {
 				OkhttpUtils.onFailurePrintln(call,e,this);
 			}
+			
 		});
 		
 	}
+	
+	
+	/**
+	 * 上传文件
+	 * @param url
+	 * @param params
+	 * @param file
+	 */
+	public static void uploadFile(String url,Map<String,Object> params,String filePath){
+		//创建File
+        File file = new File(filePath);
+        OkhttpUtils.println("上传文件名："+file.getName());
+        RequestBody fileBody=RequestBody.create(
+        		MediaType.parse("application/octet-stream"), file);
+        RequestBody requestBody = new MultipartBody.Builder()
+        		.setType(MultipartBody.FORM)
+        		.addFormDataPart("files1", file.getName(), fileBody)
+        		.build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .build();
+        OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				String requestJson = OkhttpUtils.getResponseString(response);
+				RxBus.getInstance().send("uploadFile"+ ":" +requestJson);
+			}
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				OkhttpUtils.onFailurePrintln(call,e,this);
+			}
+		});
+	}
+	
+	
+	/**
+	 * 多文件+参数 上传功能
+	 * @param url
+	 * @param params
+	 * @param filePaths
+	 */
+	public static void uploadFile(String url,Map<String,Object> params){
+		 MultipartBody.Builder builder = new MultipartBody.Builder();
+         builder.setType(MultipartBody.FORM);
+         //追加参数
+         for (String key : params.keySet()) {
+             Object object = params.get(key);
+             if (!(object instanceof File)) {
+                 builder.addFormDataPart(key, object.toString());
+             } else {
+                 File file = (File) object;
+                 builder.addFormDataPart(key, file.getName(), RequestBody.create(null, file));
+             }
+         }
+       //创建RequestBody
+         RequestBody body = builder.build();
+         Request request = new Request.Builder()
+                 .url(url)
+                 .post(body)
+                 .build();
+         OkhttpUtils.client.newCall(request).enqueue(new Callback() {
+
+ 			@Override
+ 			public void onResponse(Call call, Response response) throws IOException {
+ 				String requestJson = OkhttpUtils.getResponseString(response);
+ 				RxBus.getInstance().send("uploadFile"+ ":" +requestJson);
+ 			}
+
+ 			@Override
+ 			public void onFailure(Call call, IOException e) {
+ 				OkhttpUtils.onFailurePrintln(call,e,this);
+ 			}
+ 		});
+	}
+	
+	
 
 	protected static void onFailurePrintln(Call call, IOException e,Callback callback) {
 		if (e instanceof ConnectException) {
 			println("服务器拒绝访问！");
 		} else if (e instanceof SocketTimeoutException) {
 			println("超时响应！");
+		}else{
+		
+			OkhttpUtils.println(ExceptionUtils.printExceptionStack(e));
 		}
 		try {
 			Thread.sleep(3000);
