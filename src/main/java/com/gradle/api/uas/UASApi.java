@@ -94,7 +94,7 @@ public class UASApi {
 		// api_getWorkDate();//获取班次
 		// loadUrlNoParams("https://www.baidu.com/");//测试url
 		// login();//定时任务
-		startTaskCard("2017-03-03");//打卡签到
+		//startTaskCard("2017-03-03");//打卡签到
 		
 		//getListMenuData();//动态表单，父级菜单
 	}

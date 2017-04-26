@@ -54,7 +54,7 @@ public class OkhttpUtils {
 	.readTimeout(10, TimeUnit.SECONDS)
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
-	.addInterceptor(new LogInterceptor())
+//	.addInterceptor(new LogInterceptor())
 //	.addInterceptor(new RetryIntercepter(3))
 	.build();
 	
@@ -341,7 +341,7 @@ public class OkhttpUtils {
         		MediaType.parse("application/octet-stream"), file);
         RequestBody requestBody = new MultipartBody.Builder()
         		.setType(MultipartBody.FORM)
-        		.addFormDataPart("files1", file.getName(), fileBody)
+        		.addFormDataPart("file", file.getName(), fileBody)
         		.build();
         Request request = new Request.Builder()
                 .url(url)
@@ -379,7 +379,8 @@ public class OkhttpUtils {
                  builder.addFormDataPart(key, object.toString());
              } else {
                  File file = (File) object;
-                 builder.addFormDataPart(key, file.getName(), RequestBody.create(null, file));
+                 //其中参数“file”和服务器接收的参数 一一对应,保证多文件上传唯一key不变
+                 builder.addFormDataPart("file", file.getName(), RequestBody.create(null, file));
              }
          }
        //创建RequestBody

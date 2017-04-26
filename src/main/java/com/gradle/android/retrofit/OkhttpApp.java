@@ -22,20 +22,66 @@ public class OkhttpApp {
 	    params.put("id2", "2");
 	    params.put("id3", "3");
 	    params.put("id4", "4");
-	    //访问get请求 -----> 404,500  走onResponse(Call call, Response response)
-//		OkhttpUtils.sendGetHttp(BASE_URL+"exception04", params, "", "");
-	    //上传单个文件
-//		OkhttpUtils.uploadFile(BASE_URL+"uploadImage",
-//				params, 
-//				"C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
+	    
+	    sendHttpMethod(params);//get,post方法
+	    
+//	    uploadFile(params);//单文件上传
 		
+//	    uploadMulitFiles(params);//多文件上传
+	}
+
+
+
+
+
+	private static void sendHttpMethod(Map<String, Object> params) {
+		//访问get请求 -----> 404,500  走onResponse(Call call, Response response)
+		OkhttpUtils.sendGetHttp(BASE_URL+"exception04", params, null, null);
+	    //访问post请求
+		OkhttpUtils.sendPostHttp(BASE_URL+"param", params, null, null);
+	}
+
+
+
+
+
+	/**
+	 * 上传单个文件
+	 * 建议使用uploadMulitFiles代替
+	 * @param params
+	 */
+	private static void uploadFile(Map<String, Object> params) {
+		//上传单个文件---可以直接使用多文件上传函数
+		OkhttpUtils.uploadFile(BASE_URL+"uploadSigleFile",
+				params, 
+				"C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
+		
+		OkhttpUtils.uploadFile(BASE_URL+"uploadFile",
+				params, 
+				"C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
+	}
+
+
+
+
+     
+	/**
+	 * 多文件上传
+	 * @param params
+	 */
+	private static void uploadMulitFiles(Map<String, Object> params) {
+		//上传多个文件+普通的表单参数
 		File f1=new File("C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
-		File f2=new File("C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
-		File f3=new File("C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
+		File f2=new File("C://Users//Arison//Downloads//10015100100_2.exe");
+		File f3=new File("C://Users//Arison//Downloads//app-debug.apk");
+		
+//		File[] fs=new File[]{f1,f2,f3};
 		params.put("file1", f1);
 		params.put("file2", f2);
 		params.put("file3", f3);
+		
 		OkhttpUtils.uploadFile(BASE_URL+"uploadFiles",params);
+		OkhttpUtils.uploadFile(BASE_URL+"uploadMulitFiles",params);
 	}
 
 	
@@ -50,19 +96,12 @@ public class OkhttpApp {
 
 			@Override
 			public void onCompleted() {
-				// TODO Auto-generated method stub
+			
 				
 			}
 
 			@Override
 			public void onError(Throwable e) {
-//				   if (e instanceof SocketTimeoutException) {
-//					   OkhttpUtils.println("服务器响应超时");
-//			        } else if (e instanceof ConnectException) {
-//			           OkhttpUtils.println("服务器拒绝访问");
-//			        } else {
-//			           OkhttpUtils.println("error:" + e.getMessage());
-//			        }
 				
 			}
 
