@@ -7,15 +7,11 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 import com.gradle.android.base.HttpClient;
 import com.gradle.android.retrofit.OkhttpUtils;
-import com.gradle.java.utils.DateFormatUtil;
-
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 
 import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LogInterceptor implements Interceptor {

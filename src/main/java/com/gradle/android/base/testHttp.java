@@ -8,7 +8,7 @@ import com.gradle.android.subscriber.SubscriberOnNextListener;
 
 public class testHttp {
 
-	public static final String BASE_URL="http://192.168.253.200:8080/";
+	public static final String BASE_URL="http://192.168.253.200:8080/Chapter/";
 	
 	public static void main(String[] args) {	
 		
@@ -25,15 +25,16 @@ public class testHttp {
 			  .httpBase(RetrofitImpl.getInstance())
 			  .build();
        
-       httpClient.Api().send(new HttpClient.Builder("postParam")//子路径
+       httpClient.Api().send(new HttpClient.Builder("download")//子路径
     		   .add("param1", "value1")//局部参数
     		   .add("param2", "value2")
     		   .header("cookies", "cookies")//局部请求头
+    		   .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     		   .header("Cookie", "android")//局部请求头
     		   .header("Cookie", "java")//局部请求头---同名请求会覆盖
     		   .header("header1", "header1")//局部请求头
     		   .header("header2", "header2")//局部请求头
-    		   .method(Method.POST)
+    		   .method(Method.GET)
     		   .build()
     		   ,new NetResquestSubscriber<Object>(
     				   new SubscriberOnNextListener<Object>() {
