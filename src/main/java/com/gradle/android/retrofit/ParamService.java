@@ -5,6 +5,8 @@ import java.util.Map;
 import com.gradle.java.model.ErrorInfo;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
@@ -54,6 +56,15 @@ public interface ParamService {
 			@HeaderMap Map<String, Object> header);
 
 
+
+
+	@POST()
+	Observable<Object> uploads(
+			@Url String url,
+			  @Body RequestBody body);
+	
+	
+	
 	@POST()
 	Observable<Object> postBodyByString(@Url String url, @Body String body, @QueryMap Map<String, Object> param);
 

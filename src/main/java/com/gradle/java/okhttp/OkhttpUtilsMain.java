@@ -242,16 +242,11 @@ public class OkhttpUtilsMain {
 		}
 	}
 
-	/**
-	 * @dec 基本测试
-	 * @throws IOException
-	 */
+
 	public static void okBasicRequest() {
 		OkHttpClient client = new OkHttpClient();
-
 		Request request = new Request.Builder().url("http://www.baidu.com")
 				.build();
-
 		try {
 			Response response = client.newCall(request).execute();
 			if (!response.isSuccessful()) {

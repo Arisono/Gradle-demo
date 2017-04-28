@@ -2,6 +2,8 @@ package com.gradle.api.uas;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,35 +43,42 @@ public class UASApi {
 	private static final String baseurl_normal = "http://218.18.115.198:8888/ERP/";
 	private static final String master_normal = "USOFTSYS";
 	
-	private static final String baseurl_uas = "http://218.17.158.219:8090/ERP/";
+	private static final String baseurl_uas = "https://218.17.158.219:8443/uas/";
 	private static final String master_uas = "UAS";
 	//测试
-	private static final String baseurl_test = "http://218.17.26.162:8099/ERP/";
-	private static final String master_test = "SUOLING";
+	private static final String baseurl_test = "http://192.168.253.252:8080/ERP/";
+	private static final String master_test = "UAS_TEST";
 	
 	private static final String phone_test="13266699268";
 	private static final String password_test="111111";
 
-	private static final String master = master_test;// UAS//USOFTSYS//DATACENTER
-	private static final String baseurl = baseurl_test;// 正式账套
+	private static final String master = master_test;
+	private static final String baseurl = baseurl_test;
 	
 	private static String phone=phone_test;
 	private static String password=password_test;
+	private static Map<String, Object> params=new HashMap<>();
 			
 
 	public static void main(String[] args) {
-		
+		initRxjavaCall();
+//		api_task_while();
+		loginERP(phone, password, master); // uas系统登录
+	}
+
+
+	private static void api_task_while() {
 		new Timer().schedule(new TimerTask() {
 			
 			@Override
 			public void run() {
-				loginManage(phone, password);// 管理平台登录
+				OkhttpUtils.println("定时任务开始----");
+				//loginManage(phone, password);// 管理平台登录
 				
 			}
 		}, 1000,1000);
-		//loginERP(phone, password, master); // uas系统登录
-		//loginB2B();
 	}
+
 
 	/**
 	 * 登录成功之后请求接口
@@ -94,33 +103,69 @@ public class UASApi {
 		// api_getWorkDate();//获取班次
 		// loadUrlNoParams("https://www.baidu.com/");//测试url
 		// login();//定时任务
-		//startTaskCard("2017-03-03");//打卡签到
+		
+		
+		//startTaskCard("2017-05-22");//打卡签到
 		
 		//getListMenuData();//动态表单，父级菜单
+		
+		 //api_getCaller();
+		
+		//新版加班单调整之后的接口测试
+		//api_saveWorkExtra();
+//		api_workExtra_uncommit();
+//		api_workExtra_update();
+		api_workExtra_dete();
 	}
 	
 	
+	/**
+	 * 加班单反提交
+	 */
+	public static void api_workExtra_uncommit(){
+		    params.put("caller", "ExtraWork$");
+		    params.put("id", "32202");
+//			params.put("formStore", "{\"wod_startdate\":\"2017-05-28 00:00:00\",\"wod_enddate\":\"2017-05-28 05:00:00\",\"wo_worktask\":\"哈哈哈姐姐\"}");
+			OkhttpUtils.sendPostHttp(baseurl+"/hr/attendance/resSubmitExtraWork.action", params, "JSESSIONID=" + sessionId, "加班单反提交");
+	}
+	
+	/**
+	 * 加班单更新  需要反提交
+	 */
+	public static void api_workExtra_update(){
+		    params.put("caller", "ExtraWork$");
+		    params.put("id", "32202");
+			params.put("formStore", "{\"wod_id\":32202,\"wod_startdate\":\"2017-05-29 00:00:00\",\"wod_enddate\":\"2017-05-29 05:00:00\",\"wo_worktask\":\"哈哈哈姐姐\"}");
+			OkhttpUtils.sendPostHttp(baseurl+"mobile/oa/ExtraWorkUpdateAndSubmit.action", params, "JSESSIONID=" + sessionId, "加班单更新");
+	}
+	
+	/**
+	 * 加班单删除   需要反提交
+	 */
+	public static void api_workExtra_dete(){
+		     params.put("id", "32202");
+		     params.put("caller", "ExtraWork$");
+			//params.put("formStore", "{\"wod_startdate\":\"2017-05-27 00:00:00\",\"wod_enddate\":\"2017-05-27 05:00:00\",\"wo_worktask\":\"哈哈哈姐姐\"}");
+			OkhttpUtils.sendPostHttp(baseurl+"hr/attendance/deleteExtraWork.action", params, "JSESSIONID=" + sessionId, "加班单保存");
+	}
+	
+	/**
+	 * 加班单保存
+	 */
+	public static void api_saveWorkExtra(){
+        params.put("caller", "ExtraWork$");
+		params.put("formStore", "{\"wod_startdate\":\"2017-05-27 00:00:00\",\"wod_enddate\":\"2017-05-27 05:00:00\",\"wo_worktask\":\"哈哈哈姐姐\"}");
+		OkhttpUtils.sendPostHttp(baseurl+"mobile/oa/ExtraWorkSaveAndSubmit.action", params, "JSESSIONID=" + sessionId, "加班单保存");
+	}
+	
+	
+	private static void api_getCaller(){
+		
+		OkhttpUtils.sendGetHttp(baseurl+"mobile/oa/getoaconifg.action", null, 
+				"JSESSIONID=" + sessionId, "获取caller");
+	}
+	
 	private static void getListMenuData(){
-		RxBus.getInstance().toObservable().subscribe(new Subscriber<Object>() {
-
-			@Override
-			public void onCompleted() {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onError(Throwable e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void onNext(Object t) {
-			OkhttpUtils.println(t.toString());
-				
-			}
-		});
 		OkhttpUtils.sendGetHttp(baseurl+"mobile/oa/getmenuconfig.action", null, 
 				"JSESSIONID=" + sessionId, "菜单");
 	}
@@ -896,6 +941,7 @@ public class UASApi {
 		String formStore=""
 				+ "{\"cl_emname\":\"刘杰\","
 				+ "\"cl_distance\":"+dis+","
+				+ "\"cl_time\":"+"2017-05-22 08:22:10"+","
 				+ "\"cl_emcode\":\"U0316\","
 				+ "\"cl_phone\":\"13266699268\","
 				+ "\"cl_code\":\""+code+"\","
@@ -974,4 +1020,29 @@ public class UASApi {
 		});
 		
 	}
+	
+	
+	private static void initRxjavaCall() {
+		RxBus.getInstance().toObservable().subscribe(new Subscriber<Object>() {
+
+			@Override
+			public void onCompleted() {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onNext(Object t) {
+			OkhttpUtils.println(t.toString());
+				
+			}
+		});
+	}
+
 }

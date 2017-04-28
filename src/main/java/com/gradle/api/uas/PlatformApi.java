@@ -48,8 +48,8 @@ public class PlatformApi {
 	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
 	
 	private static String url_login = url_login_test;
-	private static String username = "15012345678";
-	private static String password = "111111";
+	private static String username = "13556889797";
+	private static String password = "@scope123123";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -292,7 +292,7 @@ public class PlatformApi {
 		RequestBody formBody = new FormBody.Builder()
 				.add("appId", "b2b")
 				.add("username", username)
-//				.add("spaceId", "81744")
+			//.add("spaceId", "81744")
 				.add("spaceId", "76035")
 				.add("password", password)
 				.build();

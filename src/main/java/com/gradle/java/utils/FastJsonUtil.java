@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.omg.PortableInterceptor.USER_EXCEPTION;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +17,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.ValueFilter;
 import com.gradle.android.retrofit.OkhttpUtils;
+import com.gradle.java.model.Users;
 
 
 /**
@@ -26,8 +29,19 @@ public class FastJsonUtil {
 
 	public static void main(String[] args) {
 		
-		  testParseObject();
+		  testJsonField();
 		
+	}
+
+
+	/**
+	 * 缺少字段  实体类打印
+	 */
+	private static void testJsonField() {
+		Users model=new Users();
+		  model.setAge(12);
+		  model.setName("liu");
+		  OkhttpUtils.println(JSON.toJSON(model));
 	}
 
 

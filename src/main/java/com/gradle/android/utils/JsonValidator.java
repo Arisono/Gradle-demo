@@ -3,6 +3,9 @@ package com.gradle.android.utils;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
+import com.alibaba.fastjson.JSON;
+import com.gradle.android.retrofit.OkhttpUtils;
+
 
 /**
  * @author :Administrator   2015年12月14日 下午4:27:12
@@ -18,7 +21,10 @@ public class JsonValidator {
     }
 
     public static void main(String[] args) {
-        String jsonStr = "\";\"";
+        String jsonStr = "\"\"";//不合格的json数据
+       //jsonStr="{\"code\":\"产品\\名称\"}";
+       OkhttpUtils.println("需要解析的json字符串："+jsonStr);
+       OkhttpUtils.println(JSON.parse(jsonStr));
         System.out.println(jsonStr + ":" + new JsonValidator().validate(jsonStr));
     }
 

@@ -10,16 +10,9 @@ import rx.Subscriber;
 import rx.functions.Func1;
 
 public class OkhttpImpl extends HttpBase {
-	
-	public  String BASE_URL="http://192.168.253.200:8080/";
-	
-	public HttpClient mbuilder;
+
 	private static OkhttpImpl instance;
 	
-//	public OkhttpImpl(HttpClient builder) {
-//		this.BASE_URL=builder.getBaseUrl();
-//	}
-
 	public static OkhttpImpl getInstance(){
 		if (instance==null) {
 			synchronized (OkhttpImpl.class) {
@@ -34,20 +27,19 @@ public class OkhttpImpl extends HttpBase {
 	@Override
 	public void initClient() {
 		//重连次数
-		OkhttpUtils.maxLoadTimes=3;
-
+		OkhttpUtils.maxLoadTimes=mbuilder.getMaxRetryCount();
+		//全局请求头
+		OkhttpUtils.initClient(mbuilder);
 	}
 
 	@Override
 	public void get(HttpClient builder, Subscriber<Object> s) {
-		this.mbuilder=builder;
-		OkhttpUtils.sendGetHttp(BASE_URL+ builder.getBaseUrl(), builder.getParams(), "", "");
+		OkhttpUtils.sendGetHttp(mbuilder.getBaseUrl()+ builder.getBaseUrl(), builder.getParams(), "sessionid", "");
 	}
 
 	@Override
 	public void post(HttpClient builder, Subscriber<Object> s) {
-		this.mbuilder=builder;
-		OkhttpUtils.sendPostHttp(BASE_URL+ builder.getBaseUrl(), builder.getParams(), "", "");
+		OkhttpUtils.sendPostHttp(mbuilder.getBaseUrl()+ builder.getBaseUrl(), builder.getParams(), "sessionid", "");
 	}
 	
 	@SuppressWarnings("unused")
@@ -82,10 +74,6 @@ public class OkhttpImpl extends HttpBase {
 		  .subscribe(s);
 	}
 
-	@Override
-	public void setBuilder(HttpClient client) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

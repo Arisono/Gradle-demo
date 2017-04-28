@@ -1,5 +1,6 @@
 package com.gradle.android.retrofit;
 
+import java.io.File;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -7,6 +8,8 @@ import com.gradle.android.converter.StringConverterFactory;
 import com.gradle.java.model.HttpResult;
 import com.gradle.java.rxjava.RxjavaUtils;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -22,7 +25,7 @@ import rx.functions.Func1;
  */
 public class RetrofitUtils {
 	
-	public static final String BASE_URL="http://192.168.253.200:8080/";
+	public static final String BASE_URL="http://192.168.253.200:8080/Chapter/";
 	public Retrofit retrofit;
 	private static int retryCount=2;
 	
@@ -64,6 +67,26 @@ public class RetrofitUtils {
 		return SingletonHolder.INSANCE;
 	}
 	
+	
+	public void uploads(Subscriber<Object> s,String url,Map<String,Object> params){
+		 MultipartBody.Builder builder = new MultipartBody.Builder();
+         builder.setType(MultipartBody.FORM);
+         //追加参数
+         for (String key : params.keySet()) {
+             Object object = params.get(key);
+             if (!(object instanceof File)) {
+                 builder.addFormDataPart(key, object.toString());
+             } else {
+                 File file = (File) object;
+                 //其中参数“file”和服务器接收的参数 一一对应,保证多文件上传唯一key不变
+                 builder.addFormDataPart("file", file.getName(), RequestBody.create(null, file));
+             }
+         }
+       //创建RequestBody
+         RequestBody body = builder.build();
+		 Observable<Object> o=paramService.uploads(url, body);
+	     toSubscribe(o, s);
+	}
 	
 	public void  getApiPostData(Subscriber<Object> s,String url,Map<String,Object> params){
 		Observable<Object> o=

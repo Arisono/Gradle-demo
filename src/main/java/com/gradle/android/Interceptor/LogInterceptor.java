@@ -71,14 +71,15 @@ public class LogInterceptor implements Interceptor {
 		  okhttp3.MediaType mediaType = response.body().contentType();
           String content = response.body().string();
           
-         
-    	  OkhttpUtils.println("------------------------------------------");
-		  OkhttpUtils.println("请求头:"+JSON.toJSONString( response.request().headers().toMultimap()));
-		  OkhttpUtils.println("url:"+JSON.toJSONString(response.request().url().toString()));
-		  OkhttpUtils.println("参数:"+JSON.toJSONString(postParm));
-		  OkhttpUtils.println("结果:"+content);
-		  OkhttpUtils.println("------------------------------------------");
-		
+         if (true) {
+        	  OkhttpUtils.println("|---------------日志打印  start---------------------------|");
+    		  OkhttpUtils.println("请求头:"+JSON.toJSONString( response.request().headers().toMultimap()));
+    		  OkhttpUtils.println("url:"+JSON.toJSONString(response.request().url().toString()));
+    		  OkhttpUtils.println("参数:"+JSON.toJSONString(postParm));
+    		  OkhttpUtils.println("结果:"+content);
+    		  OkhttpUtils.println("|---------------日志打印   end---------------------------|");
+		}
+    
 		return response.newBuilder()
                 .body(okhttp3.ResponseBody.create(mediaType, content))
                 .build();

@@ -44,6 +44,7 @@ public class BaiduPushUtils {
 //		 "3955136970545093253", // 小米四 测试机
 //		"3821126972469299968",//小明哥
 		 "3661901606382112872" // me
+		,"4279722132317779123"
 //		,"4214122687662249823"//vivo 3,
 //		,"4593168493483957705"//产品
 	};
@@ -53,14 +54,14 @@ public class BaiduPushUtils {
 			PushServerException {
 		initBaiduPushClient();
 		ExecutorService fixedThreadPool = Executors.newFixedThreadPool(1);
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 10; i++) {
 			fixedThreadPool.execute(new Runnable() {
 
 				@Override
 				public void run() {
 					
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(5000);
 						//pushStart(title,desc);//单设备
 						pushBatchDevice(title, desc);// 多设备
 					} catch (PushClientException e) {
@@ -94,14 +95,14 @@ public class BaiduPushUtils {
 			notification.put("description", desc);
 			notification.put("notification_builder_id", 0);
 			notification.put("notification_basic_style", 0x02 + 0x01 + 0x04);// 声音，震动，铃声全开
-			notification.put("open_type", 2);
+//			notification.put("open_type", 1);
 			// android客户端指定界面地址
-			notification
-					.put("pkg_content",
-							"#Intent;component=com.xzjmyk.pm.activity/.ui.erp.activity.WebViewCommActivity;end");
-			// notification.put("url", "http://push.baidu.com");
+//			notification
+//					.put("pkg_content",
+//							"#Intent;component=com.xzjmyk.pm.activity/.ui.erp.activity.WebViewCommActivity;end");
+			 notification.put("url", "http://push.baidu.com");
 			JSONObject jsonCustormCont = new JSONObject();
-			jsonCustormCont.put("title", "待处理流程001"); // 鑷畾涔夊唴瀹癸紝key-value
+			jsonCustormCont.put("title", "待处理流程0021"); // 鑷畾涔夊唴瀹癸紝key-value
 			jsonCustormCont
 					.put("url",
 							"jsps/mobile/task.jsp?caller=ResourceAssignment!Bill%26id=11472"); // 鑷畾涔夊唴瀹癸紝key-value
@@ -121,7 +122,8 @@ public class BaiduPushUtils {
 			// jsonCustormCont.put("master", "UAS");
 			// jsonCustormCont.put("uu", "10041166");
 			// jsonCustormCont.put("masterId", "2929");
-			notification.put("custom_content", jsonCustormCont);
+			
+			//notification.put("custom_content", jsonCustormCont);
 
 			PushMsgToSingleDeviceRequest request = new PushMsgToSingleDeviceRequest()
 					.addChannelId(channelId).addMsgExpires(new Integer(1))
@@ -212,20 +214,11 @@ public class BaiduPushUtils {
 		}
 	}
 
-	/**
-	 * init buduPushClient
-	 */
+
 	public static void initBaiduPushClient() {
-		// 1. get apiKey and secretKey from developer console
-
 		PushKeyPair pair = new PushKeyPair(apiKey, secretKey);
-
-		// 2. build a BaidupushClient object to access released interfaces
 		pushClient = new BaiduPushClient(pair,
 				BaiduPushConstants.CHANNEL_REST_URL);
-
-		// 3. register a YunLogHandler to get detail interacting information
-		// in this request.
 		pushClient.setChannelLogHandler(new YunLogHandler() {
 			@Override
 			public void onHandle(YunLogEvent event) {

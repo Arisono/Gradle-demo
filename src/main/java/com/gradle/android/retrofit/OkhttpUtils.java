@@ -23,6 +23,9 @@ import com.alibaba.fastjson.JSON;
 import com.gradle.android.Interceptor.CustomLogger;
 import com.gradle.android.Interceptor.LogInterceptor;
 import com.gradle.android.Interceptor.RetryIntercepter;
+import com.gradle.android.base.HttpClient;
+import com.gradle.android.retrofit.OkhttpUtils.TrustAllCerts;
+import com.gradle.android.retrofit.OkhttpUtils.TrustAllHostnameVerifier;
 import com.gradle.java.rxjava.RxBus;
 import com.gradle.java.utils.ExceptionUtils;
 
@@ -54,11 +57,25 @@ public class OkhttpUtils {
 	.readTimeout(10, TimeUnit.SECONDS)
 	.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
 	.hostnameVerifier(new TrustAllHostnameVerifier())
-//	.addInterceptor(new LogInterceptor())
+	.addInterceptor(new LogInterceptor())
 //	.addInterceptor(new RetryIntercepter(3))
 	.build();
 	
-	
+	public static void initClient(HttpClient mbuilder){
+		//本类保证初始化一次,减少系统开销
+		 okhttp3.OkHttpClient.Builder okBuilder = client.newBuilder()
+		.connectTimeout(mbuilder.getConnectTimeout(), TimeUnit.SECONDS)
+		.readTimeout(mbuilder.getReadTimeout(), TimeUnit.SECONDS)
+		.writeTimeout(mbuilder.getWriteTimeout(),TimeUnit.SECONDS)
+		.sslSocketFactory(OkhttpUtils.createSSLSocketFactory(), new TrustAllCerts())//信任所有证书
+		.hostnameVerifier(new TrustAllHostnameVerifier());
+		 
+		LogInterceptor logInterceptor= new LogInterceptor();
+		logInterceptor.setBuilder(mbuilder);
+		okBuilder.addInterceptor(logInterceptor);
+		
+		client=okBuilder.build();
+	}
 	/**
 	 * 打印日志
 	 * @param msg
@@ -155,7 +172,6 @@ public class OkhttpUtils {
 	 * @param e
 	 */
 	public static void onFailurePrintln(IOException e) {
-		//println("onFailure:" + ExceptionUtils.printExceptionStack(e));
 		if (e instanceof ConnectException) {
 			println("服务器拒绝访问！");
 		} else if (e instanceof SocketTimeoutException) {
@@ -305,7 +321,7 @@ public class OkhttpUtils {
 		Request request = new Request.Builder()
 				.url(buf.toString())
 				.addHeader("content-type", "text/html;charset:utf-8")
-				.addHeader("Cookie",cookies)
+				.addHeader("Cookie","12")
 				.build();
 		OkhttpUtils.println(tag+":"+buf.toString());
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
@@ -314,6 +330,7 @@ public class OkhttpUtils {
 			public void onResponse(Call call, Response response) throws IOException {
 				String requestJson;
 				requestJson = OkhttpUtils.getResponseString(response);
+				OkhttpUtils.println(requestJson);
 				RxBus.getInstance().send(tag + ":" +requestJson);
 			}
 

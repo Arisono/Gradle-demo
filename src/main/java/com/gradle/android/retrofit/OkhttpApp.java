@@ -12,7 +12,7 @@ import rx.Subscriber;
 
 public class OkhttpApp {
 	
-	public static final String BASE_URL="http://192.168.253.200:8080/";
+	public static final String BASE_URL="http://192.168.253.200:8080/Chapter/";
 
 	public static void main(String[] args) {
 		initOkhttp();
@@ -23,11 +23,12 @@ public class OkhttpApp {
 	    params.put("id3", "3");
 	    params.put("id4", "4");
 	    
-	    sendHttpMethod(params);//get,post方法
+	   // sendHttpMethod(params);//get,post方法
 	    
 //	    uploadFile(params);//单文件上传
-		
-//	    uploadMulitFiles(params);//多文件上传
+			  
+	    uploadMulitFiles(params);//多文件上传
+			   
 	}
 
 
@@ -71,13 +72,13 @@ public class OkhttpApp {
 	 */
 	private static void uploadMulitFiles(Map<String, Object> params) {
 		//上传多个文件+普通的表单参数
-		File f1=new File("C://Users//Arison//Downloads//JJPlayer_2.8.2.1_setup_jjvod.1444617961.exe");
-		File f2=new File("C://Users//Arison//Downloads//10015100100_2.exe");
-		File f3=new File("C://Users//Arison//Downloads//app-debug.apk");
+
+		File f1=new File("C://Users//Arison//Downloads//DropboxInstaller.exe");
+	//	File f2=new File("C://Users//Arison//Downloads//10015100100_2.exe");
+		File f3=new File("C://Users//Arison//Downloads//Android技术内部分享.pptx");
 		
-//		File[] fs=new File[]{f1,f2,f3};
 		params.put("file1", f1);
-		params.put("file2", f2);
+//		params.put("file2", f2);
 		params.put("file3", f3);
 		
 		OkhttpUtils.uploadFile(BASE_URL+"uploadFiles",params);

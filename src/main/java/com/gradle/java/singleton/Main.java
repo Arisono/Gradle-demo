@@ -2,9 +2,11 @@ package com.gradle.java.singleton;
 
 import java.util.Date;
 
+import com.gradle.android.retrofit.OkhttpUtils;
 import com.gradle.api.config.ApiConfig;
 import com.gradle.api.config.ApiUtils;
 import com.gradle.api.uas.PlatformApi;
+import com.gradle.java.thread.Volatile;
 import com.gradle.java.utils.DateFormatUtil;
 
 
@@ -14,12 +16,26 @@ import com.gradle.java.utils.DateFormatUtil;
  * 测试单例引用内存问题
  */
 public class Main {
-
+	static volatile int j=0;
 	public static void main(String[] args) {
-      System.out.println(ApiConfig.getInstance(ApiUtils.getApiModel()).getmApiBase().login);
-      if (ApiUtils.getApiModel() instanceof PlatformApi) {
-		
-	  }
+	
+		for( int i=0;i<197880;i++){
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					j++;
+					//OkhttpUtils.println("i="+j);
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					SingleApp.getInstance();
+					
+				}
+			}).start();
+		}
 	}
 	
 

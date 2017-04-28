@@ -34,6 +34,20 @@ public class DataBaseManager {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		//mulitsThreadTask();
+		DataBaseManager.getInstance().openDataBase();
+		DataBaseManager.getInstance().closeDataBase();
+		
+		DataBaseManager.getInstance().openDataBase();
+		DataBaseManager.getInstance().closeDataBase();
+		
+		DataBaseManager.getInstance().openDataBase();
+		DataBaseManager.getInstance().closeDataBase();
+
+	}
+
+	@SuppressWarnings("unused")
+	private static void mulitsThreadTask() {
 		for(int i=1;i<=2000;i++){
 			
 			new Thread(new Runnable() {
@@ -59,7 +73,6 @@ public class DataBaseManager {
 				}
 			},""+i).start();
 		}
-
 	}
 	
 	public synchronized AtomicInteger openDataBase(){
