@@ -13,19 +13,8 @@ public class testHttp {
 
 	public static final String BASE_URL="http://192.168.253.200:8080/Chapter/";
 	
-	public static void main(String[] args) {	
-		
-	 new Thread(new Runnable() {
-		
-		@Override
-		public void run() {
-			 testRetrofitImpl();
-//			 while(true){
-//				 
-//			 }
-		}
-	 }).start();
-	 
+	public static void main(String[] args) {
+		testRetrofitImpl();
 	  //testOkhttpImpl();
 	}
 
@@ -125,8 +114,7 @@ public class testHttp {
 							
 						}
 					}));
-		 
-		
+
 	}
 
 }
