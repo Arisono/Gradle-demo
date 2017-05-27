@@ -9,7 +9,7 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 
 dependencies {
-
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'org.slf4j:slf4j-api:1.7.13'
     //测试Junit
     testCompile 'junit:junit:4.12'

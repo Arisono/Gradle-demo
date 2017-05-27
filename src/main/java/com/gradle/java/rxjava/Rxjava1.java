@@ -1,6 +1,6 @@
 package com.gradle.java.rxjava;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
+
 
 import java.net.SocketTimeoutException;
 import java.rmi.ConnectException;
