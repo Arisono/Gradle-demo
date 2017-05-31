@@ -71,16 +71,13 @@ public class testHttp {
 						OkhttpUtils.println(t.toString());
 					}
 				}));
-		   
-//	  while (true) {
-//	//保证main主线程一直运行
-//		}
+
 	}
 	
 	
 	/**
 	 * OkhttpImpl 实现的网络请求
-	 * @param args
+	 * @param
 	 */
 	private static void testOkhttpImpl() {
 		 HttpClient httpClient=new HttpClient.Builder()
