@@ -1,6 +1,6 @@
 package com.gradle.java.singleton;
 
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 
 public class SingleApp {
   

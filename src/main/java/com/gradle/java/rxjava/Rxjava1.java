@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 
 import rx.Observable;
 import rx.Observer;

@@ -1,5 +1,8 @@
 # 学习版本构建工具Gradle以及Java知识
 
+**通知公告**：项目升级改造，本项目地址迁移到[GradleModular](https://github.com/JModular/GradleModular)
+之后,Gradle-demo依旧会更新。但是GradleModular项目更加正规，采取多模块工程划分的方式构建。
+
 ## 项目宗旨
       
 - **Java基础**
@@ -11,13 +14,13 @@
    
 ## 功能模块
 
-- 【Okhttp接口测试】在[com.gradle.api.uas](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/api/uas)包名下;
+- 【Okhttp接口测试】在[com.gradle.http.uas](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/api/uas)包名下;
 - 【Java常用几种加密算法】在[com.gradle.java.encryption](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/encryption)包名下 ;[加密算法测试](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/test)
 - 【Rxjava的学习笔记】在[com.gradle.java.rxjava](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/rxjava)包名下;
 - 【LeetCode源码及题解】在[com.gradle.java.leetcode](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java/leetcode)包名下;
 - 【设计模式源码与分析】在[com.gradle.design](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/design)包名下;
 - 【Java基本知识】在[com.gradle.java](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/java)包名下;
-- 【Rxjava+Retrofit+Okhttp组合使用】在[com.gradle.android.retrofit](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/gradle/android/retrofit)包名下;
+- 【Rxjava+Retrofit+Okhttp组合使用】在[com.gradle.android.retrofit](https://github.com/Arisono/Gradle-demo/tree/master/src/main/java/com/android/base/net)包名下;
 
   
 ## 文档参考

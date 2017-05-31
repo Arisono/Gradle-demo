@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 import com.gradle.android.utils.RegexUtil;
 import com.gradle.java.model.Users;
 import com.gradle.java.utils.DateFormatUtil;
@@ -38,15 +38,48 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-		final int vardata=getNumber();
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-              OkhttpUtils.println(vardata+"");				
-			}
-		}).start();
+		    String content="1232131'";
+		    System.out.println(content.replace("'", "''"));
+	}
+
+	private static int testImageScale(float ww,float hh) {
+		int w = 1200; //原图片宽度
+		int h = 1500;  //原图片高度
+		// 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可  
+		int be = 1;// be=1表示不缩放  
+		if (w > h && w > ww) {// 如果宽度大的话根据宽度固定大小缩放  
+		    be = (int) (w / ww);  
+		} else if (w < h && h > hh) {// 如果高度高的话根据宽度固定大小缩放  
+		    be = (int) (h / hh);  
+		}  
+		return be;
+	}
+
+
+	private static void testBigDecimal() {
+		test12();
+	}
+
+	private static void test12() {
+		float Max = 100, Min = 30.0f;  
+	       
+	      BigDecimal db = new BigDecimal(Math.random() * (Max - Min) + Min);  
+	      System.out.println(db.setScale(1, BigDecimal.ROUND_HALF_UP)// 保留30位小数并四舍五入  
+	                    .toString());  
+	      
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+	}
+	
+	
+	public boolean isCheckDate(String date,String requestDate){
+		date="";
+		//检查是不是今天
 		
+		//检查是否是上午，下午
+		
+		//利用时间来限制3分钟之内不能再次访问
+		
+		return false;
 	}
 	
 	public static int getNumber(){

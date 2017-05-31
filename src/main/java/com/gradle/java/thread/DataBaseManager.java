@@ -2,7 +2,7 @@ package com.gradle.java.thread;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 
 /**
  * @author Arison

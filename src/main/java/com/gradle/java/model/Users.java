@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 public class Users {
 	
 	private String name;
-	@JSONField(serialize = false)  
+//	@JSONField(serialize = false)  
 	private int age;
 
 	public String getName() {

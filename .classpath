@@ -11,15 +11,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="lib" path="libs/bccs-api-3.0.1.jar"/>
-	<classpathentry kind="lib" path="libs/flexjson-2.1.jar"/>
-	<classpathentry kind="lib" path="libs/json-lib-2.4-jdk15.jar"/>
-	<classpathentry kind="lib" path="libs/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="libs/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="libs/ezmorph-1.0.6.jar"/>
-	<classpathentry kind="lib" path="libs/commons-collections-3.2.1.jar" sourcepath="C:/Users/Arison/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar"/>
-	<classpathentry kind="lib" path="libs/commons-beanutils-1.9.2.jar"/>
-	<classpathentry kind="lib" path="libs/sun.misc.BASE64Decoder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

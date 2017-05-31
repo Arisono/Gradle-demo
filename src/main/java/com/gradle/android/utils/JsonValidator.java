@@ -4,7 +4,7 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
 import com.alibaba.fastjson.JSON;
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 
 
 /**

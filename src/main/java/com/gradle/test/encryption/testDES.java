@@ -1,6 +1,6 @@
 package com.gradle.test.encryption;
 
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 import com.gradle.java.encryption.BytesToHex;
 import com.gradle.java.encryption.DESUtil;
 

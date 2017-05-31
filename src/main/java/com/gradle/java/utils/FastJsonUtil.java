@@ -15,9 +15,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.PropertyFilter;
 import com.alibaba.fastjson.serializer.ValueFilter;
-import com.gradle.android.retrofit.OkhttpUtils;
-import com.gradle.java.model.Users;
+import com.android.retrofit.demo.OkhttpUtils;
 
 
 /**
@@ -33,15 +33,54 @@ public class FastJsonUtil {
 		
 	}
 
+	 class Users {
+		
+		private String n_ame;
+//		@JSONField(serialize = false)  
+		private int age;
+
+	
+
+		public String getN_ame() {
+			return n_ame;
+		}
+
+		public void setN_ame(String n_ame) {
+			this.n_ame = n_ame;
+		}
+
+		public int getAge() {
+			return age;
+		}
+
+		public void setAge(int age) {
+			this.age = age;
+		}
+
+	}
 
 	/**
 	 * 缺少字段  实体类打印
 	 */
 	private static void testJsonField() {
-		Users model=new Users();
-		  model.setAge(12);
-		  model.setName("liu");
-		  OkhttpUtils.println(JSON.toJSON(model));
+		  List<Users> models=new ArrayList<>();
+		  for(int i=0;i<11;i++){
+			  Users model=new FastJsonUtil().new  Users();
+			  model.setAge(i);
+			  model.setN_ame("liu");
+			  models.add(model);
+		  }
+		  PropertyFilter profilter = new PropertyFilter(){  
+			  
+	            @Override  
+	            public boolean apply(Object object, String name, Object value) {  
+	                if(name.equalsIgnoreCase("age")&&value.equals(5)){  
+	                    return false;  
+	                }  
+	                return true;  
+	            }  
+	        };  
+		  OkhttpUtils.println(JSON.toJSONString(models, profilter));
 	}
 
 

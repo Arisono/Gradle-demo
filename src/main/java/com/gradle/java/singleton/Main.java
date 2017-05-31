@@ -2,11 +2,6 @@ package com.gradle.java.singleton;
 
 import java.util.Date;
 
-import com.gradle.android.retrofit.OkhttpUtils;
-import com.gradle.api.config.ApiConfig;
-import com.gradle.api.config.ApiUtils;
-import com.gradle.api.uas.PlatformApi;
-import com.gradle.java.thread.Volatile;
 import com.gradle.java.utils.DateFormatUtil;
 
 

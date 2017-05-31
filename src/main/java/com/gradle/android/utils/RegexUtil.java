@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.gradle.android.retrofit.OkhttpUtils;
+import com.android.retrofit.demo.OkhttpUtils;
 
 /**
  * 正则表达式工具类 Created by Arison on 2016/3/25.
@@ -59,18 +59,24 @@ public class RegexUtil {
 	private static String regex9 = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
 	
 	
+	/**
+	 * 全字符验证
+	 */
+	private static String regex10="^.{1,300}$";
 	
+	/**
+	 * 支持中，英，数字，下划线，括号，小数点
+	 */
+	private static String regex11="^[\u4e00-\u9fa5_a-zA-Z0-9.()]{0,30}$";
 
+	
+	
+	
 	public static void main(String[] args) {
 		
-	OkhttpUtils.println(checkRegex("12.223",regex1));	
-		
-//	System.out.println("验证结果："+checkRegex("adfi4yhndf126com"
-//				+ "asfdadfajksggj奇偶id按时交付就看到撒放假啊多少觉得十分激动撒骄傲的司法局"
-//				+ "接撒地方角度来看撒酒疯来看撒绝对是咖啡尽量快点撒房间快点撒姐夫肯定撒就看到撒房间卡多少"
-//				+ "啊圣诞节佛道撒酒疯圣诞节啊发据鞍读书撒旦颇丰打撒哦id撒颇的萨芬",
-//				regex3_1));
-		
+	  OkhttpUtils.println(checkRegex("(123ijkjfd_821.)",regex11));	
+	
+    	
 	}
 
 	
@@ -87,7 +93,17 @@ public class RegexUtil {
 	
 	
 	
-	
+	/**
+	 * 限制输入表情符号
+	 * @param string
+	 * @return
+	 */
+	public static boolean isEmoji(String string) {
+        Pattern p = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+            Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(string);
+        return m.find();
+    }
 	
 	
 	
@@ -96,9 +112,6 @@ public class RegexUtil {
 	 * 以下方法可以作废
 	 *
 	 */
-	
-	
-	
 	public static boolean checkEmail(String email) {
 		String regex = "\\w+@\\w+\\.[a-z]+(\\.[a-z]+)?";
 		return Pattern.matches(regex, email);
