@@ -39,8 +39,8 @@ public class testPlatformApi {
 	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
 	
 	private static String url_login = url_login_test;
-	private static String username = "13266699268";
-	private static String password = "cmy3331";
+	private static String username = "13266699225";
+	private static String password = "111111";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -57,7 +57,7 @@ public class testPlatformApi {
 	public static void main(String[] args) {
 	
 		//测试环境  正式环境
-		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer);
+		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer );
 		//管理平台登录---参数
 		testUASApi.loginManage(username, password);// 管理平台登录
 		//执行登录

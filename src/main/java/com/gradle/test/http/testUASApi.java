@@ -49,11 +49,11 @@ public class testUASApi {
 	private static final String baseurl_test = "https://218.17.158.219:8443/uas_test/";
 	private static final String master_test = "UAS_TEST";
 	
-	private static final String phone_test="13266699268";
-	private static final String password_test="111111";
+	private static final String phone_test="13352991628";
+	private static final String password_test="az00213381";
 
-	private static final String master = master_test;
-	private static final String baseurl = baseurl_test;
+	private static final String master = master_normal;
+	private static final String baseurl = baseurl_normal;
 	
 	private static String phone=phone_test;
 	private static String password=password_test;
@@ -238,7 +238,7 @@ public class testUASApi {
 				String json = OkhttpUtils.getResponseString(response);
 				//String account=JSON.parseArray(json).getJSONObject(0).getString("account");
 				RxBus.getInstance().send("管理平台："+json);
-				//OkhttpUtils.println("管理平台：" + json);
+				OkhttpUtils.println("管理平台：" + json);
 			}
 
 			@Override

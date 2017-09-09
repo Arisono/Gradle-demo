@@ -39,8 +39,8 @@ public class testHttp {
 
 		// testAPIBody("17607612611","易女士");//发短信
 		// testAPIBody("13266699268","刘");//发短信
-		 testRetrofitImpl();
-		 //testUploadFiles();
+		// testRetrofitImpl();
+		 testUploadFiles();
 	}
 
 	private static void testAPIBody(String phone,String name) {
@@ -66,17 +66,31 @@ public class testHttp {
 		File f1 = new File("C://Users//Arison//Downloads//SmartAdmin_1_3.zip");
 		File f2 = new File("C://Users//Arison//Downloads//RetrofitWrapper.java");
 		File f3 = new File("C://Users//Arison//Downloads//BaiduTranslate_chrome_1.2.crx");
-		httpClient.Api().send(
-				new HttpClient.Builder()
-						.url("uploadFiles")
-						.add("file1", f1)
-						.add("file2", f2)
-						.add("file3", f3)
-						.add("phone", "1234567890")
-						.filesKey("file")
-						.method(Method.POST)
-						.build(),
-				new NetResquestSubscriber<>(new SubscriberOnNextListener<Object>() {
+//		httpClient.Api().send(
+//				new HttpClient.Builder()
+//						.url("uploadFiles")
+//						.add("file1", f1)
+//						.add("file2", f2)
+//						.add("file3", f3)
+//						.add("phone", "1234567890")
+//						.filesKey("file")
+//						.method(Method.POST)
+//						.build(),
+//				new NetResquestSubscriber<>(new SubscriberOnNextListener<Object>() {
+//
+//					@Override
+//					public void onNext(Object t) {
+//
+//						OkhttpUtils.println(t.toString());
+//					}
+//				}));
+		
+		httpClient.Api().send(new HttpClient.Builder()
+				.url("uploadSigleFile")
+				.add("file1", f1)
+			
+				.method(Method.POST)
+				.build(), 	new NetResquestSubscriber<>(new SubscriberOnNextListener<Object>() {
 
 					@Override
 					public void onNext(Object t) {
