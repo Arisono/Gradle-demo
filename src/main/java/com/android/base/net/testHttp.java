@@ -88,7 +88,6 @@ public class testHttp {
 		httpClient.Api().send(new HttpClient.Builder()
 				.url("uploadSigleFile")
 				.add("file1", f1)
-			
 				.method(Method.POST)
 				.build(), 	new NetResquestSubscriber<>(new SubscriberOnNextListener<Object>() {
 

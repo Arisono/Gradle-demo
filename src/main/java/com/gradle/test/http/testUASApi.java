@@ -98,8 +98,7 @@ public class testUASApi {
 		// selectDetailData();// 配置表单 详细界面数据接口
 		// saveFormData();//配置表单 保存数据接口
 		// upateFormData();//配置表单 更新数据接口
-		// loginIM(MD5Utils.encode("13510107574"),
-		// MD5Utils.encode("111111"));//登录IM系统
+		loginIM(MD5Utils.encode("15270003113"), MD5Utils.encode("1"));//登录IM系统
 		// addWorkReport();//添加日报
 		// getStagePoints();
 		// api_isTurnToCustomer();
@@ -110,7 +109,7 @@ public class testUASApi {
 		// login();//定时任务
 		
 		
-		startTaskCard("2017-06-05");//打卡签到
+		//startTaskCard("2017-06-05");//打卡签到
 		
 		//getListMenuData();//动态表单，父级菜单
 		

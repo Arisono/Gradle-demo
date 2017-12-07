@@ -39,8 +39,8 @@ public class testPlatformApi {
 	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
 	
 	private static String url_login = url_login_test;
-	private static String username = "13266699225";
-	private static String password = "111111";
+	private static String username = "15270003113";
+	private static String password = "1";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";
@@ -57,13 +57,15 @@ public class testPlatformApi {
 	public static void main(String[] args) {
 	
 		//测试环境  正式环境
-		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer );
-		//管理平台登录---参数
+//		url.setmBaseUrl(ApiPlatform.mBaseUrl_developer );
+//		//管理平台登录---参数
 		testUASApi.loginManage(username, password);// 管理平台登录
-		//执行登录
-	    taskRun();
-	    //执行异步任务
-	    observer();
+//		//执行登录
+//	    taskRun();
+//	    //执行异步任务
+//	    observer();
+	    //{"username":"18680669690","spaceId":"88745","password":"111111","appId":"b2b"}
+	 //   loginB2B(url_login_formal, "18680669690", password);
 	}
 	
 	/**
@@ -274,7 +276,7 @@ public class testPlatformApi {
 	
 	/**
 	 * 登录 B2B
-	 * 
+	 * {"username":"18680669690","spaceId":"88745","password":"111111","appId":"b2b"}
 	 * @param url
 	 * @param username
 	 * @param password
@@ -283,8 +285,8 @@ public class testPlatformApi {
 		RequestBody formBody = new FormBody.Builder()
 				.add("appId", "b2b")
 				.add("username", username)
-			//.add("spaceId", "81744")
-				.add("spaceId", "76035")
+			    .add("spaceId", "88745")
+				//.add("spaceId", "76035")
 				.add("password", password)
 				.build();
 		Request request = new Request.Builder()
