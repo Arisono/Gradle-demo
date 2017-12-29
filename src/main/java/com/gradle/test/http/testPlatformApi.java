@@ -38,9 +38,11 @@ public class testPlatformApi {
 	private static String url_login_test = "http://113.105.74.135:8001/sso/login";
 	private static String url_login_formal = "https://uas.ubtob.com/sso/login";
 	
+	//13826525605    abc123456
+
 	private static String url_login = url_login_test;
-	private static String username = "15270003113";
-	private static String password = "1";
+	private static String username = "13802579265";     
+	private static String password = "qaz8924159";
 	private static String cookies = "";
 	private static String enuu = "";
 	private static String emcode = "";

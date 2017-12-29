@@ -1,5 +1,6 @@
 package com.gradle.java.rxjava;
 
+import java.awt.Event;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.concurrent.Executors;
 import com.android.retrofit.demo.OkhttpUtils;
 import com.gradle.java.model.DownloadRepoMessageEvent;
 import com.gradle.java.utils.StringUtils;
+
 
 import rx.Observable;
 import rx.Observer;
@@ -33,9 +35,9 @@ public class RxjavaUtils {
 	public static void main(String[] args) {
 
 		 //rxBus();//rxbus测试
-		 //rxBusMethod();
+		 rxBusMethod();
 		
-		taskRun();
+		//taskRun();
 
 		// observeOn();//观察事件
 
@@ -156,19 +158,20 @@ public class RxjavaUtils {
 	public static void rxBusMethod() {
 		// 注册 ---被观察者
 		if (mSubscription != null && !mSubscription.isUnsubscribed()) {
-			OkhttpUtils.println("mSubscription:unsubscribe()");
             mSubscription.unsubscribe();
         }
+		
 		 mSubscription=RxBus.getInstance().toObservable()
-				.filter(o -> o instanceof DownloadRepoMessageEvent)
-				.map(o -> (DownloadRepoMessageEvent) o)
+				.filter(o -> o instanceof EventMessage)
+				.map(o -> (EventMessage) o)
 				// .observeOn(AndroidSchedulers.mainThread())
-				.doOnNext(o -> showMessage(o.getMessage())).subscribe();
-		OkhttpUtils.println("isUnsubscribed():"+mSubscription.isUnsubscribed());
+				.doOnNext(o -> showMessage(o.getObject()))
+				.subscribe();
+	
 		// 发送消息 ---观察者
 		RxBus.getInstance().send(
-				new DownloadRepoMessageEvent("我这是利用rxjava技术来发送消息！"));
-		OkhttpUtils.println("isUnsubscribed():"+mSubscription.isUnsubscribed());
+				new EventMessage(new Rxjava1()));
+	
 		
 	}
 	
@@ -190,7 +193,7 @@ public class RxjavaUtils {
 	
 	
 
-	public static void showMessage(String message) {
+	public static void showMessage(Object message) {
 		System.out.println(message);
 	}
 

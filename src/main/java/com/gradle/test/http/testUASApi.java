@@ -34,6 +34,16 @@ import rx.Subscriber;
  */
 @SuppressWarnings("unused")
 public class testUASApi {
+	
+//	"platform":"ERP",
+//	"account":"U0403",
+//	"master":"YITOA_DATACENTER",
+//	"name":"(英唐)英唐集团",
+//	"masterId":3252,
+//	"website":"http://218.18.115.198:8888/ERP/",
+//	"imid":101529,
+//	"sex":"M",
+//	"businessCode":"3252"
    
 	private static String sessionId;
 	private static String emcode;
@@ -41,7 +51,7 @@ public class testUASApi {
 	
 	
 	private static final String baseurl_normal = "http://218.18.115.198:8888/ERP/";
-	private static final String master_normal = "USOFTSYS";
+	private static final String master_normal = "YITOA_DATACENTER";
 	
 	private static final String baseurl_uas = "https://218.17.158.219:8443/uas/";
 	private static final String master_uas = "UAS";
@@ -49,8 +59,8 @@ public class testUASApi {
 	private static final String baseurl_test = "https://218.17.158.219:8443/uas_test/";
 	private static final String master_test = "UAS_TEST";
 	
-	private static final String phone_test="13352991628";
-	private static final String password_test="az00213381";
+	private static final String phone_test="13802579265";
+	private static final String password_test="qaz8924159";
 
 	private static final String master = master_normal;
 	private static final String baseurl = baseurl_normal;
@@ -62,7 +72,8 @@ public class testUASApi {
 
 	public static void main(String[] args) {
 		initRxjavaCall();
-//		api_task_while();
+		loginIM(MD5Utils.encode("13266699268"), MD5Utils.encode("111111aa"));//登录IM系统
+
 		if(sessionId!=null){
 			callbackResquest();
 		}else{
@@ -98,7 +109,7 @@ public class testUASApi {
 		// selectDetailData();// 配置表单 详细界面数据接口
 		// saveFormData();//配置表单 保存数据接口
 		// upateFormData();//配置表单 更新数据接口
-		loginIM(MD5Utils.encode("15270003113"), MD5Utils.encode("1"));//登录IM系统
+		
 		// addWorkReport();//添加日报
 		// getStagePoints();
 		// api_isTurnToCustomer();
@@ -220,14 +231,11 @@ public class testUASApi {
 	 * @param password
 	 */
 	public static void loginManage(String phone, String password) {
-		//192.168.253.192:8080/platform-manage
-		//manage.ubtob.com
-		//192.168.253.60:9090/platform-manage
 		String url = "http://manage.ubtob.com/public/account?user=" + phone
 				+ "&password=" + password;
 		url = url + "&_timestamp=" + System.currentTimeMillis();
 		url = url + "&_signature=" + HmacUtils.encode(url);
-		//OkhttpUtils.println("管理平台登录url:" + url);
+		OkhttpUtils.println("管理平台登录url:" + url);
 		Request request = new Request.Builder().url(url)
 				.addHeader("content-type", "text/html;charset:utf-8").build();
 		OkhttpUtils.client.newCall(request).enqueue(new Callback() {
@@ -255,6 +263,8 @@ public class testUASApi {
 	 * @param password
 	 */
 	public static void loginIM(String phone, String password) {
+		OkhttpUtils.println(phone);
+		OkhttpUtils.println(password);
 		String url = "http://113.105.74.140:8092/user/login";
 		RequestBody formBody = new FormBody.Builder()
 				.add("latitude", "22.540691").add("longitude", "113.95332")

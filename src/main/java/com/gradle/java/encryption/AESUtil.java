@@ -21,6 +21,7 @@ public class AESUtil {
 		KeyGenerator keyGen = KeyGenerator.getInstance("AES");
 		//初始化密钥生成器
 		keyGen.init(128);  //默认128，获得无政策权限后可用192或256
+		
 		//生成密钥
 		SecretKey secretKey = keyGen.generateKey();
 		return secretKey.getEncoded();
@@ -37,6 +38,7 @@ public class AESUtil {
 		Cipher cipher = Cipher.getInstance("AES");
 		//根据密钥对cipher进行初始化
 		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+	
 		//加密
 		byte[] encrypt = cipher.doFinal(data);
 		

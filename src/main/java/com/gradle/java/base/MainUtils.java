@@ -38,8 +38,10 @@ public class MainUtils {
 	private static int counter = 0;
 
 	public static void main(String[] args) {
-		    String content="1232131'";
-		    System.out.println(content.replace("'", "''"));
+//		    String content="1232131'";
+//		    System.out.println(content.replace("'", "''"));
+		    
+		    System.out.println(Integer.valueOf("0.38"));
 	}
 
 	private static int testImageScale(float ww,float hh) {

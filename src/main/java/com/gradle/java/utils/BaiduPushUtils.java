@@ -44,7 +44,7 @@ public class BaiduPushUtils {
 //		 "3955136970545093253", // 小米四 测试机
 //		"3821126972469299968",//小明哥
 		 "3661901606382112872" // me
-		,"4279722132317779123"
+//		,"4279722132317779123"
 //		,"4214122687662249823"//vivo 3,
 //		,"4593168493483957705"//产品
 	};
@@ -61,7 +61,7 @@ public class BaiduPushUtils {
 				public void run() {
 					
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(10000);
 						//pushStart(title,desc);//单设备
 						pushBatchDevice(title, desc);// 多设备
 					} catch (PushClientException e) {
